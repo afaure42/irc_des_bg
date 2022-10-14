@@ -16,6 +16,7 @@ public:
 	int get_fd() const;
 	int get_read_size() const;
 	std::string	& get_read_buff();
+	std::string	& get_write_buff();
 	
 	bool	is_connected() const;
 	bool	is_writeable() const;

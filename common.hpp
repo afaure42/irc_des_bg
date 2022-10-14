@@ -11,6 +11,8 @@
 #include <unistd.h> //close
 #include <errno.h>
 #include <cstdlib>
+#include <map>
+#include <vector>
 #include "custom_exceptions.hpp"
 
 

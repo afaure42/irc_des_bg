@@ -2,9 +2,13 @@
 #define SCHEDULER_HPP
 
 #include "common.hpp"
-#include <map>
 #include "Server.hpp"
 #include "Client.hpp"
+#include "read_write.hpp"
+#include "Info.hpp"
+
+
+typedef std::map<int, Info>::iterator Info_iter;
 
 /**
  * @brief Here is the Scheduler, shiny and beautifull
@@ -20,37 +24,25 @@ public:
 	Scheduler(Server & server);
 
 	/**
+	 * @brief This will return a ref to a vector containing
+	 * All info class that received an update and that havent been
+	 * Processed yet
+	 * @return A reference to a vector of <Info>
+	 */
+	std::map<int, Info> & get_updates(void);
+
+	/**
+	 * @brief Function used to send a message to a FD
+	 */
+	void queue_message(int fd, std::string msg);
+
+	/**
 	 * @brief Function to add to the read queue
-	 *  The Scheduler will then try to ready from this client
+	 *  The Scheduler will then try to read from this client
 	 *  when the read loop happens
 	 * @param client client to add
 	 */
-	void add_to_read(const Client & client);
-
-	/**
-	 * @brief Function to add to the write queue
-	 * 	The Scheduler will then try to send the msg in the buffer
-	 * 
-	 * @param client Client to send the msg to
-	 * @param msg Data that you want to send if the buffer is not empty,
-	 * 	subsequent call will concatenate
-	 */
-	void add_to_write(const Client & client, std::string msg);
-
-	/**
-	 * @brief Function used by the server to tell processing
-	 *	when new data has been received
-	 * @param client 
-	 */
-	void add_to_process(const Client & client);
-	
-	/**
-	 * @brief Function used by processing when there is nothing
-	 * to be done on this client
-	 * @param client Client to be removed from processing queue
-	 */
-
-	void remove_from_process(const Client & client);
+	void add_to_read(Client * client);
 
 	/**
 	 * @brief This will make the scheduler read from every
@@ -66,11 +58,11 @@ public:
 	 */
 	void write_all(void);
 private:
-	Server & _server;
+	Server & _server; // i need it to deconnect clients
 
-	std::map<int, Client> _read;
-	std::map<int, Client> _write;
-	std::map<int, Client> _process;
+	std::map<int, Client *> _read;
+	std::map<int, Client *> _write;
+	std::map<int, Info> _updates;
 
 	Scheduler(const Scheduler & ref); // NO COPY
 	Scheduler(); // NOR DEFAULT

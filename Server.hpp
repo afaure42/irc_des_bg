@@ -40,7 +40,22 @@ public:
 	 */
 	void	disconnect_client(Client & client);
 
+	/**
+	 * @brief getter for the Clients
+	 * 
+	 * @param fd fd of the client you want
+	 * @return A Reference to the client class corresponding to that fd
+	 */
+	Client & get_client(int fd);
 	
+	/**
+	 * @brief will wait for new event using epoll
+	 * and accept new connections
+	 * 
+	 * @param scheduler A ref to the scheduler, the server will
+	 * add to the update queue every fd that received data
+	 */
+	void wait_and_accept(Scheduler & scheduler);
 
 private:
 //SOCKET INFORMATIONS
@@ -55,6 +70,8 @@ private:
 	int _epfd;
 	epoll_event _events[EVENTS_SIZE];
 
+// Current_connections
+	std::map<int, Client> _connected_clients;
 };
 
 #endif
