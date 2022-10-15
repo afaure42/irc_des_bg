@@ -11,6 +11,7 @@
 #include <unistd.h> //close
 #include <errno.h>
 #include <cstdlib>
+#include <iostream>
 #include "custom_exceptions.hpp"
 
 
