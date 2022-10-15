@@ -28,6 +28,7 @@ class User
 		unsigned int	_id;
 		std::string		_nick;
 		bool			_away;
+		std::string		_away_msg;
 		bool			_invisible;
 };
 

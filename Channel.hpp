@@ -55,5 +55,4 @@ class Channel
 		unsigned int	_usrlimit;
         typedef std::map<std::string, User> _members; // nick -> User
 		typedef std::map<std::string, unsigned int> _members_permissions; // nick -> permissions
-
 };
