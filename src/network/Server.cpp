@@ -119,7 +119,7 @@ void Server::wait_and_accept(Scheduler & scheduler)
 		{
 			std::cout << "EPOLLHUP for id:" << this->to_id(fd) << '\n';
 			scheduler.remove_from_queues(this->to_id(fd));
-			scheduler.add_to_updates(Info(this->to_id(fd), NULL, false));
+			scheduler.add_to_updates(Update(this->to_id(fd), NULL, false));
 			disconnect_client(this->to_id(fd));
 			continue;
 		}

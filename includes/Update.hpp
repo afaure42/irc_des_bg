@@ -11,16 +11,16 @@
  * You can access its read buffer with the buff method
  * (Dont forget to erase what you have processed)
  */
-class Info
+class Update
 {
 public:
 
-	Info(unsigned int connection_id, std::string * buff, bool connected);
-	Info(Client & ref);
-	Info(const Info & ref);
-	Info(){};
+	Update(unsigned int connection_id, std::string * buff, bool connected);
+	Update(Client & ref);
+	Update(const Update & ref);
+	Update(){};
 
-	Info & operator=(const Info & rhs);
+	Update & operator=(const Update & rhs);
 
 	/*getters*/
 	/**

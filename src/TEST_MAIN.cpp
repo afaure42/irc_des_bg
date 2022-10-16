@@ -2,7 +2,7 @@
 #include "Scheduler.hpp"
 #include "Server.hpp"
 
-typedef std::map<unsigned int, Info>::iterator update_iter;
+typedef std::map<unsigned int, Update>::iterator update_iter;
 
 int main(int argc, char *argv[])
 {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 			std::cout << "Processing\n";
 			//creating a reference to a map
 			//and calling the scheduler to get all updates
-			std::map <unsigned int, Info> & updates = scheduler.get_updates();
+			std::map <unsigned int, Update> & updates = scheduler.get_updates();
 			update_iter it = updates.begin();
 
 			//looping on all updates

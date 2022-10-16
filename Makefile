@@ -13,7 +13,7 @@ SRC_OFILES			=	$(SRC_PATH:.cpp=.o)
 ALL_OFILES			+=	$(SRC_OFILES)
 
 NETWORK_FILES		=	write_client.cpp Scheduler.cpp server_loop.cpp Server.cpp server_init.cpp \
-						custom_exceptions.cpp read_client.cpp Client.cpp Info.cpp
+						custom_exceptions.cpp read_client.cpp Client.cpp Update.cpp
 NETWORK_PATH		=	$(addprefix ${NETWORK_FILES_PATH}, ${NETWORK_FILES})
 NETWORK_OFILES		=	$(NETWORK_PATH:.cpp=.o)
 ALL_OFILES			+=	$(NETWORK_OFILES)
