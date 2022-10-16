@@ -6,14 +6,16 @@
 class Client
 {
 public:
-	Client();
+	Client(){};
 	Client(const Client & ref);
-	Client(const int &fd, const sockaddr_in & addr, 
-			const socklen_t & socklen, bool connected);
+	Client(const int &fd, const unsigned int & id,
+		const sockaddr_in & addr, const socklen_t & socklen,
+		bool connected);
 
 	Client & operator= (const Client & ref);
 
 	int get_fd() const;
+	unsigned int get_id() const;
 	int get_read_size() const;
 	std::string	& get_read_buff();
 	std::string	& get_write_buff();
@@ -28,6 +30,7 @@ public:
 
 private:
 	int			_fd;
+	unsigned int _id;
 	sockaddr_in _addr;
 	socklen_t	_socklen;
 	bool		_connected;

@@ -5,37 +5,65 @@ Scheduler::Scheduler(Server & server)
 {
 }
 
-void Scheduler::add_to_read(Client * client)
+void Scheduler::add_to_read(unsigned int connection_id)
 {
-	this->_read[client->get_fd()] = client;
+	this->_read.insert(connection_id);
 }
 
-std::map<int, Info> & Scheduler::get_updates()
+void Scheduler::add_to_updates(Info info)
+{
+	this->_updates[info.get_id()] = info;
+}
+
+std::map<unsigned int, Info> & Scheduler::get_updates()
 {
 	return this->_updates;
 }
 
+bool Scheduler::queue_message(unsigned int connection_id, std::string msg)
+{
+	std::cout << "A message is being queued for connection:" << connection_id << '\n';
+	if (this->_server.is_client_connected(connection_id))
+	{
+		this->_server.get_client(connection_id).
+		get_write_buff().append(msg);
+		this->_write.insert(connection_id);
+		return true;
+	}
+	return false;
+}
+
+void Scheduler::remove_from_queues(unsigned int connection_id)
+{
+	this->_read.erase(connection_id);
+	this->_write.erase(connection_id);
+}
+
 void Scheduler::read_all(void)
 {
-	std::map<int, Client *>::iterator it = this->_read.begin();
+	std::set<unsigned int>::iterator it = this->_read.begin();
 	//read from client
 	while (it != this->_read.end())
 	{
 		//if something changed (deconnexion or data received)
-		if (read_from_client(*it->second))
-			this->_updates[it->first] = Info(*(it->second));
+		if (read_from_client(this->_server.get_client(*it)))
+			this->_updates[*it] = Info(this->_server.get_client(*it));
 		// add to the updates
 
-		if (!it->second->is_connected())
+		if (!this->_server.get_client(*it).is_connected())
 		{
-			this->_server.disconnect_client(*it->second);
+			this->_write.erase(*it);
+			//remove from write queue
+			//and properly disconnect (may throw)
+			this->_server.disconnect_client(*it);
 			//be carefull client pointer is invalid now
-			this->_read.erase((it++)->first);
+
+			this->_read.erase(*(it++));
 		}
 
 		//if we cant read anymore, we will remove it from the read_list
-		else if (!it->second->is_readable())
-			this->_read.erase((it++)->first);
+		else if (!this->_server.get_client(*it).is_readable())
+			this->_read.erase(*(it++));
 		else
 			it++;
 	}
@@ -43,17 +71,17 @@ void Scheduler::read_all(void)
 
 void Scheduler::write_all(void)
 {
-	std::map<int, Client *>::iterator it = this->_write.begin();
+	std::set<unsigned int>::iterator it = this->_write.begin();
 
 	while (it != this->_write.end())
 	{
 		//if client is writeable
-		if (it->second->is_writeable())
-			write_to_client(*it->second);
+		if (this->_server.get_client(*it).is_writeable())
+			write_to_client(this->_server.get_client(*it));
 
 		//if buffer empty remove from write queue
-		if (it->second->get_write_buff().empty())
-			this->_write.erase((it++)->first);
+		if (this->_server.get_client(*it).get_write_buff().empty())
+			this->_write.erase(*(it++));
 		else
 			it++;
 	}

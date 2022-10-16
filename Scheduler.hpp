@@ -7,6 +7,9 @@
 #include "read_write.hpp"
 #include "Info.hpp"
 
+class Info;
+class Server;
+class Client;
 
 typedef std::map<int, Info>::iterator Info_iter;
 
@@ -16,6 +19,9 @@ typedef std::map<int, Info>::iterator Info_iter;
  *  to start working and sending messages ? You can !
  * 	Wanna tell processing to move their asses ? You can !
  *  Wanna get better at lol URF ? WIP !
+ * 
+ * \n The Scheduler uses connection ids, those are unique to each current and futur Connections
+ * A new connection will not have the same id as an old closed one ( or only a INT_MAX old connection ;) )
  */
 class Scheduler
 {
@@ -29,20 +35,31 @@ public:
 	 * Processed yet
 	 * @return A reference to a vector of <Info>
 	 */
-	std::map<int, Info> & get_updates(void);
+	std::map<unsigned int, Info> & get_updates(void);
 
 	/**
-	 * @brief Function used to send a message to a FD
+	 * @brief Function used to send a message to a connection
+	 * 
+	 * @return true if msg was succesfully added to buffer
+	 * @return false if client is not connected
 	 */
-	void queue_message(int fd, std::string msg);
+	bool queue_message(unsigned int connection_id, std::string msg);
 
 	/**
 	 * @brief Function to add to the read queue
 	 *  The Scheduler will then try to read from this client
 	 *  when the read loop happens
-	 * @param client client to add
+	 * @param connection_id id of the client you want to add
 	 */
-	void add_to_read(Client * client);
+	void add_to_read(unsigned int connection_id);
+
+	/**
+	 * @brief function used by the server to tell the scheduler
+	 * something new happened to this connection
+	 * 
+	 * @param connection_id 
+	 */
+	void add_to_updates(Info info);
 
 	/**
 	 * @brief This will make the scheduler read from every
@@ -57,12 +74,26 @@ public:
 	 * the message is sent
 	 */
 	void write_all(void);
+
+	/**
+	 * @brief will remove a client from read write and process queue
+	 * 
+	 * @param connection_id id of the client you 
+	 * want to remove from the Scheduler
+	 */
+	void remove_from_queues(unsigned int connection_id);
 private:
 	Server & _server; // i need it to deconnect clients
 
-	std::map<int, Client *> _read;
-	std::map<int, Client *> _write;
-	std::map<int, Info> _updates;
+	//sets are used because there is a no duplicate guarantee 
+	//when inserting the same thing many times
+	//though i think i might not need it for the read queue
+	std::set<unsigned int> _read;
+	std::set<unsigned int> _write;
+
+	std::map<unsigned int, Info> _updates;
+
+
 
 	Scheduler(const Scheduler & ref); // NO COPY
 	Scheduler(); // NOR DEFAULT

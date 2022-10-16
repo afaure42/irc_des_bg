@@ -15,24 +15,50 @@ class Info
 {
 public:
 
-	Info(int fd, std::string * buff, bool connected);
-	Info(const Client & ref);
+	Info(unsigned int connection_id, std::string * buff, bool connected);
+	Info(Client & ref);
 	Info(const Info & ref);
+	Info(){};
+
+	Info & operator=(const Info & rhs);
 
 	/*getters*/
-	int				get_fd() const;
+	/**
+	 * @brief get the Connection id, the connection id is unique value
+	 * identifying a current connection with a client
+	 * 
+	 * @return connection id
+	 */
+	unsigned int	get_id() const;
+
+	/**
+	 * @brief get the read_buffer of this connection
+	 * Be sure to erase what you have processed
+	 * 
+	 * @return pointer to a string
+	 */
 	std::string *	buff() const;
+
+	/**
+	 * @brief get connection status
+	 */
 	bool			is_connected() const;
 
 	/*setters*/
+	/**
+	 * @brief You can set the whole buffer at once if you want to
+	 * 
+	 * @param ref reference to the string you want the buffer replaced with
+	 * be careful to not lose unprocessed data !
+	 */
 	void	set_buff(const std::string & ref);
 
 private:
-	int		_fd;
+
+	unsigned int	_connection_id;
 	std::string *	_read_buff;
 	bool			_connected;
 
-	Info();
 };
 
 #endif
