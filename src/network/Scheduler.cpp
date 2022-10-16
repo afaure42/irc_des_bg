@@ -10,12 +10,12 @@ void Scheduler::addToRead(unsigned int connection_id)
 	this->_read.insert(connection_id);
 }
 
-void Scheduler::addToUpdates(Info info)
+void Scheduler::addToUpdates(Update info)
 {
 	this->_updates[info.getId()] = info;
 }
 
-std::map<unsigned int, Info> & Scheduler::getUpdates()
+std::map<unsigned int, Update> & Scheduler::getUpdates()
 {
 	return this->_updates;
 }
@@ -47,7 +47,7 @@ void Scheduler::readAll(void)
 	{
 		//if something changed (deconnexion or data received)
 		if (read_from_client(this->_server.getClient(*it)))
-			this->_updates[*it] = Info(this->_server.getClient(*it));
+			this->_updates[*it] = Update(this->_server.getClient(*it));
 		// add to the updates
 
 		if (!this->_server.getClient(*it).isConnected())

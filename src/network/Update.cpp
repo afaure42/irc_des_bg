@@ -1,26 +1,26 @@
-#include "Info.hpp"
+#include "Update.hpp"
 
-Info::Info(unsigned int id, std::string * buff, bool connected)
+Update::Update(unsigned int id, std::string * buff, bool connected)
 :_connection_id(id), _read_buff(buff), _connected(connected)
 {
 
 }
 
-Info::Info(const Info & ref)
+Update::Update(const Update & ref)
 :_connection_id(ref.getId()), _read_buff(ref.getBuff()),
 _connected(ref.isConnected())
 {
 
 }
 
-Info::Info(Client & ref)
+Update::Update(Client & ref)
 :_connection_id(ref.getId()), _read_buff(&ref.getReadBuff()),
 _connected(ref.isConnected())
 {
 
 }
 
-Info & Info::operator=(const Info & rhs)
+Update & Update::operator=(const Update & rhs)
 {
 	this->_connected = rhs._connected;
 	this->_connection_id = rhs._connection_id;
@@ -29,18 +29,18 @@ Info & Info::operator=(const Info & rhs)
 	return *this;
 }
 
-unsigned int Info::getId() const {
+unsigned int Update::getId() const {
 	return this->_connection_id;
 }
 
-std::string * Info::getBuff() const{
+std::string * Update::getBuff() const{
 	return this->_read_buff;
 }
 
-bool Info::isConnected() const {
+bool Update::isConnected() const {
 	return this->_connected;
 }
 
-void Info::setBuff(const std::string & ref) {
+void Update::setBuff(const std::string & ref) {
 	*(this->_read_buff) = ref;
 }

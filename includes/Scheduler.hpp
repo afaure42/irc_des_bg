@@ -5,13 +5,13 @@
 #include "Server.hpp"
 #include "Client.hpp"
 #include "read_write.hpp"
-#include "Info.hpp"
+#include "Update.hpp"
 
-class Info;
+class Update;
 class Server;
 class Client;
 
-typedef std::map<int, Info>::iterator Info_iter;
+typedef std::map<int, Update>::iterator Info_iter;
 
 /**
  * @brief Here is the Scheduler, shiny and beautifull
@@ -35,7 +35,7 @@ public:
 	 * Processed yet
 	 * @return A reference to a vector of <Info>
 	 */
-	std::map<unsigned int, Info> & getUpdates(void);
+	std::map<unsigned int, Update> & getUpdates(void);
 
 	/**
 	 * @brief Function used to send a message to a connection
@@ -59,7 +59,7 @@ public:
 	 * 
 	 * @param connection_id 
 	 */
-	void addToUpdates(Info info);
+	void addToUpdates(Update info);
 
 	/**
 	 * @brief This will make the scheduler read from every
@@ -91,7 +91,7 @@ private:
 	std::set<unsigned int> _read;
 	std::set<unsigned int> _write;
 
-	std::map<unsigned int, Info> _updates;
+	std::map<unsigned int, Update> _updates;
 
 
 
