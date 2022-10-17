@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 				else if (!it->second.getBuff()->empty())
 				{
 					// parse and create command
-					Command command(it->second.buff());
+					Command command(it->second.getBuff());
 					std::cout << command;
 					parser.parseCommand(command);
 					if (it->second.getBuff()->find("shutdown\n", 0)
