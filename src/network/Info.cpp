@@ -7,15 +7,15 @@ Info::Info(unsigned int id, std::string * buff, bool connected)
 }
 
 Info::Info(const Info & ref)
-:_connection_id(ref.get_id()), _read_buff(ref.buff()),
-_connected(ref.is_connected())
+:_connection_id(ref.getId()), _read_buff(ref.getBuff()),
+_connected(ref.isConnected())
 {
 
 }
 
 Info::Info(Client & ref)
-:_connection_id(ref.get_id()), _read_buff(&ref.get_read_buff()),
-_connected(ref.is_connected())
+:_connection_id(ref.getId()), _read_buff(&ref.getReadBuff()),
+_connected(ref.isConnected())
 {
 
 }
@@ -29,18 +29,18 @@ Info & Info::operator=(const Info & rhs)
 	return *this;
 }
 
-unsigned int Info::get_id() const {
+unsigned int Info::getId() const {
 	return this->_connection_id;
 }
 
-std::string * Info::buff() const{
+std::string * Info::getBuff() const{
 	return this->_read_buff;
 }
 
-bool Info::is_connected() const {
+bool Info::isConnected() const {
 	return this->_connected;
 }
 
-void Info::set_buff(const std::string & ref) {
+void Info::setBuff(const std::string & ref) {
 	*(this->_read_buff) = ref;
 }

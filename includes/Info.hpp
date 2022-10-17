@@ -8,7 +8,7 @@
  * @brief Object containing information regarding a recent status update
  * A status update can be either a deconnection (connected == false)
  * or an update in the read buffer
- * You can access its read buffer with the buff method
+ * You can access its read buffer with the getBuff method
  * (Dont forget to erase what you have processed)
  */
 class Info
@@ -29,7 +29,7 @@ public:
 	 * 
 	 * @return connection id
 	 */
-	unsigned int	get_id() const;
+	unsigned int	getId() const;
 
 	/**
 	 * @brief get the read_buffer of this connection
@@ -37,12 +37,12 @@ public:
 	 * 
 	 * @return pointer to a string
 	 */
-	std::string *	buff() const;
+	std::string *	getBuff() const;
 
 	/**
 	 * @brief get connection status
 	 */
-	bool			is_connected() const;
+	bool			isConnected() const;
 
 	/*setters*/
 	/**
@@ -51,7 +51,7 @@ public:
 	 * @param ref reference to the string you want the buffer replaced with
 	 * be careful to not lose unprocessed data !
 	 */
-	void	set_buff(const std::string & ref);
+	void	setBuff(const std::string & ref);
 
 private:
 

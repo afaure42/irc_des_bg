@@ -59,47 +59,47 @@ Server::Server(int port)
 	memset(this->_events, 0, sizeof(epoll_event) * EVENTS_SIZE);
 }
 
-int Server::to_fd(unsigned int id)
+int Server::_toFd(unsigned int id)
 {
-	return this->get_client(id).get_fd();
+	return this->getClient(id).getFd();
 }
 
-unsigned int Server::to_id(int fd)
+unsigned int Server::_toId(int fd)
 {
 	return this->_connection_index.at(fd);
 }
 
-void Server::disconnect_client(unsigned int id)
+void Server::disconnectClient(unsigned int id)
 {
-	this->rmv_socket_epoll(this->to_fd(id));
-	close(this->to_fd(id));
-	this->_connection_index.erase(this->to_fd(id));
+	this->_rmvSocketEpoll(this->_toFd(id));
+	close(this->_toFd(id));
+	this->_connection_index.erase(this->_toFd(id));
 	this->_connected_clients.erase(id);
 }
 
-void Server::disconnect_client(Client & client)
+void Server::disconnectClient(Client & client)
 {
-	this->disconnect_client(client.get_id());
+	this->disconnectClient(client.getId());
 }
 
-bool Server::is_client_connected(unsigned int connection_id)
+bool Server::isClientConnected(unsigned int connection_id)
 {
 	return (this->_connected_clients.find(connection_id) 
 		!= this->_connected_clients.end());
 }
 
-Client & Server::get_client(unsigned int connection_id)
+Client & Server::getClient(unsigned int connection_id)
 {
 		return this->_connected_clients
 		.at(connection_id);
 }
 
-void Server::wait_and_accept(Scheduler & scheduler)
+void Server::waitAndAccept(Scheduler & scheduler)
 {
 	int nb_fds = epoll_wait(this->_epfd,
 			this->_events, EVENTS_SIZE, -1);
 	if (nb_fds < 0)
-		throw(syscall_error(errno, "wait_and_accept: epoll_wait:"));
+		throw(syscall_error(errno, "waitAndAccept: epoll_wait:"));
 
 	epoll_event * ev = this->_events;
 	for(int i = 0; i < nb_fds; i++)
@@ -108,7 +108,7 @@ void Server::wait_and_accept(Scheduler & scheduler)
 		if (fd == this->_sockfd)
 		{
 			std::cout << "NEW CONNECTION DETECTED\n";
-			this->accept_new_clients();
+			this->_acceptNewClients();
 			continue;
 		}
 		//IF deconnected, disconnect client and remove from different
@@ -117,28 +117,28 @@ void Server::wait_and_accept(Scheduler & scheduler)
 			|| ev[i].events & EPOLLERR
 			|| ev[i].events & EPOLLHUP)
 		{
-			std::cout << "EPOLLHUP for id:" << this->to_id(fd) << '\n';
-			scheduler.remove_from_queues(this->to_id(fd));
-			scheduler.add_to_updates(Info(this->to_id(fd), NULL, false));
-			disconnect_client(this->to_id(fd));
+			std::cout << "EPOLLHUP for id:" << this->_toId(fd) << '\n';
+			scheduler.removeFromQueues(this->_toId(fd));
+			scheduler.addToUpdates(Info(this->_toId(fd), NULL, false));
+			disconnectClient(this->_toId(fd));
 			continue;
 		}
 
 		//IF POLLIN, add to the read queue and set read ok flag
 		if (ev[i].events & EPOLLIN)
 		{
-			this->get_client(this->to_id(fd)).set_readable(true);
+			this->getClient(this->_toId(fd)).setReadable(true);
 
-			scheduler.add_to_read(this->to_id(fd));
+			scheduler.addToRead(this->_toId(fd));
 		}
 
 		//if POLLOUT just set write ok flag
 		if (ev[i].events & EPOLLOUT)
-			this->get_client(this->to_id(fd)).set_writeable(true);
+			this->getClient(this->_toId(fd)).setWriteable(true);
 	}
 }
 
-void Server::add_socket_epoll(int fd)
+void Server::_addSocketEpoll(int fd)
 {
 	epoll_event ev;
 
@@ -149,14 +149,14 @@ void Server::add_socket_epoll(int fd)
 		throw(syscall_error(errno, "epoll_ctl_add:"));
 }
 
-void Server::rmv_socket_epoll(int fd)
+void Server::_rmvSocketEpoll(int fd)
 {
 	if (epoll_ctl(this->_epfd, EPOLL_CTL_DEL, fd, NULL) < 0)
 		throw(syscall_error(errno, "epoll_ctl_del:"));
 }
 
 
-void Server::accept_new_clients(void)
+void Server::_acceptNewClients(void)
 {
 	while (1)
 	{
@@ -174,14 +174,14 @@ void Server::accept_new_clients(void)
 			if (errno == EWOULDBLOCK || errno == EAGAIN)
 				break;
 			else
-				throw (syscall_error(errno, "accept_new_clients: accept:"));
+				throw (syscall_error(errno, "_acceptNewClients: accept:"));
 		}
 
 		ret = fcntl(new_sock, F_SETFL, O_NONBLOCK);
 		if (ret < 0)
-			throw(syscall_error(errno, "accept_new_clients: fcntl:"));
+			throw(syscall_error(errno, "_acceptNewClients: fcntl:"));
 		
-		add_socket_epoll(new_sock);
+		_addSocketEpoll(new_sock);
 		this->_connection_counter++;
 		this->_connection_index[new_sock] = this->_connection_counter;
 		this->_connected_clients[this->_connection_counter] = 
