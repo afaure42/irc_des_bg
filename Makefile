@@ -7,7 +7,7 @@ SRC_FILES_PATH		=	./src/
 NETWORK_FILES_PATH	=	./src/network/
 INCLUDES			=	-I./includes
 				
-SRC_FILES			=	Channel.cpp Command.cpp User.cpp TEST_MAIN.cpp
+SRC_FILES			=	Command.cpp User.cpp TEST_MAIN.cpp Parser.cpp
 SRC_PATH			=	$(addprefix ${SRC_FILES_PATH}, ${SRC_FILES})
 SRC_OFILES			=	$(SRC_PATH:.cpp=.o)
 ALL_OFILES			+=	$(SRC_OFILES)

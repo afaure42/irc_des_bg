@@ -1,6 +1,8 @@
 #include "common.hpp"
 #include "Scheduler.hpp"
 #include "Server.hpp"
+#include "Command.hpp"
+#include "Parser.hpp"
 
 typedef std::map<unsigned int, Update>::iterator update_iter;
 
@@ -67,6 +69,11 @@ int main(int argc, char *argv[])
 				}
 				else if (!it->second.buff()->empty())
 				{
+					// parse and create command
+					Command command(it->second.buff());
+					Parser parser;
+					std::cout << command;
+					parser.parseCommand(command);
 					if (it->second.buff()->find("shutdown\n", 0)
 						!= it->second.buff()->npos)
 						server_on = false;

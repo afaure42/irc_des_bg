@@ -1,3 +1,4 @@
 *.o
 *.d
+.vscode
 irc_des_bg

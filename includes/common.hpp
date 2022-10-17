@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <exception>
 #include <string>
+#include <sstream> // string stream
 #include <cstring> //strerror
 #include <unistd.h> //close
 #include <errno.h>

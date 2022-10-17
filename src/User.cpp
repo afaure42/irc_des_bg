@@ -1,6 +1,6 @@
 #include "User.hpp"
 
-User::User(const std::string &nickname) :
+User::User(std::string nickname) :
 	_nick(nickname), _away(false), _invisible(false)
 {
 	static int id = 0;
@@ -36,7 +36,11 @@ unsigned int	User::getId(void) const {
 std::string	User::getNick(void) const {
 	return (this->_nick);
 }
+std::string	const	&User::getUsername(void) const {
+	return (this->_usrname);
+}
 
+// OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const User& usr)
 {
     os << "User id: " << usr.getId() << ", nickname: " << usr.getNick() << std::endl;
