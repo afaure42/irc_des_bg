@@ -22,7 +22,7 @@ void	Command::_createParams(std::string raw_command) {
 	// Start by deleting the \n at the end, will need to be changed
 	// to instead delete le /r/n or whatever
 	// if std::string.ends_with ? or .contains()
-	raw_command.erase(raw_command.find_first_of('\n'));
+	raw_command.erase(raw_command.find_first_of('\n'), 1);
 	if (!raw_command.empty()) {
 		std::istringstream sstream(raw_command);
 		std::string token;
@@ -38,12 +38,12 @@ void	Command::_createParams(std::string raw_command) {
 // OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const Command& cmd)
 {
-	os << "COMMAND OUTPUT START=================" << std::endl;
-    os << "Command [" << cmd.getCmdType() << "]" << std::endl;
+	os << "COMMAND OUTPUT START=================\n"
+		<< "Command [" << cmd.getCmdType() << "]\n";
 	std::list<std::string>	params = cmd.getParams();
 	std::list<std::string>::iterator it = params.begin();
 	for (size_t i = 0; it != params.end(); it++, i++)
-		std::cout << "Param " << i << "=> " << it->data() << std::endl;
-	os << "COMMAND OUTPUT END=================" << std::endl;
+		std::cout << "Param " << i << "=> " << it->data() << "\n";
+	os << "COMMAND OUTPUT END=================\n";
     return os;
 }

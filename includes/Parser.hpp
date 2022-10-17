@@ -9,7 +9,7 @@ class Parser
 	public:
 		Parser();
 		~Parser();
-		void	parseCommand(Command const &cmd);
+		void			parseCommand(Command const &cmd);
 	private:
 		bool			_cmd_is_valid;
 		int				_numeric_return;

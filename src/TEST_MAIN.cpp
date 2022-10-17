@@ -19,8 +19,9 @@ int main(int argc, char *argv[])
 	//the server's dtor can free all its resources
 	try
 	{
-		Server server(port);
-		Scheduler scheduler(server); 
+		Server		server(port);
+		Scheduler	scheduler(server); 
+		Parser		parser;
 
 		std::cout << "Init is Done\n";
 		//init is done in the ctors so if any errors were to happen
@@ -71,7 +72,6 @@ int main(int argc, char *argv[])
 				{
 					// parse and create command
 					Command command(it->second.buff());
-					Parser parser;
 					std::cout << command;
 					parser.parseCommand(command);
 					if (it->second.buff()->find("shutdown\n", 0)
