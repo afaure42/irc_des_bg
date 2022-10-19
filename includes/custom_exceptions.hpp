@@ -19,6 +19,8 @@ public:
 	 */
 	syscall_error(int err, std::string msg = "An error Ocurred");
 
+	~syscall_error() throw(){};
+
 	/**
 	 * @return string defined by the thrower
 	 * 			(usually the syscall that returned an error)

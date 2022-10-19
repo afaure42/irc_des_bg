@@ -35,7 +35,7 @@ public:
 	 * Processed yet
 	 * @return A reference to a vector of <Info>
 	 */
-	std::map<unsigned int, Update> & get_updates(void);
+	std::map<unsigned int, Update> & getUpdates(void);
 
 	/**
 	 * @brief Function used to send a message to a connection
@@ -43,7 +43,7 @@ public:
 	 * @return true if msg was succesfully added to buffer
 	 * @return false if client is not connected
 	 */
-	bool queue_message(unsigned int connection_id, std::string msg);
+	bool queueMessage(unsigned int connection_id, std::string msg);
 
 	/**
 	 * @brief Function to add to the read queue
@@ -51,7 +51,7 @@ public:
 	 *  when the read loop happens
 	 * @param connection_id id of the client you want to add
 	 */
-	void add_to_read(unsigned int connection_id);
+	void addToRead(unsigned int connection_id);
 
 	/**
 	 * @brief function used by the server to tell the scheduler
@@ -59,21 +59,21 @@ public:
 	 * 
 	 * @param connection_id 
 	 */
-	void add_to_updates(Update info);
+	void addToUpdates(Update info);
 
 	/**
 	 * @brief This will make the scheduler read from every
 	 * client in the reading queue and add those clients to the processing
 	 * queue
 	 */
-	void read_all(void);
+	void readAll(void);
 
 	/**
 	 * @brief This will make the scheduler write to every client
 	 * in the writing qeue, clients will be automatically removed when
 	 * the message is sent
 	 */
-	void write_all(void);
+	void writeAll(void);
 
 	/**
 	 * @brief will remove a client from read write and process queue
@@ -81,7 +81,7 @@ public:
 	 * @param connection_id id of the client you 
 	 * want to remove from the Scheduler
 	 */
-	void remove_from_queues(unsigned int connection_id);
+	void removeFromQueues(unsigned int connection_id);
 private:
 	Server & _server; // i need it to deconnect clients
 

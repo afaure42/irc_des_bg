@@ -22,14 +22,14 @@ public:
 	 * May Throw a syscall_error exception
 	 * @param client The client you want to disconnect
 	 */
-	void	disconnect_client(Client & client);
+	void	disconnectClient(Client & client);
 	/**
 	 * @brief Closes the tcp connection with the client
 	 * No condition regarding the server socket
 	 * May Throw a syscall_error exception
 	 * @param connection_id The id of the client you want to disconnect
 	 */
-	void	disconnect_client(unsigned int connection_id);
+	void	disconnectClient(unsigned int connection_id);
 
 	/**
 	 * @brief Function to know if a client is still connected
@@ -38,7 +38,7 @@ public:
 	 * @return true if client is connected
 	 * @return false if cilent is not connected
 	 */
-	bool	is_client_connected(unsigned int connection_id);
+	bool	isClientConnected(unsigned int connection_id);
 
 	/**
 	 * @brief getter for the Clients
@@ -47,7 +47,7 @@ public:
 	 * @return A Pointer to the client class corresponding to that
 	 * 	connection_id
 	 */
-	Client & get_client(unsigned int connection_id);
+	Client & getClient(unsigned int connection_id);
 	
 	/**
 	 * @brief will wait for new event using epoll
@@ -56,7 +56,7 @@ public:
 	 * @param scheduler A ref to the scheduler, the server will
 	 * add to the update queue every fd that received data
 	 */
-	void wait_and_accept(Scheduler & scheduler);
+	void waitAndAccept(Scheduler & scheduler);
 
 private:
 //Private methods:
@@ -68,19 +68,19 @@ private:
 	/** @brief adds the fd to the epoll interest list
 	 * May throw a syscall_error exception
 	*/
-	void add_socket_epoll(int fd);
+	void _addSocketEpoll(int fd);
 
 	/** @brief removes fd from the epoll interset list
 	 * May throw a syscall_error exception
 	*/
-	void rmv_socket_epoll(int fd);
+	void _rmvSocketEpoll(int fd);
 
 	/**
 	 * @brief will accept new clients until no connection is pending
 	 * ( call if EPOLLIN event on the server socket)
 	 * May Throw a syscall_error exception
 	 */
-	void	accept_new_clients(void);
+	void	_acceptNewClients(void);
 
 	/**
 	 * @brief conversion from connection id 
@@ -88,7 +88,7 @@ private:
 	 * @param id 
 	 * @return fd of that connection
 	 */
-	int	to_fd(unsigned int id);
+	int	_toFd(unsigned int id);
 
 	/**
 	 * @brief conversion from fd to 
@@ -96,7 +96,7 @@ private:
 	 * @param fd 
 	 * @return connection id of this client
 	 */
-	unsigned int to_id(int fd);
+	unsigned int _toId(int fd);
 
 
 //SOCKET INFORMATIONS

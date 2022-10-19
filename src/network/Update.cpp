@@ -7,15 +7,15 @@ Update::Update(unsigned int id, std::string * buff, bool connected)
 }
 
 Update::Update(const Update & ref)
-:_connection_id(ref.get_id()), _read_buff(ref.buff()),
-_connected(ref.is_connected())
+:_connection_id(ref.getId()), _read_buff(ref.getBuff()),
+_connected(ref.isConnected())
 {
 
 }
 
 Update::Update(Client & ref)
-:_connection_id(ref.get_id()), _read_buff(&ref.get_read_buff()),
-_connected(ref.is_connected())
+:_connection_id(ref.getId()), _read_buff(&ref.getReadBuff()),
+_connected(ref.isConnected())
 {
 
 }
@@ -29,18 +29,18 @@ Update & Update::operator=(const Update & rhs)
 	return *this;
 }
 
-unsigned int Update::get_id() const {
+unsigned int Update::getId() const {
 	return this->_connection_id;
 }
 
-std::string * Update::buff() const{
+std::string * Update::getBuff() const{
 	return this->_read_buff;
 }
 
-bool Update::is_connected() const {
+bool Update::isConnected() const {
 	return this->_connected;
 }
 
-void Update::set_buff(const std::string & ref) {
+void Update::setBuff(const std::string & ref) {
 	*(this->_read_buff) = ref;
 }
