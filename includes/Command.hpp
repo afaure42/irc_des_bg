@@ -1,12 +1,14 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include "common.hpp"
-#include "numeric_replies.hpp"
-#include "User.hpp"
-#include "Channel.hpp"
 #include <functional>
 
+#include "common.hpp"
+#include "User.hpp"
+#include "Channel.hpp"
+
+#include "numeric_replies.hpp"
+#include "command_ids.hpp"
 
 // users map
 typedef std::map<unsigned int, User>	t_users;
@@ -39,6 +41,7 @@ class Command
 		// Are only really useful for << overload and debug purposes
 		std::string const		&getCmdType(void) const;
 		std::list<std::string>	getParams(void) const;
+		int						getNumericReturn(void) const;
 	private:
 		std::string				_cmd_type;
 		std::list<std::string>	_params;
@@ -56,13 +59,14 @@ class Command
 		// Method used for parsing //
 		unsigned int			_getCommandId() const;
 
-		// COMMAND MAPS TYPEDEFS
+		/* COMMAND MAPS TYPEDEFS */
+		/* Implemented for clarity */
 		// login functions typedef
 		typedef unsigned int (Command::*login_fn)(unsigned int, t_users &);
 		// login functions map typedef
-		typedef std::map<unsigned int, login_fn> login_fn_map;
+		typedef std::map<unsigned int, login_fn>	login_fn_map;
 		// the login functions map
-		login_fn_map			_login_functions;
+		login_fn_map								_login_functions;
 		// all functions typedef, add channels
 		typedef unsigned int (Command::*exec_fn)(
 				unsigned int,
@@ -72,6 +76,8 @@ class Command
 		typedef std::map<unsigned int, exec_fn> exec_fn_map;
 		// the all functions map
 		exec_fn_map				_all_functions;
+		// login map pair typedef
+		typedef std::pair<unsigned int, login_fn>	fn_map_pair;
 
 		// Execution methods
 		unsigned int			_pass(unsigned int client_id,

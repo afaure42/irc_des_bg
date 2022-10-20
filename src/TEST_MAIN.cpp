@@ -72,9 +72,9 @@ int main(int argc, char *argv[])
 				{
 					// parse and create command
 					Command command(it->second.getBuff());
-					std::cout << command;
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
+					std::cout << command;
 					if (it->second.getBuff()->find("shutdown\n", 0)
 						!= it->second.getBuff()->npos)
 						server_on = false;
