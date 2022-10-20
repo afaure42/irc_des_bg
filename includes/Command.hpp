@@ -50,7 +50,7 @@ class Command
 		**	>0 if command encountered an error */
 		int						_numeric_return;
 		// Setup methods
-		void					_set_function_map(void);
+		void					_setFunctionMap(void);
 		void					_createParams(std::string raw_command);
 
 		/* COMMAND MAP TYPEDEFS */

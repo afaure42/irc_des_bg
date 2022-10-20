@@ -3,7 +3,7 @@
 Command::Command(std::string *raw_command)
 {
 	this->_createParams(*raw_command);
-	this->_set_function_map();
+	this->_setFunctionMap();
 	std::cout << "coucou => " << *raw_command << std::endl;
 }
 
@@ -46,7 +46,7 @@ void	Command::_createParams(std::string raw_command) {
 // LOGIN MAP
 // Here is a good example of how easy it will be to add more functions
 // in the future: simply add to the map the pair <cmd_id, function>
-void	Command::_set_function_map(void) {
+void	Command::_setFunctionMap(void) {
 	exec_fn_map::iterator it = this->_command_functions.begin();
 	this->_command_functions.insert(
 			it,	fn_map_pair("PASS", &Command::_pass));
@@ -61,11 +61,8 @@ void	Command::_set_function_map(void) {
 // PARSING
 
 // EXECUTION PIPELINE
-// Uses the id of the command to execute the appropriate function in
-// the function map.
-	// cmd_id will be 0 only if command doesn't exist
-	// cmd_id <= 3 ? login functions
-	// cmd_id > 3 ? all other funcions
+// Tries to find the method for the command in the functions map,
+// and executes it if found
 void	Command::execute(
 	unsigned int	client_id,
 	t_users			&users,
@@ -120,7 +117,7 @@ unsigned int	Command::_nick(	unsigned int client_id,
 								t_users &users,
 								t_channels &channels) {
 	(void)client_id;(void)users;(void)channels;
-	std::cout << "NICK command spotted\n";
+	std::cout << "NICK command execution\n";
 	return (0);
 }
 
@@ -129,7 +126,7 @@ unsigned int	Command::_user(	unsigned int client_id,
 								t_users &users,
 								t_channels &channels ) {
 	(void)client_id;(void)users;(void)channels;
-	std::cout << "USER command spotted\n";
+	std::cout << "USER command execution\n";
 	return (0);
 }
 
