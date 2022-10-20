@@ -85,7 +85,8 @@ void	Command::execute(
 
 // EXECUTION METHODS START //
 
-// PASS: Sets the password for the user
+// PASS: Sets the password for the user, can be done as many times as the user wants
+// while he is not registered
 // Must check if password has been given, not sure if more than one arg atm,
 // and must check if the user is already registered on the server
 unsigned int	Command::_pass(	unsigned int client_id,
@@ -98,26 +99,55 @@ unsigned int	Command::_pass(	unsigned int client_id,
 		std::cout << "No parameters\n";
 		return (ERR_NEEDMOREPARAMS);
 	}
-	if (users.find(client_id) != users.end()) {
+	t_users::iterator it = users.find(client_id);
+
+	//if user doesnt exist, create it
+	if (it == users.end())
+		it = users.insert(std::make_pair(client_id, User(client_id))).first;
+	//std::map insert returns a pair of iterator, bool, we just need the iterator
+
+	if (it->second.isRegistered()) {
 		std::cout << "Client already registered\n";
 		return (ERR_ALREADYREGISTERED);
 	}
 	// Error checking done ->
-	// create a new User and insert it inside the map
-	User	new_user(client_id);
-	users.insert(
-		users.begin(), 
-		std::pair<unsigned int, User>(client_id, new_user));
+
+	// set the password to the param given
+	it->second.setConnectPass(this->_params.front());
+
 	std::cout << "execution succesful\n";
 	return (0);
 }
 
+
 // NICK: Sets the nickname for the user
 unsigned int	Command::_nick(	unsigned int client_id,
 								t_users &users,
-								t_channels &channels) {
-	(void)client_id;(void)users;(void)channels;
-	std::cout << "NICK command execution\n";
+								t_channels &channels)
+{
+	(void)channels;
+	t_users::iterator user_it = users.find(client_id);
+	if (user_it == users.end())
+		return (ERR_WRONGORDER);
+
+	if (this->_params.empty())
+		return (ERR_NONICKNAMEGIVEN);
+
+	//BASIC SYNTAX CHEKS MAY NEED TO DO MORE LATER
+	std::string & nick = this->_params.front();
+	if(nick.length() > 9)
+		return (ERR_ERRONEUSNICKNAME);
+		
+	//check for nickname in use
+	for(t_users::iterator it = users.begin(); it != users.end(); it++)
+	{
+		if (it->second.getNick() == nick)
+			return (ERR_NICKNAMEINUSE);
+	}
+
+	//err checking done
+
+	user_it->second.setNick(nick);
 	return (0);
 }
 
@@ -125,7 +155,7 @@ unsigned int	Command::_nick(	unsigned int client_id,
 unsigned int	Command::_user(	unsigned int client_id,
 								t_users &users,
 								t_channels &channels ) {
-	(void)client_id;(void)users;(void)channels;
+	(void)client_id;(void)users;
 	std::cout << "USER command execution\n";
 	return (0);
 }

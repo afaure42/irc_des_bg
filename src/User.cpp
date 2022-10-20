@@ -1,7 +1,7 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _away(false), _invisible(false)
+	_id(client_id), _away(false), _invisible(false), _registered(false)
 {
 }
 
@@ -20,6 +20,16 @@ void	User::setAwayStatus(void) {
 void	User::setInvisStatus(void) {
 	this->_invisible = !this->_invisible;
 }
+void	User::setRegistered(void) {
+	this->_registered = !this->_registered;
+}
+void	User::setNick(std::string nick) {
+	this->_old_nick = this->_nick;
+	this->_nick = nick;
+}
+void	User::setUsername(const std::string & usrname) {
+	this->_usrname = usrname;
+}
 
 // GETTERS //
 bool	User::isAway(void) const {
@@ -28,14 +38,20 @@ bool	User::isAway(void) const {
 bool	User::isInvisible(void) const {
 	return (this->_invisible);
 }
+bool	User::isRegistered(void) const{
+	return (this->_registered);
+}
 unsigned int	User::getId(void) const {
 	return (this->_id);
 }
-std::string	User::getNick(void) const {
+std::string	const	&User::getNick(void) const {
 	return (this->_nick);
 }
 std::string	const	&User::getUsername(void) const {
 	return (this->_usrname);
+}
+std::string const	&User::getOldNick(void) const {
+	return this->_old_nick;
 }
 
 // OPERATOR OVERLOADS //
