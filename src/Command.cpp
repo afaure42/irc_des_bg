@@ -155,7 +155,37 @@ unsigned int	Command::_nick(	unsigned int client_id,
 unsigned int	Command::_user(	unsigned int client_id,
 								t_users &users,
 								t_channels &channels ) {
-	(void)client_id;(void)users;
+	(void)channels;
+	int modes = 0;
+	if (this->_params.size() < 4)
+		return (ERR_NEEDMOREPARAMS);
+
+	t_users::iterator user_it = users.find(client_id);
+
+	if (user_it == users.end())
+		return (ERR_WRONGORDER);
+	
+	//i dont understand what syntax checks are needed for now
+	//https://datatracker.ietf.org/doc/html/rfc2812#section-2.3.1
+
+	//set username
+	user_it->second.setUsername(this->_params.front());
+	this->_params.pop_front();
+
+	//setting modes using some bitshifting (sorryyy i love this too much)
+	modes = std::atoi(this->_params.front().c_str());
+	if (modes & USR_MODE_i)
+		user_it->second.setInvisStatus(true);
+	if (modes & USR_MODE_w)
+		user_it->second.setWallopStatus(true);
+	this->_params.pop_front();
+	this->_params.pop_front(); //3rd parameter unused
+
+	//setting realname
+	user_it->second.setRealname(this->_params.front());
+
+	//TODO: SEND RPL 001 to 004
+
 	std::cout << "USER command execution\n";
 	return (0);
 }

@@ -1,7 +1,7 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _away(false), _invisible(false), _registered(false)
+	_id(client_id), _modes(0), _registered(false)
 {
 }
 
@@ -14,14 +14,14 @@ void	User::check(void) const {
 }
 
 // SETTERS //
-void	User::setAwayStatus(void) {
-	this->_away = !this->_away;
+void	User::setAwayStatus(bool status) {
+	this->_modes |= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
 }
-void	User::setInvisStatus(void) {
-	this->_invisible = !this->_invisible;
+void	User::setInvisStatus(bool status) {
+	this->_modes |= (USR_MODE_i) & (status << USR_MODE_i_OFFSET);
 }
 void	User::setRegistered(void) {
-	this->_registered = !this->_registered;
+	this->_registered = true;
 }
 void	User::setNick(std::string nick) {
 	this->_old_nick = this->_nick;
@@ -30,13 +30,19 @@ void	User::setNick(std::string nick) {
 void	User::setUsername(const std::string & usrname) {
 	this->_usrname = usrname;
 }
+void	User::setRealname(const std::string & realname) {
+	this->_realname = realname;
+}
 
 // GETTERS //
 bool	User::isAway(void) const {
-	return (this->_away);
+	return (this->_modes & USR_MODE_a);
 }
 bool	User::isInvisible(void) const {
-	return (this->_invisible);
+	return (this->_modes & USR_MODE_i);
+}
+bool	User::isWallop(void) const{
+	return (this->_modes & USR_MODE_w);
 }
 bool	User::isRegistered(void) const{
 	return (this->_registered);
