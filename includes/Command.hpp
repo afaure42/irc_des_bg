@@ -60,7 +60,7 @@ class Command
 		// login functions typedef
 		typedef unsigned int (Command::*login_fn)(unsigned int, t_users &);
 		// login functions map typedef
-		typedef std::unordered_map<unsigned int, login_fn> login_fn_map;
+		typedef std::map<unsigned int, login_fn> login_fn_map;
 		// the login functions map
 		login_fn_map			_login_functions;
 		// all functions typedef, add channels
@@ -69,7 +69,7 @@ class Command
 				t_users &,
 				t_channels &);
 		// all functions map typedef
-		typedef std::unordered_map<unsigned int, exec_fn> exec_fn_map;
+		typedef std::map<unsigned int, exec_fn> exec_fn_map;
 		// the all functions map
 		exec_fn_map				_all_functions;
 

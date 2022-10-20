@@ -6,15 +6,15 @@ bool read_from_client(Client & client)
 	int r;
 	bool in_received = false;
 
-	while (client.is_readable())
+	while (client.isReadable())
 	{
-		r = read(client.get_fd(), buff, READ_SIZE);
+		r = read(client.getFd(), buff, READ_SIZE);
 		if (r < 0)
 		{
 			if (errno == EAGAIN || errno == EWOULDBLOCK)
 			{
 				errno = 0;
-				client.set_readable(false);
+				client.setReadable(false);
 			}
 			else
 				throw(syscall_error(errno,
@@ -22,17 +22,17 @@ bool read_from_client(Client & client)
 		}
 		else if (r == 0)
 		{
-			client.set_readable(false);
-			client.set_connected(false);
+			client.setReadable(false);
+			client.setConnected(false);
 		}
 		else
 		{
 			buff[r] = '\0';
-			client.get_read_buff().append(buff);
+			client.getReadBuff().append(buff);
 		}
 		in_received = true;
 	}
 	std::cout << "Message received from connection:"
-	<< client.get_id() << ":<" << client.get_read_buff() << ">\n";
+	<< client.getId() << ":<" << client.getReadBuff() << ">\n";
 	return in_received;
 }

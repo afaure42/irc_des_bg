@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 		//write
 
 		//the process step can know what has happened during the 2 precedent phases
-		//by calling scheduler.get_updates()
+		//by calling scheduler.getUpdates()
 		//it will then gain access to a list of Info calss containing information
 		//about what happened on a specific connection
 		//those may be a deconnection or new chars received
@@ -43,46 +43,47 @@ int main(int argc, char *argv[])
 		bool server_on = true;
 		while (server_on)
 		{
-			std::cout << "wait_and_accept\n";
+			std::cout << "waitAndAccept\n";
 			//WAIT AND ACCEPT STEP
-			server.wait_and_accept(scheduler);
+			server.waitAndAccept(scheduler);
 
 
 			std::cout << "Reading\n";
 			//READING STEP
-			scheduler.read_all();
+			scheduler.readAll();
 
 			/*			PROCESSING STEP ( here just echoing what was received )*/
 
 			std::cout << "Processing\n";
 			//creating a reference to a map
 			//and calling the scheduler to get all updates
-			std::map <unsigned int, Update> & updates = scheduler.get_updates();
+			std::map <unsigned int, Update> & updates = scheduler.getUpdates();
 			update_iter it = updates.begin();
 
 			//looping on all updates
 			while (it != updates.end())
 			{
-				if (!it->second.is_connected())
+				if (!it->second.isConnected())
 				{
-					std::cout << "Client_id:" << it->second.get_id()
+					std::cout << "Client_id:" << it->second.getId()
 					<< " has disconnected\n";
 				}
-				else if (!it->second.buff()->empty())
+				else if (!it->second.getBuff()->empty())
 				{
 					// parse and create command
-					Command command(it->second.buff());
+					Command command(it->second.getBuff());
 					std::cout << command;
-					command.execute(it->second.get_id(), users, channels);
-					if (it->second.buff()->find("shutdown\n", 0)
-						!= it->second.buff()->npos)
+					// Execuuuuute
+					command.execute(it->second.getId(), users, channels);
+					if (it->second.getBuff()->find("shutdown\n", 0)
+						!= it->second.getBuff()->npos)
 						server_on = false;
 
-					scheduler.queue_message(it->second.get_id(), *it->second.buff());
+					scheduler.queueMessage(it->second.getId(), *it->second.getBuff());
 
 					//do not forget to remove what you have processed from the read buffer
 					//i recommend reading a little bit about erase method for std::string
-					it->second.buff()->clear();
+					it->second.getBuff()->clear();
 				}
 				it++;
 			}
@@ -95,7 +96,7 @@ int main(int argc, char *argv[])
 
 			std::cout << "Writing\n";
 			//WRITING STEP
-			scheduler.write_all();
+			scheduler.writeAll();
 
 		}
 

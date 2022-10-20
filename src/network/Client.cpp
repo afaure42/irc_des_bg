@@ -28,46 +28,46 @@ Client & Client::operator=(const Client & ref)
 	return *this;
 }
 
-int Client::get_fd() const {
+int Client::getFd() const {
 	return this->_fd;
 }
 
-unsigned int Client::get_id() const {
+unsigned int Client::getId() const {
 	return this->_id;
 }
 
-int Client::get_read_size() const {
+int Client::getReadSize() const {
 	return this->_last_read_size;
 }
 
-std::string	& Client::get_read_buff() {
+std::string	& Client::getReadBuff() {
 	return this->_read_buff;
 }
 
-std::string	& Client::get_write_buff() {
+std::string	& Client::getWriteBuff() {
 	return this->_to_write;
 }
 	
-bool	Client::is_connected() const {
+bool	Client::isConnected() const {
 	return this->_connected;
 }
 
-bool	Client::is_writeable() const {
+bool	Client::isWriteable() const {
 	return this->_write_ready;
 }
 
-bool	Client::is_readable() const {
+bool	Client::isReadable() const {
 	return this->_read_ready;
 }
 
-void	Client::set_writeable(bool input){
+void	Client::setWriteable(bool input){
 	this->_write_ready = input;
 }
 
-void	Client::set_connected(bool input) {
+void	Client::setConnected(bool input) {
 	this->_connected = input;
 }
 
-void	Client::set_readable(bool input) {
+void	Client::setReadable(bool input) {
 	this->_read_ready = input;
 }

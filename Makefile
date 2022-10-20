@@ -1,6 +1,6 @@
 NAME	= irc_des_bg
 CC		= c++
-FLAGS	= -Wall -Wextra -Werror -MMD -g
+FLAGS	= -Wall -Wextra -Werror -MMD -std=c++98
 rm		= rm -f
 
 SRC_FILES_PATH		=	./src/

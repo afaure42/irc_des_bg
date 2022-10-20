@@ -22,9 +22,10 @@ std::list<std::string>	Command::getParams(void) const {
 // LOGIN MAP
 // Here is a good example of how easy it will be to add more function
 void	Command::_set_login_functions(void) {
-	this->_login_functions.emplace(1, &Command::_pass);
-	this->_login_functions.emplace(2, &Command::_nick);
-	this->_login_functions.emplace(3, &Command::_user);
+	login_fn_map::iterator it = this->_login_functions.begin();
+	this->_login_functions.insert(
+			it,
+			std::pair<unsigned int, login_fn>(1, &Command::_pass));
 }
 // GENERAL EXEC MAP, soon TM
 // void	Command::_set_all_functions_map(void) {
@@ -71,11 +72,13 @@ void	Command::execute(
 	t_channels		&channels)
 {
 	(void)channels;
+	std::cout << "ici\n";
 	// cmd_id will be 0 only if command doesn't exist
 	if (this->_cmd_id == 0)
 		this->_numeric_return = -1; // -1 if command doesnt exist
 	// cmd_id <= 3 ? login functions
 	else if (this->_cmd_id <= 3) {
+		std::cout << "la\n";
 		this->_numeric_return = // you can admire the very intuitive syntax lmao
 			(this->*(_login_functions.find(this->_cmd_id))->second)(client_id, users);
 	} else {
@@ -98,7 +101,9 @@ unsigned int	Command::_pass(unsigned int client_id, t_users &users) {
 	// Error checking done ->
 	// create a new User and insert it inside the map
 	User	new_user(client_id);
-	users.insert({client_id, new_user});
+	users.insert(
+		users.begin(), 
+		std::pair<unsigned int, User>(client_id, new_user));
 	return (0);
 }
 

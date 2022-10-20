@@ -14,19 +14,19 @@ public:
 
 	Client & operator= (const Client & ref);
 
-	int get_fd() const;
-	unsigned int get_id() const;
-	int get_read_size() const;
-	std::string	& get_read_buff();
-	std::string	& get_write_buff();
+	int getFd() const;
+	unsigned int getId() const;
+	int getReadSize() const;
+	std::string	& getReadBuff();
+	std::string	& getWriteBuff();
 	
-	bool	is_connected() const;
-	bool	is_writeable() const;
-	bool	is_readable() const;
+	bool	isConnected() const;
+	bool	isWriteable() const;
+	bool	isReadable() const;
 
-	void	set_writeable(bool input);
-	void	set_connected(bool input);
-	void	set_readable(bool input);
+	void	setWriteable(bool input);
+	void	setConnected(bool input);
+	void	setReadable(bool input);
 
 private:
 	int			_fd;
