@@ -15,8 +15,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <vector>
+#include <list>
 #include "custom_exceptions.hpp"
 #include <iostream>
 

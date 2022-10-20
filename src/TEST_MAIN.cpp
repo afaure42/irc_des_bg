@@ -2,7 +2,6 @@
 #include "Scheduler.hpp"
 #include "Server.hpp"
 #include "Command.hpp"
-#include "Parser.hpp"
 
 typedef std::map<unsigned int, Update>::iterator update_iter;
 
@@ -21,7 +20,8 @@ int main(int argc, char *argv[])
 	{
 		Server		server(port);
 		Scheduler	scheduler(server); 
-		Parser		parser;
+		std::map<unsigned int, User>	users;
+		std::vector<Channel>			channels;
 
 		std::cout << "Init is Done\n";
 		//init is done in the ctors so if any errors were to happen
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 					// parse and create command
 					Command command(it->second.buff());
 					std::cout << command;
-					parser.parseCommand(command);
+					command.execute(it->second.get_id(), users, channels);
 					if (it->second.buff()->find("shutdown\n", 0)
 						!= it->second.buff()->npos)
 						server_on = false;

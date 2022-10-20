@@ -1,10 +1,8 @@
 #include "User.hpp"
 
-User::User(std::string nickname) :
-	_nick(nickname), _away(false), _invisible(false)
+User::User(unsigned int client_id) :
+	_id(client_id), _away(false), _invisible(false)
 {
-	static int id = 0;
-	this->_id = id++;
 }
 
 User::~User()

@@ -4,7 +4,7 @@
 class User
 {
 	public:
-		User(const std::string	nickname);
+		User(unsigned int client_id);
 		~User();
 		void				check(void) const;
 		// setters
@@ -26,7 +26,7 @@ class User
 	// 	O - local operator flag; -> CHANNEL
 	// 	s - marks a user for receipt of server notices.
 	private:
-		unsigned int		_id; // automatic, static int incremented
+		unsigned int		_id; // client_id, also it's index in the map
 		std::string			_nick; // can change
 		std::string const	_usrname; // this one cannot
 		bool				_away;

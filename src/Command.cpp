@@ -3,6 +3,8 @@
 Command::Command(std::string *raw_command)
 {
 	this->_createParams(*raw_command);
+	this->_cmd_id = this->_getCommandId();
+	this->_set_login_functions();
 	std::cout << "coucou => " << *raw_command << std::endl;
 }
 
@@ -16,6 +18,33 @@ std::list<std::string>	Command::getParams(void) const {
 	return (this->_params);
 }
 
+// INITIALIZATION OF MAPS OF FUNCTION POINTERS
+// LOGIN MAP
+// Here is a good example of how easy it will be to add more function
+void	Command::_set_login_functions(void) {
+	this->_login_functions.emplace(1, &Command::_pass);
+	this->_login_functions.emplace(2, &Command::_nick);
+	this->_login_functions.emplace(3, &Command::_user);
+}
+// GENERAL EXEC MAP, soon TM
+// void	Command::_set_all_functions_map(void) {
+// }
+// PARSING
+
+/**
+ * @brief Get a unique ID identifying each command
+ * 
+ * @return Defaults to 0 if unknown command, else the appropriate command id
+ */
+unsigned int	Command::_getCommandId() const {
+	if (this->_cmd_type.compare("PASS") == 0)
+		return (1);
+	if (this->_cmd_type.compare("NICK") == 0)
+		return (2);
+	if (this->_cmd_type.compare("USER") == 0)
+		return (3);
+	return (0);
+}
 
 // Creates the cmdType and params for the command
 void	Command::_createParams(std::string raw_command) {
@@ -34,6 +63,60 @@ void	Command::_createParams(std::string raw_command) {
 		this->_params.pop_front();
 	}
 }
+
+// EXECUTION PIPELINE
+void	Command::execute(
+	unsigned int	client_id,
+	t_users			&users,
+	t_channels		&channels)
+{
+	(void)channels;
+	// cmd_id will be 0 only if command doesn't exist
+	if (this->_cmd_id == 0)
+		this->_numeric_return = -1; // -1 if command doesnt exist
+	// cmd_id <= 3 ? login functions
+	else if (this->_cmd_id <= 3) {
+		this->_numeric_return = // you can admire the very intuitive syntax lmao
+			(this->*(_login_functions.find(this->_cmd_id))->second)(client_id, users);
+	} else {
+		// the rest of the functions, call
+	}
+}
+
+// EXECUTION METHODS START //
+
+// PASS: Sets the password for the user
+// Must check if password has been given, not sure if more than one arg atm,
+// and must check if the user is already registered on the server
+unsigned int	Command::_pass(unsigned int client_id, t_users &users) {
+	std::cout << "PASS command spotted\n";
+	// Error checking
+	if (this->_params.empty())
+		return (ERR_NEEDMOREPARAMS);
+	if (users.find(client_id) == users.end())
+		return (ERR_ALREADYREGISTERED);
+	// Error checking done ->
+	// create a new User and insert it inside the map
+	User	new_user(client_id);
+	users.insert({client_id, new_user});
+	return (0);
+}
+
+unsigned int	Command::_nick(unsigned int client_id, t_users &users) {
+	(void)client_id;(void)users;
+	std::cout << "NICK command spotted\n";
+	return (0);
+}
+
+unsigned int	Command::_user(unsigned int client_id, t_users &users) {
+	(void)client_id;(void)users;
+	std::cout << "USER command spotted\n";
+	return (0);
+}
+
+
+// EXECUTION METHODS END //
+
 
 // OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const Command& cmd)
