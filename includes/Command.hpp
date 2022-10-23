@@ -1,8 +1,6 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include <functional>
-
 #include "common.hpp"
 #include "User.hpp"
 #include "Channel.hpp"
@@ -47,12 +45,12 @@ class Command
 	private:
 		// Internal variables
 		unsigned int			_chars_read;
+		exec_fn_map				_function_map;
 		std::string				_cmd_name;
 		t_stringlist			_params;
 		int						_numeric_return;
-		exec_fn_map				_function_map;
 		// Internal methods
-		unsigned int			_setupCommand(std::string raw_command);
+		void					_setupCommand(std::string raw_command);
 };
 
 std::ostream& operator<<(std::ostream& os, const Command& cmd);

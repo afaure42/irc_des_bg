@@ -1,7 +1,7 @@
 #include "Command.hpp"
 
 Command::Command(exec_fn_map &fn_map, std::string *raw_command) :
-	_function_map(fn_map), _chars_read(0)
+	 _chars_read(0), _function_map(fn_map)
 {
 	this->_setupCommand(*raw_command);
 	std::cout << "coucou => " << *raw_command << std::endl;
@@ -28,19 +28,23 @@ int const	&Command::getNumericReturn(void) const {
 // TODO: This function needs to check for the presence of /r/d or whatever,
 // extract the substring(s), and the program must
 // delete the buffer up until that point 
-unsigned int	Command::_setupCommand(std::string raw_command) {
-	// Start by deleting the \n at the end, will need to be changed
-	raw_command.erase(raw_command.find_first_of('\n'), 1);
-	// while find(\r\d), do that and count the size of what you find
-	if (!raw_command.empty()) {
-		std::istringstream sstream(raw_command);
-		std::string token;
+void	Command::_setupCommand(std::string raw_command) {
+	// If a separator is in buffer, do stuff
+	if (raw_command.find(IRC_MSG_SEPARATOR) != raw_command.npos) {
+		std::string command = raw_command.substr(0, raw_command.find(IRC_MSG_SEPARATOR));
+		this->_chars_read = command.length();
+		command.erase(command.find_first_of('\n'), 1);
+		// while find(\r\d), do that and count the size of what you find
+		if (!command.empty()) {
+			std::istringstream sstream(command);
+			std::string token;
 
-		while (std::getline(sstream, token, ' ')) {
-			this->_params.push_back(token);
+			while (std::getline(sstream, token, ' ')) {
+				this->_params.push_back(token);
+			}
+			this->_cmd_name = this->_params.begin()->data();
+			this->_params.pop_front();
 		}
-		this->_cmd_name = this->_params.begin()->data();
-		this->_params.pop_front();
 	}
 	// return the size of what you just read for deletion from buffer
 }
