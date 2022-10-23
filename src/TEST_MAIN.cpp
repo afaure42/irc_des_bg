@@ -2,6 +2,7 @@
 #include "Scheduler.hpp"
 #include "Server.hpp"
 #include "Command.hpp"
+#include "functionMap.hpp"
 
 typedef std::map<unsigned int, Update>::iterator update_iter;
 
@@ -18,11 +19,13 @@ int main(int argc, char *argv[])
 	//the server's dtor can free all its resources
 	try
 	{
-		Server		server(port);
-		Scheduler	scheduler(server); 
+		Server							server(port);
+		Scheduler						scheduler(server); 
 		std::map<unsigned int, User>	users;
 		std::vector<Channel>			channels;
-
+		exec_fn_map						function_map;
+		
+		setFunctionMap(function_map);
 		std::cout << "Init is Done\n";
 		//init is done in the ctors so if any errors were to happen
 		//an exception would have been thrown by now
@@ -71,7 +74,7 @@ int main(int argc, char *argv[])
 				else if (!it->second.getBuff()->empty())
 				{
 					// parse and create command
-					Command command(it->second.getBuff());
+					Command command(function_map, it->second.getBuff());
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
 					std::cout << command;
