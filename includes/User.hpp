@@ -46,6 +46,7 @@ class User
 		std::string const	&getRealname(void) const;
 		std::string const	&getHostName(void) const;
 		std::string const	&getConnectPass(void) const;
+		std::vector<std::string> & getChannels(void);
 	// The available modes are as follows:
 
 	// 	a - user is flagged as away;
@@ -66,6 +67,7 @@ class User
 		bool				_registered;
 		std::string			_connection_pass;
 		int					_modes;
+		std::vector<std::string> _channels;
 };
 
 std::ostream& operator<<(std::ostream& os, const User& usr);

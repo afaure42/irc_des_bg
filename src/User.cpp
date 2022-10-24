@@ -71,6 +71,9 @@ std::string const	&User::getOldNick(void) const {
 std::string const &User::getHostName(void) const {
 	return this->_hostname;
 }
+std::vector<std::string> & User::getChannels(void) {
+	return this->_channels;
+}
 
 // OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const User& usr)

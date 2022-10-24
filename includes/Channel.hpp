@@ -34,8 +34,12 @@ class Channel
 	// 	I - set/remove an invitation mask to automatically override
 	// 		the invite-only flag;
     public:
+		Channel(const std::string & name);
+		Channel(const Channel & ref);
         Channel();
         ~Channel();
+		Channel & operator=(const Channel & ref);
+
 		enum userPermissions {
 			CREATOR = 1, // O
 			OPERATOR = 1 << 1, // o
@@ -55,10 +59,12 @@ class Channel
 		members_t		&getMembers();
 		members_perms_t &getPermissions();
 		std::string		&getName();
+		std::string		&getTopic();
 
 
 		//setters
 		void		setName(std::string & name);
+		void		setTopic(std::string & topic);
 
 
 		//METHODS
@@ -71,8 +77,18 @@ class Channel
 		 * @param msg msg to send
 		 */
 		void		send(Scheduler & scheduler, std::string & msg);
+
+		/**
+		 * @brief command to make a user join the channel, the 
+		 * channel will then send a JOIN message to its members
+		 * 
+		 * @param scheduler 
+		 * @param user 
+		 */
+		unsigned int		join(Scheduler & scheduler, User & user);
     private:
         std::string		_name;
+		std::string		_topic;
 		unsigned int	_modes;
 		std::string		_key;
 		unsigned int	_usrlimit;

@@ -4,6 +4,7 @@
 #include "common.hpp"
 #include "Command.hpp"
 #include "syntax_checks.hpp"
+#include "exec_command_utils.hpp"
 
 class Command;
 
@@ -25,14 +26,16 @@ typedef std::pair<std::string, exec_fn>		fn_map_pair;
 void	setFunctionMap(exec_fn_map &fn_map);
 
 // Prototypes
-unsigned int			pass(Command &command, unsigned int client_id,
-							t_users &users, t_channels &channels);
-unsigned int			nick(Command &command, unsigned int client_id,
-							t_users &users, t_channels &channels);
-unsigned int			user(Command &command, unsigned int client_id,
-							t_users &users, t_channels &channels);
-unsigned int			privmsg(Command &command, unsigned int client_id,
-								t_users &users, t_channels &channels );
+unsigned int	pass(Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels);
+unsigned int	nick(Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels);
+unsigned int	user(Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels);
+unsigned int	privmsg(Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels );
+unsigned int	join(	Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels );
 
 
 #endif

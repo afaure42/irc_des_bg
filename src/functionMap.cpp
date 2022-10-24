@@ -16,6 +16,8 @@ void	setFunctionMap(exec_fn_map &function_map) {
 			it,	fn_map_pair("USER", user));
 	function_map.insert(
 			it, fn_map_pair("PRIVMSG", privmsg));
+	function_map.insert(
+			it, fn_map_pair("JOIN", join));
 }
 
 // EXECUTION METHODS START //

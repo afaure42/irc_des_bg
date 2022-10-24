@@ -8,7 +8,7 @@ NETWORK_FILES_PATH	=	./src/network/
 INCLUDES			=	-I./includes
 				
 SRC_FILES			=	Command.cpp functionMap.cpp User.cpp Channel.cpp TEST_MAIN.cpp \
-						syntax_checks.cpp privmsg.cpp
+						syntax_checks.cpp privmsg.cpp exec_command_utils.cpp join.cpp
 SRC_PATH			=	$(addprefix ${SRC_FILES_PATH}, ${SRC_FILES})
 SRC_OFILES			=	$(SRC_PATH:.cpp=.o)
 

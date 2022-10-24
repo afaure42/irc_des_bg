@@ -6,7 +6,6 @@ unsigned int	privmsg(	Command &command,
 								t_users &users,
 								t_channels &channels )
 {
-	(void)channels;
 	std::list<std::string>	params = command.getParams();
 
 	if (params.size() < 2)
@@ -19,30 +18,17 @@ unsigned int	privmsg(	Command &command,
 	//but this will add a parameter to the command
 	//or just add it ass a reference member in the command
 
-	while (params.size() != 1)
+	while (params.size() > 1)
 	{
 		std::string msg = from + params.front() + " " + params.back() + "\r\n";
 
 		//first try to find channel
-		t_channels::iterator ch_it = channels.begin();
-		while (ch_it != channels.end())
-		{
-			if (ch_it->getName() == params.front())
-				break;
-			ch_it++;
-		}
+		t_channels::iterator ch_it = findChannel(params.front(), channels);
 		if (ch_it != channels.end())
 			ch_it->send(command.getScheduler(), msg);
 		else//if no channel found then try to find user
 		{
-			
-			t_users::iterator usr_it = users.begin();
-			while(usr_it != users.end())
-			{
-				if (usr_it->second.getNick() == params.front())
-					break;
-				usr_it++;
-			}
+			t_users::iterator usr_it = findUser(params.front(), users);
 			if (usr_it != users.end())
 				command.getScheduler().queueMessage(usr_it->first, msg);
 			else //no channel nor user found then return ERR
