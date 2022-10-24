@@ -4,6 +4,7 @@
 #include "common.hpp"
 #include "User.hpp"
 #include "Channel.hpp"
+#include "Scheduler.hpp"
 
 #include "numeric_replies.hpp"
 #include "functionMap.hpp"
@@ -42,6 +43,7 @@ class Command
 		std::string const		&getCmdName(void) const;
 		t_stringlist const		&getParams(void) const;
 		int const				&getNumericReturn(void) const;
+		Scheduler				&getScheduler(void);
 	private:
 		// Internal variables
 		unsigned int			_chars_read;
@@ -49,6 +51,7 @@ class Command
 		std::string				_cmd_name;
 		t_stringlist			_params;
 		int						_numeric_return;
+		Scheduler	&			_scheduler;
 		// Internal methods
 		void					_setupCommand(std::string raw_command);
 };

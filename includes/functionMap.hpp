@@ -31,6 +31,8 @@ unsigned int			nick(Command &command, unsigned int client_id,
 							t_users &users, t_channels &channels);
 unsigned int			user(Command &command, unsigned int client_id,
 							t_users &users, t_channels &channels);
+unsigned int			privmsg(Command &command, unsigned int client_id,
+								t_users &users, t_channels &channels );
 
 
 #endif

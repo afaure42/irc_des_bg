@@ -17,6 +17,8 @@ void	setFunctionMap(exec_fn_map &function_map) {
 			it,	fn_map_pair("NICK", nick));
 	function_map.insert(
 			it,	fn_map_pair("USER", user));
+	function_map.insert(
+			it, fn_map_pair("PRIVMSG", privsmg));
 }
 
 // EXECUTION METHODS START //
@@ -132,4 +134,40 @@ unsigned int	user(	Command &command,
 	return (0);
 }
 
+unsigned int	privmsg(	Command &command,
+								unsigned int client_id,
+								t_users &users,
+								t_channels &channels )
+{
+	(void)channels;
+	std::list<std::string>	params = command.getParams();
+
+	//TODO handle case if PRIVMSG is to a channel
+	
+	//TODO implement a map of nick -> id 
+	//to not have to iterate through all clients
+	//but this will add a parameter to the command
+	//or just add it ass a reference member in the command
+
+	t_users::iterator it = users.begin();
+
+	while(it != users.end())
+	{
+		if (it->second.getNick() == params.front())
+			break;
+		it++;
+	}
+	if (it == users.end())
+		return (ERR_NOSUCHNICK);
+	
+	//error checking done
+	params.pop_front();
+	std::stringstream ss;
+	ss << ':' << users[client_id].getNick() << ' ' << "PRIVMSG "
+	<< params.front() << "\r\n";
+	command.getScheduler().queueMessage(it->first, ss.str());
+
+	std::cout << "PRIVMSG command execution\n";
+	return (0);
+}
 // EXECUTION METHODS END //
