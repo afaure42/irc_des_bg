@@ -1,0 +1,36 @@
+#ifndef FUNCTION_MAP_HPP
+#define FUNCTION_MAP_HPP
+
+#include "common.hpp"
+#include "User.hpp"
+#include "Channel.hpp"
+
+class Command;
+
+// users map
+typedef std::map<unsigned int, User>	t_users;
+// channels map
+typedef std::vector<Channel> 			t_channels;
+
+typedef unsigned int (*exec_fn) (
+		Command &,
+		unsigned int,
+		t_users &,
+		t_channels & );
+
+typedef std::map<std::string, exec_fn>		exec_fn_map;
+// login map pair typedef
+typedef std::pair<std::string, exec_fn>		fn_map_pair;
+
+void	setFunctionMap(exec_fn_map &fn_map);
+
+// Prototypes
+unsigned int			pass(Command &command, unsigned int client_id,
+							t_users &users, t_channels &channels);
+unsigned int			nick(Command &command, unsigned int client_id,
+							t_users &users, t_channels &channels);
+unsigned int			user(Command &command, unsigned int client_id,
+							t_users &users, t_channels &channels);
+
+
+#endif

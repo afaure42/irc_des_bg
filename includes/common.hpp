@@ -29,6 +29,9 @@
 #define READ_SIZE 128
 #define WRITE_SIZE 128
 
+// will be changed to the real thing after
+#define IRC_MSG_SEPARATOR "\n"
+
 
 
 #endif

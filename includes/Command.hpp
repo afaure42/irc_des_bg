@@ -1,18 +1,19 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include <functional>
-
 #include "common.hpp"
 #include "User.hpp"
 #include "Channel.hpp"
 
 #include "numeric_replies.hpp"
+#include "functionMap.hpp"
 
 // users map
 typedef std::map<unsigned int, User>	t_users;
 // channels map
 typedef std::vector<Channel> 			t_channels;
+// string list
+typedef std::list<std::string>			t_stringlist;
 
 /**
  * @brief Command class, basic setup is done during initialization,
@@ -30,50 +31,26 @@ typedef std::vector<Channel> 			t_channels;
 class Command
 {
 	public:
-		Command(std::string *raw_command);
+		Command(exec_fn_map &fn_map, std::string *raw_command);
 		~Command();
 		// Public method to be called after setup of the command
 		void					execute(unsigned int client_id,
 									t_users &users,
 									t_channels &channels);
-		// Are only really useful for << overload and debug purposes
+		// Getters
+		unsigned int const		&getCharsRead(void) const;
 		std::string const		&getCmdName(void) const;
-		std::list<std::string>	getParams(void) const;
-		int						getNumericReturn(void) const;
+		t_stringlist const		&getParams(void) const;
+		int const				&getNumericReturn(void) const;
 	private:
+		// Internal variables
+		unsigned int			_chars_read;
+		exec_fn_map				_function_map;
 		std::string				_cmd_name;
-		std::list<std::string>	_params;
-		/* All numeric replies return values in numeric_replies.hpp
-		** Numeric return will be set to :
-		**	-1 if command doesnt exist
-		**	0 if command executed succesfully
-		**	>0 if command encountered an error */
+		t_stringlist			_params;
 		int						_numeric_return;
-		// Setup methods
-		void					_setFunctionMap(void);
-		void					_createParams(std::string raw_command);
-
-		/* COMMAND MAP TYPEDEFS */
-		/* Implemented for clarity */
-		// command methods typedef, add channels
-		typedef unsigned int (Command::*exec_fn)(
-				unsigned int,
-				t_users &,
-				t_channels &);
-		// all methods map typedef
-		typedef std::map<std::string, exec_fn>		exec_fn_map;
-		// the methods map
-		exec_fn_map									_command_functions;
-		// login map pair typedef
-		typedef std::pair<std::string, exec_fn>	fn_map_pair;
-
-		// Execution methods
-		unsigned int			_pass(unsigned int client_id,
-									t_users &users, t_channels &channels);
-		unsigned int			_nick(unsigned int client_id,
-									t_users &users, t_channels &channels);
-		unsigned int			_user(unsigned int client_id,
-									t_users &users, t_channels &channels);
+		// Internal methods
+		void					_setupCommand(std::string raw_command);
 };
 
 std::ostream& operator<<(std::ostream& os, const Command& cmd);
