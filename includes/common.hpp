@@ -3,6 +3,7 @@
 
 #include <sys/socket.h>
 #include <sys/epoll.h>
+#include <netdb.h>
 #include <netinet/ip.h>
 #include <netinet/in.h>
 #include <exception>

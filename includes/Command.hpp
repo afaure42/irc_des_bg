@@ -2,9 +2,10 @@
 #define COMMAND_HPP
 
 #include "common.hpp"
+#include "Scheduler.hpp"
+#include "Server.hpp"
 #include "User.hpp"
 #include "Channel.hpp"
-#include "Scheduler.hpp"
 
 #include "numeric_replies.hpp"
 #include "functionMap.hpp"
@@ -29,10 +30,30 @@ typedef std::list<std::string>			t_stringlist;
  * 	0 if command executed succesfully
  * 	>0 if command encountered an error
  */
+
+class Command;
+
+// users map
+typedef std::map<unsigned int, User>	t_users;
+// channels map
+typedef std::vector<Channel> 			t_channels;
+
+typedef unsigned int (*exec_fn) (
+		Command &,
+		unsigned int,
+		t_users &,
+		t_channels & );
+
+typedef std::map<std::string, exec_fn>		exec_fn_map;
+// login map pair typedef
+typedef std::pair<std::string, exec_fn>		fn_map_pair;
+
+
+
 class Command
 {
 	public:
-		Command(exec_fn_map &fn_map, std::string *raw_command, Scheduler & scheduler);
+		Command(exec_fn_map &fn_map, std::string *raw_command, Scheduler & scheduler, Server & server);
 		~Command();
 		// Public method to be called after setup of the command
 		void					execute(unsigned int client_id,
@@ -44,6 +65,7 @@ class Command
 		t_stringlist const		&getParams(void) const;
 		int const				&getNumericReturn(void) const;
 		Scheduler				&getScheduler(void);
+		Server					&getServer(void);
 	private:
 		// Internal variables
 		unsigned int			_chars_read;
@@ -52,6 +74,7 @@ class Command
 		t_stringlist			_params;
 		int						_numeric_return;
 		Scheduler	&			_scheduler;
+		Server		&			_server;
 		// Internal methods
 		void					_setupCommand(std::string raw_command);
 };

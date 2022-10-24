@@ -1,7 +1,11 @@
 #include "Command.hpp"
 
-Command::Command(exec_fn_map &fn_map, std::string *raw_command, Scheduler & scheduler) :
-	 _chars_read(0), _function_map(fn_map), _scheduler(scheduler)
+Command::Command(exec_fn_map &fn_map,
+				std::string *raw_command,
+				Scheduler & scheduler,
+				Server & server)
+:_chars_read(0), _function_map(fn_map), _scheduler(scheduler),
+	_server(server)
 {
 	this->_setupCommand(*raw_command);
 	std::cout << "coucou => " << *raw_command << std::endl;
@@ -25,6 +29,9 @@ int const	&Command::getNumericReturn(void) const {
 }
 Scheduler &		Command::getScheduler(void) {
 	return (this->_scheduler);
+}
+Server &	Command::getServer(void) {
+	return (this->_server);
 }
 
 // Creates the cmdType and params for the command

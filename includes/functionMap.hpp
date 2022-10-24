@@ -2,8 +2,8 @@
 #define FUNCTION_MAP_HPP
 
 #include "common.hpp"
-#include "User.hpp"
-#include "Channel.hpp"
+#include "Command.hpp"
+#include "syntax_checks.hpp"
 
 class Command;
 

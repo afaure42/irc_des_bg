@@ -1,7 +1,4 @@
-#include "common.hpp"
-#include "syntax_checks.hpp"
 #include "functionMap.hpp"
-#include "Command.hpp"
 
 // INITIALIZATION OF MAPS OF FUNCTION POINTERS
 // LOGIN MAP
@@ -99,7 +96,6 @@ unsigned int	user(	Command &command,
 								t_channels &channels ) {
 	(void)channels;
 	std::list<std::string>	params = command.getParams();
-	int modes = 0;
 
 	if (params.size() < 4)
 		return (ERR_NEEDMOREPARAMS);
@@ -116,58 +112,22 @@ unsigned int	user(	Command &command,
 	user_it->second.setUsername(params.front());
 	params.pop_front();
 
-	//setting modes using some bitshifting (sorryyy i love this too much)
-	modes = std::atoi(params.front().c_str());
-	if (modes & USR_MODE_i)
-		user_it->second.setInvisStatus(true);
-	if (modes & USR_MODE_w)
-		user_it->second.setWallopStatus(true);
-	params.pop_front();
+	params.pop_front(); //2nd parameter unused
 	params.pop_front(); //3rd parameter unused
+	//setting hostname
+	user_it->second.setHostName(command.getServer().getClientHost(client_id));
 
 	//setting realname
 	user_it->second.setRealname(params.front());
 
 	//TODO: SEND RPL 001 to 004
+	std::stringstream ss;
+	ss << ":irc_des_bg 001 Welcome to irc_des_bg " << user_it->second.getNick()
+	<< '!' << user_it->second.getUsername() << '@' << user_it->second.getHostName()
+	<<  "\r\n";
+
+	command.getScheduler().queueMessage(client_id, ss.str());
 
 	std::cout << "USER command execution\n";
 	return (0);
 }
-
-unsigned int	privmsg(	Command &command,
-								unsigned int client_id,
-								t_users &users,
-								t_channels &channels )
-{
-	(void)channels;
-	std::list<std::string>	params = command.getParams();
-
-	//TODO handle case if PRIVMSG is to a channel
-	
-	//TODO implement a map of nick -> id 
-	//to not have to iterate through all clients
-	//but this will add a parameter to the command
-	//or just add it ass a reference member in the command
-
-	t_users::iterator it = users.begin();
-
-	while(it != users.end())
-	{
-		if (it->second.getNick() == params.front())
-			break;
-		it++;
-	}
-	if (it == users.end())
-		return (ERR_NOSUCHNICK);
-	
-	//error checking done
-	params.pop_front();
-	std::stringstream ss;
-	ss << ':' << users[client_id].getNick() << ' ' << "PRIVMSG "
-	<< params.front() << "\r\n";
-	command.getScheduler().queueMessage(it->first, ss.str());
-
-	std::cout << "PRIVMSG command execution\n";
-	return (0);
-}
-// EXECUTION METHODS END //

@@ -14,11 +14,12 @@ public:
 
 	Client & operator= (const Client & ref);
 
-	int getFd() const;
-	unsigned int getId() const;
-	int getReadSize() const;
-	std::string	& getReadBuff();
-	std::string	& getWriteBuff();
+	int				getFd() const;
+	unsigned int	getId() const;
+	int				getReadSize() const;
+	const sockaddr_in	*	getSockAddr();
+	std::string	&	getReadBuff();
+	std::string	&	getWriteBuff();
 	
 	bool	isConnected() const;
 	bool	isWriteable() const;

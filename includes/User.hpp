@@ -31,6 +31,7 @@ class User
 		void				setNick(std::string nick);
 		void				setUsername(const std::string & username);
 		void				setRealname(const std::string & realname);
+		void				setHostName(const std::string & hostname);
 		void				setConnectPass(const std::string & connect_pass);
 
 		// getters
@@ -43,6 +44,7 @@ class User
 		std::string const	&getOldNick(void) const;
 		std::string const	&getUsername(void) const;
 		std::string const	&getRealname(void) const;
+		std::string const	&getHostName(void) const;
 		std::string const	&getConnectPass(void) const;
 	// The available modes are as follows:
 
@@ -59,6 +61,7 @@ class User
 		std::string			_old_nick;
 		std::string			_usrname; // this one cannot
 		std::string			_realname;
+		std::string			_hostname;
 		std::string			_away_msg;
 		bool				_registered;
 		std::string			_connection_pass;

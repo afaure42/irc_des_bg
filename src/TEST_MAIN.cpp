@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 				else if (!it->second.getBuff()->empty())
 				{
 					// parse and create command
-					Command command(function_map, it->second.getBuff(), scheduler);
+					Command command(function_map, it->second.getBuff(), scheduler, server);
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
 					std::cout << command;
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 						!= it->second.getBuff()->npos)
 						server_on = false;
 
-					scheduler.queueMessage(it->second.getId(), *it->second.getBuff());
+					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff());
 
 					//do not forget to remove what you have processed from the read buffer
 					//i recommend reading a little bit about erase method for std::string

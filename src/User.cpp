@@ -39,6 +39,9 @@ void	User::setRealname(const std::string & realname) {
 void	User::setConnectPass(const std::string & connect_pass) {
 	this->_connection_pass = connect_pass;
 }
+void	User::setHostName(const std::string & hostname) {
+	this->_hostname = hostname;
+}
 
 // GETTERS //
 bool	User::isAway(void) const {
@@ -64,6 +67,9 @@ std::string	const	&User::getUsername(void) const {
 }
 std::string const	&User::getOldNick(void) const {
 	return this->_old_nick;
+}
+std::string const &User::getHostName(void) const {
+	return this->_hostname;
 }
 
 // OPERATOR OVERLOADS //

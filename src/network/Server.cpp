@@ -138,6 +138,19 @@ void Server::waitAndAccept(Scheduler & scheduler)
 	}
 }
 
+std::string	Server::getClientHost(unsigned int connection_id)
+{
+	char buff[1024];
+	sockaddr * sa = (sockaddr *)this->getClient(connection_id).getSockAddr();
+
+	int ret = getnameinfo(sa, sizeof(sockaddr_in), buff, 1024, NULL, 0, 0);
+
+	if (ret != 0)
+		throw(syscall_error(errno, "getClientHost"));
+
+	return (std::string(buff));	
+}
+
 void Server::_addSocketEpoll(int fd)
 {
 	epoll_event ev;

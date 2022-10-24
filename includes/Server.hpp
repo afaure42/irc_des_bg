@@ -48,6 +48,14 @@ public:
 	 * 	connection_id
 	 */
 	Client & getClient(unsigned int connection_id);
+
+	/**
+	 * @brief getter for the Host name of client
+	 * 
+	 * @param connection_id id of the client
+	 * @return std::string human readable string of the host address
+	 */
+	std::string getClientHost(unsigned int connection_id);
 	
 	/**
 	 * @brief will wait for new event using epoll

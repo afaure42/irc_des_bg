@@ -2,9 +2,11 @@
 
 #include "common.hpp"
 #include "User.hpp"
-#include <map>
+#include "Scheduler.hpp"
 
 
+typedef std::map<unsigned int, User *> members_t; // id -> User
+typedef std::map<unsigned int, unsigned int> members_perms_t; // id -> permissions
 class Channel
 {
 	// The various modes available for channels are as follows:
@@ -48,11 +50,32 @@ class Channel
 			PRIVATE = 1 << 5, // p
 			SECRET = 1 << 6, // s
 		};
+
+		//getters
+		members_t		&getMembers();
+		members_perms_t &getPermissions();
+		std::string		&getName();
+
+
+		//setters
+		void		setName(std::string & name);
+
+
+		//METHODS
+
+		/**
+		 * @brief Will queue the msg to
+		 * every single member of current channel
+		 * 
+		 * @param scheduler ref to scheduler
+		 * @param msg msg to send
+		 */
+		void		send(Scheduler & scheduler, std::string & msg);
     private:
         std::string		_name;
 		unsigned int	_modes;
 		std::string		_key;
 		unsigned int	_usrlimit;
-        typedef std::map<std::string, User> _members; // nick -> User
-		typedef std::map<std::string, unsigned int> _members_permissions; // nick -> permissions
+		members_t		_members;
+		members_perms_t _permissions;
 };
