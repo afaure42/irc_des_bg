@@ -1,7 +1,7 @@
 #include "Command.hpp"
 
-Command::Command(exec_fn_map &fn_map, std::string *raw_command) :
-	 _chars_read(0), _function_map(fn_map)
+Command::Command(exec_fn_map &fn_map, std::string *raw_command, Scheduler & scheduler) :
+	 _chars_read(0), _function_map(fn_map), _scheduler(scheduler)
 {
 	this->_setupCommand(*raw_command);
 	std::cout << "coucou => " << *raw_command << std::endl;
@@ -23,6 +23,9 @@ std::list<std::string> const	&Command::getParams(void) const {
 int const	&Command::getNumericReturn(void) const {
 	return (this->_numeric_return);
 }
+Scheduler &		Command::getScheduler(void) {
+	return (this->_scheduler);
+}
 
 // Creates the cmdType and params for the command
 // TODO: This function needs to check for the presence of /r/d or whatever,
@@ -33,7 +36,9 @@ void	Command::_setupCommand(std::string raw_command) {
 	if (raw_command.find(IRC_MSG_SEPARATOR) != raw_command.npos) {
 		std::string command = raw_command.substr(0, raw_command.find(IRC_MSG_SEPARATOR));
 		this->_chars_read = command.length();
-		command.erase(command.find_first_of('\n'), 1);
+		size_t pos = command.find_first_of('\n');
+		if (pos != command.npos)
+			command.erase(pos, 1);
 		// while find(\r\d), do that and count the size of what you find
 		if (!command.empty()) {
 			std::istringstream sstream(command);

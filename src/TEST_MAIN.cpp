@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 				else if (!it->second.getBuff()->empty())
 				{
 					// parse and create command
-					Command command(function_map, it->second.getBuff());
+					Command command(function_map, it->second.getBuff(), scheduler);
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
 					std::cout << command;

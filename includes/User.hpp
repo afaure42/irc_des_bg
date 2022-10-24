@@ -19,6 +19,7 @@
 class User
 {
 	public:
+		User(){};
 		User(unsigned int client_id);
 		~User();
 		void				check(void) const;
@@ -27,10 +28,10 @@ class User
 		void				setInvisStatus(bool status);
 		void				setWallopStatus(bool status);
 		void				setRegistered(void);
-		void				setConnectPass(std::string pass);
 		void				setNick(std::string nick);
 		void				setUsername(const std::string & username);
 		void				setRealname(const std::string & realname);
+		void				setConnectPass(const std::string & connect_pass);
 
 		// getters
 		bool				isRegistered(void) const;

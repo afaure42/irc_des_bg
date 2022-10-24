@@ -32,7 +32,7 @@ typedef std::list<std::string>			t_stringlist;
 class Command
 {
 	public:
-		Command(exec_fn_map &fn_map, std::string *raw_command);
+		Command(exec_fn_map &fn_map, std::string *raw_command, Scheduler & scheduler);
 		~Command();
 		// Public method to be called after setup of the command
 		void					execute(unsigned int client_id,

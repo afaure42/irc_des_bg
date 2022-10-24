@@ -1,7 +1,7 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _modes(0), _registered(false)
+	_id(client_id), _registered(false), _modes(0)
 {
 }
 
@@ -15,10 +15,13 @@ void	User::check(void) const {
 
 // SETTERS //
 void	User::setAwayStatus(bool status) {
-	this->_modes |= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
+	this->_modes ^= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
 }
 void	User::setInvisStatus(bool status) {
-	this->_modes |= (USR_MODE_i) & (status << USR_MODE_i_OFFSET);
+	this->_modes ^= (USR_MODE_i) & (status << USR_MODE_i_OFFSET);
+}
+void User::setWallopStatus(bool status) {
+	this->_modes ^= (USR_MODE_w) & (status << USR_MODE_w_OFFSET);
 }
 void	User::setRegistered(void) {
 	this->_registered = true;
@@ -32,6 +35,9 @@ void	User::setUsername(const std::string & usrname) {
 }
 void	User::setRealname(const std::string & realname) {
 	this->_realname = realname;
+}
+void	User::setConnectPass(const std::string & connect_pass) {
+	this->_connection_pass = connect_pass;
 }
 
 // GETTERS //

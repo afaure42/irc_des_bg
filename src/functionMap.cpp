@@ -18,7 +18,7 @@ void	setFunctionMap(exec_fn_map &function_map) {
 	function_map.insert(
 			it,	fn_map_pair("USER", user));
 	function_map.insert(
-			it, fn_map_pair("PRIVMSG", privsmg));
+			it, fn_map_pair("PRIVMSG", privmsg));
 }
 
 // EXECUTION METHODS START //

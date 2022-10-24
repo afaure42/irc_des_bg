@@ -1,30 +1,10 @@
 #include "syntax_checks.hpp"
 
-const std::string SpecialCharSet
-{
-	'[', ']','{', '}',
-	'\\', '`', '_', '^', '|'
-};
+const std::string SpecialCharSet ("[]{}\\`_^|");
 
-const std::string ForbiddenUserCharSet
-{
-	0x00, //NULL
-	0x0A, //new line
-	0x0D, //carriage return
-	' ',  
-	'@'	
-};
+const std::string ForbiddenUserCharSet ("\0\r\n @");
 
-const std::string ForbiddenChanCharSet
-{
-	0x00, //NULL
-	0x07, //BELL
-	0x0D, //CR
-	0x0A, //newline
-	' ',
-	',',
-	':'
-};
+const std::string ForbiddenChanCharSet ("\0\x07\r\n ,:");
 
 static bool isSpecialChar(const char & c) {
 	return (SpecialCharSet.find(c) != SpecialCharSet.npos);
@@ -37,7 +17,7 @@ bool isValidNick(const std::string & nick)
 	if (nick.length() > 9 || nick.empty())
 		return false;
 
-	for (int i = 0; i < nick.length(); i++)
+	for (size_t i = 0; i < nick.length(); i++)
 	{
 		if (i == 0 && !std::isalpha(nick[i]) && !isSpecialChar(nick[i]))
 			return false;
@@ -52,7 +32,7 @@ bool isValidUser(const std::string & user)
 	if (user.empty())
 		return false;
 	
-	for(int i = 0; i < user.length(); i++)
+	for(size_t i = 0; i < user.length(); i++)
 	{
 		if (ForbiddenUserCharSet.find(user[i]) != ForbiddenUserCharSet.npos)
 			return false;
@@ -67,7 +47,7 @@ static bool isValidChanstring(const std::string & chanstring)
 	if (chanstring.empty())
 		return false;
 	
-	for(int i = 0; i < chanstring.length(); i++)
+	for(size_t i = 0; i < chanstring.length(); i++)
 	{
 		if (ForbiddenChanCharSet.find(chanstring[i])
 			!= ForbiddenChanCharSet.npos)
@@ -81,7 +61,7 @@ static bool isValidChannelid(const std::string & channelid)
 	if (channelid.length() != 5)
 		return false;
 	
-	for (int i = 0; i < channelid.length(); i++)
+	for (size_t i = 0; i < channelid.length(); i++)
 	{
 		if (!std::isupper(channelid[i]) && !std::isdigit(channelid[i]))
 			return false;
