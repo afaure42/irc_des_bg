@@ -55,7 +55,7 @@ void		Channel::send(Scheduler & scheduler, std::string & msg)
 
 	while(it != this->_members.end())
 	{
-		scheduler.queueMessage(it->first, msg);
+		scheduler.queueMessage(it->first, msg, true);
 		it++;
 	}
 }

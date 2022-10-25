@@ -1,5 +1,6 @@
 #include "functionMap.hpp"
 
+
 // INITIALIZATION OF MAPS OF FUNCTION POINTERS
 // LOGIN MAP
 // To add more functions to he map,	simply add to the map
@@ -107,6 +108,13 @@ unsigned int	user(	Command &command,
 	if (user_it == users.end())
 		return (ERR_WRONGORDER);
 	
+	if (user_it->second.getConnectPass() != command.getServer().getPass())
+	{
+		command.getScheduler().queueMessage(client_id, "Invalid Password\n", false);
+		return (0);
+	}
+	
+	
 	//i dont understand what syntax checks are needed for now
 	//https://datatracker.ietf.org/doc/html/rfc2812#section-2.3.1
 
@@ -128,7 +136,7 @@ unsigned int	user(	Command &command,
 	<< '!' << user_it->second.getUsername() << '@' << user_it->second.getHostName()
 	<<  "\r\n";
 
-	command.getScheduler().queueMessage(client_id, ss.str());
+	command.getScheduler().queueMessage(client_id, ss.str(), true);
 
 	std::cout << "USER command execution\n";
 	return (0);

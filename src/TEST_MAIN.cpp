@@ -8,18 +8,19 @@ typedef std::map<unsigned int, Update>::iterator update_iter;
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
+	if (argc != 3)
 	{
-		std::cout << "USAGE : ./program <port>\n";
+		std::cout << "USAGE : ./program <port> <password>\n";
 		return EXIT_FAILURE;
 	}
 	int port = std::atoi(argv[1]);
+	std::string pass = std::string(argv[2]);
 
 	//every actions is in a try catch block
 	//the server's dtor can free all its resources
 	try
 	{
-		Server							server(port);
+		Server							server(port, pass);
 		Scheduler						scheduler(server); 
 		std::map<unsigned int, User>	users;
 		std::vector<Channel>			channels;
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 						!= it->second.getBuff()->npos)
 						server_on = false;
 
-					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff());
+					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
 
 					//do not forget to remove what you have processed from the read buffer
 					//i recommend reading a little bit about erase method for std::string

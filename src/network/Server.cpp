@@ -1,8 +1,8 @@
 #include "Server.hpp"
 
-Server::Server(int port)
+Server::Server(int port, std::string & pass)
 :_port(port), _sockfd(-1), _sockaddr(), _socklen(),
-	_epfd(-1), _events(), _connection_counter()
+	_epfd(-1), _events(), _pass(pass), _connection_counter()
 {
 	//CREATING SOCKET
 	this->_sockfd = socket(AF_INET,
@@ -92,6 +92,10 @@ Client & Server::getClient(unsigned int connection_id)
 {
 		return this->_connected_clients
 		.at(connection_id);
+}
+
+const std::string & Server::getPass(void) const {
+	return this->_pass;
 }
 
 void Server::waitAndAccept(Scheduler & scheduler)

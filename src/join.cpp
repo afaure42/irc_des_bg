@@ -34,7 +34,7 @@ unsigned int	join(	Command &command,
 			return ret;
 		if(!it->getTopic().empty())
 			command.getScheduler()
-			.queueMessage(client_id, ":irc_des_bg 332 " + it->getTopic());
+			.queueMessage(client_id, ":irc_des_bg 332 " + it->getTopic(), true);
 		params.pop_front();
 	}
 

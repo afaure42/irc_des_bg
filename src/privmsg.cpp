@@ -30,7 +30,7 @@ unsigned int	privmsg(	Command &command,
 		{
 			t_users::iterator usr_it = findUser(params.front(), users);
 			if (usr_it != users.end())
-				command.getScheduler().queueMessage(usr_it->first, msg);
+				command.getScheduler().queueMessage(usr_it->first, msg, true);
 			else //no channel nor user found then return ERR
 				return (ERR_NOSUCHNICK);
 		}

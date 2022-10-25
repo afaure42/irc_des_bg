@@ -12,7 +12,7 @@ class Client;
 class Server
 {
 public:
-	Server(int port);
+	Server(int port, std::string & pass);
 	~Server();
 
 
@@ -56,6 +56,11 @@ public:
 	 * @return std::string human readable string of the host address
 	 */
 	std::string getClientHost(unsigned int connection_id);
+
+	/**
+	 * @brief Get the connection Pass
+	 */
+	const std::string & getPass(void) const;
 	
 	/**
 	 * @brief will wait for new event using epoll
@@ -116,6 +121,9 @@ private:
 //EPOLL RELATED THINGS
 	int _epfd;
 	epoll_event _events[EVENTS_SIZE];
+
+//UTILS
+	std::string _pass;
 
 // Current_connections
 	std::map<unsigned int, Client>	_connected_clients;
