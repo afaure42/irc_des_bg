@@ -8,5 +8,5 @@ const std::string errNeedMoreParams(Command & command, std::string nick)
 
 const std::string errUnknownCommand(Command & command, std::string nick){
 	return (SERVER_PREFIX + " 421 " + nick + " " + command.getCmdName()
-	+ " : Unkown Command\r\n");
+	+ " :Unkown Command\r\n");
 }
