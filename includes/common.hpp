@@ -25,6 +25,7 @@
 
 /***DEFINES*****/
 #define SERVER_NAME std::string("irc_des_bg")
+#define SERVER_PREFIX ": " + SERVER_NAME
 
 #define EVENTS_SIZE 100
 #define MAX_CONNECTIONS_LISTN 20

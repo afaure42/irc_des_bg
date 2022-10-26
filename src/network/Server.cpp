@@ -122,7 +122,6 @@ void Server::waitAndAccept(Scheduler & scheduler)
 			|| ev[i].events & EPOLLHUP)
 		{
 			std::cout << "EPOLLHUP for id:" << this->_toId(fd) << '\n';
-			scheduler.removeFromQueues(this->_toId(fd));
 			scheduler.addToUpdates(Update(this->_toId(fd), NULL, false));
 			disconnectClient(this->_toId(fd));
 			continue;

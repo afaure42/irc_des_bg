@@ -7,7 +7,10 @@
 #include "Channel.hpp"
 #include "Command.hpp"
 
+class Command;
 
+const std::string errNeedMoreParams(Command & command, std::string nick);
+const std::string errUnknownCommand(Command & command, std::string nick);
 // TODO (maybe?): add description of the errors
 // GENERAL ERRORS
 

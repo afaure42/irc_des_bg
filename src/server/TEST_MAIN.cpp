@@ -67,8 +67,12 @@ int main(int argc, char *argv[])
 			//looping on all updates
 			while (it != updates.end())
 			{
+				if (users.find(it->first) == users.end())
+					users.insert(std::make_pair(it->first, User(it->first)));
 				if (!it->second.isConnected())
 				{
+					users.erase(it->first);
+					scheduler.removeFromQueues(it->first);
 					std::cout << "Client_id:" << it->second.getId()
 					<< " has disconnected\n";
 				}
