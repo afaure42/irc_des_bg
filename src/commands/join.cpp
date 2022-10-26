@@ -11,7 +11,7 @@ unsigned int	join(	Command &command,
 	if (params.size() < 1)
 		return (ERR_NEEDMOREPARAMS);
 	
-	std::string from = ":" + users.at(client_id).getNick() + " JOIN ";
+	std::string from = users.at(client_id).getNick() + " JOIN ";
 
 	while (params.size() > 0)
 	{

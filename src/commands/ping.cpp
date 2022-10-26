@@ -12,7 +12,7 @@ unsigned int	ping(	Command &command,
 	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
 
-	msg = SERVER_PREFIX + " PONG " + params.front() + "\r\n";
+	msg = SERVER_PREFIX + " PONG " + params.front() + IRC_MSG_SEPARATOR;
 	command.getScheduler().queueMessage(client_id, msg, true);
 	return (0);
 }

@@ -53,7 +53,11 @@ typedef std::pair<std::string, exec_fn>		fn_map_pair;
 class Command
 {
 	public:
-		Command(exec_fn_map &fn_map, std::string *raw_command, Scheduler & scheduler, Server & server);
+		Command(
+			exec_fn_map &fn_map,
+			std::string *raw_command,
+			Scheduler & scheduler,
+			Server & server);
 		~Command();
 		// Public method to be called after setup of the command
 		void					execute(unsigned int client_id,
@@ -77,6 +81,8 @@ class Command
 		Server		&			_server;
 		// Internal methods
 		void					_setupCommand(std::string raw_command);
+		std::string const		_createNumericReply(unsigned int nr,
+									unsigned int client_id);
 };
 
 std::ostream& operator<<(std::ostream& os, const Command& cmd);

@@ -14,12 +14,12 @@ const std::string errUnknownCommand(Command & command, std::string nick);
 // TODO (maybe?): add description of the errors
 // GENERAL ERRORS
 
-//REGISTRATION
+// REGISTRATION
 #define RPL_WELCOME				001
 #define RPL_YOURHOST			002
 #define RPL_CREATED				003
 #define RPL_MYINFO				004
-
+#define RPL_UMODEIS				221
 
 // NICK ERRORS
 #define ERR_NOSUCHNICK			401
@@ -39,5 +39,9 @@ const std::string errUnknownCommand(Command & command, std::string nick);
 #define ERR_NEEDMOREPARAMS		461
 #define ERR_ALREADYREGISTERED	462
 #define ERR_RESTRICTED			464
+
+// MODE ERRORS
+#define ERR_UMODEUNKNOWNFLAG	501
+#define ERR_USERSDONTMATCH		502
 
 #endif

@@ -22,10 +22,6 @@ User::~User()
 {
 }
 
-void	User::check(void) const {
-	std::cout << "alles gut !" << std::endl;
-}
-
 // SETTERS //
 void	User::setAwayStatus(bool status) {
 	this->_modes ^= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
