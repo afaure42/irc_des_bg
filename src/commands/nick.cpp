@@ -9,7 +9,7 @@ unsigned int	nick(	Command &command,
 
 	t_users::iterator user_it = users.find(client_id);
 	if (user_it == users.end())
-		return (ERR_WRONGORDER);
+		return (ERR_NONICKNAMEGIVEN);
 
 	if (params.empty())
 		return (ERR_NONICKNAMEGIVEN);

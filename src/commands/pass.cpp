@@ -13,13 +13,11 @@ unsigned int	pass(	Command &command,
 	// Error checking
 	if (params.empty()) {
 		std::cout << "No parameters\n";
-		return (ERR_NEEDMOREPARAMS);
+		command.getScheduler().
+		queueMessage(client_id, errNeedMoreParams(command, users.at(client_id).getNick()), true);
 	}
 	t_users::iterator it = users.find(client_id);
 
-	//if user doesnt exist, create it
-	if (it == users.end())
-		it = users.insert(std::make_pair(client_id, User(client_id))).first;
 	//std::map insert returns a pair of iterator, bool, we just need the iterator
 
 	if (it->second.isRegistered()) {

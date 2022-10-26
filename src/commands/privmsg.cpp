@@ -10,7 +10,7 @@ unsigned int	privmsg(	Command &command,
 	if (params.size() < 2)
 		return (ERR_NEEDMOREPARAMS);
 	
-	std::string from = ":" + users[client_id].getNick() + " PRIVMSG ";
+	std::string from = ":" + users.at(client_id).getNick() + " PRIVMSG ";
 
 	//TODO implement a map of nick -> id 
 	//to not have to iterate through all clients
