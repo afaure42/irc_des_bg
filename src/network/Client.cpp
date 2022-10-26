@@ -40,6 +40,10 @@ int Client::getReadSize() const {
 	return this->_last_read_size;
 }
 
+const sockaddr_in * Client::getSockAddr() {
+	return &(this->_addr);
+}
+
 std::string	& Client::getReadBuff() {
 	return this->_read_buff;
 }

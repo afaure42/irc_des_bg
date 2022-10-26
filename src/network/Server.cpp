@@ -1,8 +1,8 @@
 #include "Server.hpp"
 
-Server::Server(int port)
+Server::Server(int port, std::string & pass)
 :_port(port), _sockfd(-1), _sockaddr(), _socklen(),
-	_epfd(-1), _events(), _connection_counter()
+	_epfd(-1), _events(), _pass(pass), _connection_counter()
 {
 	//CREATING SOCKET
 	this->_sockfd = socket(AF_INET,
@@ -94,6 +94,10 @@ Client & Server::getClient(unsigned int connection_id)
 		.at(connection_id);
 }
 
+const std::string & Server::getPass(void) const {
+	return this->_pass;
+}
+
 void Server::waitAndAccept(Scheduler & scheduler)
 {
 	int nb_fds = epoll_wait(this->_epfd,
@@ -136,6 +140,19 @@ void Server::waitAndAccept(Scheduler & scheduler)
 		if (ev[i].events & EPOLLOUT)
 			this->getClient(this->_toId(fd)).setWriteable(true);
 	}
+}
+
+std::string	Server::getClientHost(unsigned int connection_id)
+{
+	char buff[1024];
+	sockaddr * sa = (sockaddr *)this->getClient(connection_id).getSockAddr();
+
+	int ret = getnameinfo(sa, sizeof(sockaddr_in), buff, 1024, NULL, 0, 0);
+
+	if (ret != 0)
+		throw(syscall_error(errno, "getClientHost"));
+
+	return (std::string(buff));	
 }
 
 void Server::_addSocketEpoll(int fd)

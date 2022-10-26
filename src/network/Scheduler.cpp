@@ -20,7 +20,7 @@ std::map<unsigned int, Update> & Scheduler::getUpdates()
 	return this->_updates;
 }
 
-bool Scheduler::queueMessage(unsigned int connection_id, std::string msg)
+bool Scheduler::queueMessage(unsigned int connection_id, std::string msg, bool connected)
 {
 	std::cout << "A message is being queued for connection:" << connection_id << '\n';
 	if (this->_server.isClientConnected(connection_id))
@@ -28,6 +28,7 @@ bool Scheduler::queueMessage(unsigned int connection_id, std::string msg)
 		this->_server.getClient(connection_id).
 		getWriteBuff().append(msg);
 		this->_write.insert(connection_id);
+		this->_server.getClient(connection_id).setConnected(connected);
 		return true;
 	}
 	return false;
@@ -81,7 +82,16 @@ void Scheduler::writeAll(void)
 
 		//if buffer empty remove from write queue
 		if (this->_server.getClient(*it).getWriteBuff().empty())
-			this->_write.erase(*(it++));
+		{
+			//if deconnection is requested, disconnect
+			if (!this->_server.getClient(*it).isConnected())
+			{
+				this->_server.disconnectClient(*it);
+				this->removeFromQueues(*(it++));
+			}
+			else
+				this->_write.erase(*(it++));
+		}
 		else
 			it++;
 	}

@@ -43,7 +43,7 @@ public:
 	 * @return true if msg was succesfully added to buffer
 	 * @return false if client is not connected
 	 */
-	bool queueMessage(unsigned int connection_id, std::string msg);
+	bool queueMessage(unsigned int connection_id, std::string msg, bool connected);
 
 	/**
 	 * @brief Function to add to the read queue

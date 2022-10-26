@@ -1,7 +1,7 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _away(false), _invisible(false)
+	_id(client_id), _registered(false), _modes(0)
 {
 }
 
@@ -14,28 +14,68 @@ void	User::check(void) const {
 }
 
 // SETTERS //
-void	User::setAwayStatus(void) {
-	this->_away = !this->_away;
+void	User::setAwayStatus(bool status) {
+	this->_modes ^= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
 }
-void	User::setInvisStatus(void) {
-	this->_invisible = !this->_invisible;
+void	User::setInvisStatus(bool status) {
+	this->_modes ^= (USR_MODE_i) & (status << USR_MODE_i_OFFSET);
+}
+void User::setWallopStatus(bool status) {
+	this->_modes ^= (USR_MODE_w) & (status << USR_MODE_w_OFFSET);
+}
+void	User::setRegistered(void) {
+	this->_registered = true;
+}
+void	User::setNick(std::string nick) {
+	this->_old_nick = this->_nick;
+	this->_nick = nick;
+}
+void	User::setUsername(const std::string & usrname) {
+	this->_usrname = usrname;
+}
+void	User::setRealname(const std::string & realname) {
+	this->_realname = realname;
+}
+void	User::setConnectPass(const std::string & connect_pass) {
+	this->_connection_pass = connect_pass;
+}
+void	User::setHostName(const std::string & hostname) {
+	this->_hostname = hostname;
 }
 
 // GETTERS //
 bool	User::isAway(void) const {
-	return (this->_away);
+	return (this->_modes & USR_MODE_a);
 }
 bool	User::isInvisible(void) const {
-	return (this->_invisible);
+	return (this->_modes & USR_MODE_i);
+}
+bool	User::isWallop(void) const{
+	return (this->_modes & USR_MODE_w);
+}
+bool	User::isRegistered(void) const{
+	return (this->_registered);
 }
 unsigned int	User::getId(void) const {
 	return (this->_id);
 }
-std::string	User::getNick(void) const {
+std::string	const	&User::getNick(void) const {
 	return (this->_nick);
 }
 std::string	const	&User::getUsername(void) const {
 	return (this->_usrname);
+}
+std::string const	&User::getOldNick(void) const {
+	return this->_old_nick;
+}
+std::string const &User::getHostName(void) const {
+	return this->_hostname;
+}
+std::vector<std::string> & User::getChannels(void) {
+	return this->_channels;
+}
+const std::string &User::getConnectPass(void) const {
+	return this->_connection_pass;
 }
 
 // OPERATOR OVERLOADS //

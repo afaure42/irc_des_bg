@@ -2,9 +2,11 @@
 
 #include "common.hpp"
 #include "User.hpp"
-#include <map>
+#include "Scheduler.hpp"
 
 
+typedef std::map<unsigned int, User *> members_t; // id -> User
+typedef std::map<unsigned int, unsigned int> members_perms_t; // id -> permissions
 class Channel
 {
 	// The various modes available for channels are as follows:
@@ -32,8 +34,12 @@ class Channel
 	// 	I - set/remove an invitation mask to automatically override
 	// 		the invite-only flag;
     public:
+		Channel(const std::string & name);
+		Channel(const Channel & ref);
         Channel();
         ~Channel();
+		Channel & operator=(const Channel & ref);
+
 		enum userPermissions {
 			CREATOR = 1, // O
 			OPERATOR = 1 << 1, // o
@@ -48,11 +54,44 @@ class Channel
 			PRIVATE = 1 << 5, // p
 			SECRET = 1 << 6, // s
 		};
+
+		//getters
+		members_t		&getMembers();
+		members_perms_t &getPermissions();
+		std::string		&getName();
+		std::string		&getTopic();
+
+
+		//setters
+		void		setName(std::string & name);
+		void		setTopic(std::string & topic);
+
+
+		//METHODS
+
+		/**
+		 * @brief Will queue the msg to
+		 * every single member of current channel
+		 * 
+		 * @param scheduler ref to scheduler
+		 * @param msg msg to send
+		 */
+		void		send(Scheduler & scheduler, std::string & msg);
+
+		/**
+		 * @brief command to make a user join the channel, the 
+		 * channel will then send a JOIN message to its members
+		 * 
+		 * @param scheduler 
+		 * @param user 
+		 */
+		unsigned int		join(Scheduler & scheduler, User & user);
     private:
         std::string		_name;
+		std::string		_topic;
 		unsigned int	_modes;
 		std::string		_key;
 		unsigned int	_usrlimit;
-        typedef std::map<std::string, User> _members; // nick -> User
-		typedef std::map<std::string, unsigned int> _members_permissions; // nick -> permissions
+		members_t		_members;
+		members_perms_t _permissions;
 };
