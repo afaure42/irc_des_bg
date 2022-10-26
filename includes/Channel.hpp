@@ -75,8 +75,10 @@ class Channel
 		 * 
 		 * @param scheduler ref to scheduler
 		 * @param msg msg to send
+		 * @param from sender of the message, he will not receive the msg
+		 * 		put 0 if you dont care
 		 */
-		void		send(Scheduler & scheduler, std::string & msg);
+		void		send(Scheduler & scheduler, std::string & msg, unsigned int from);
 
 		/**
 		 * @brief command to make a user join the channel, the 

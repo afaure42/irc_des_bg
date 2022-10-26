@@ -23,6 +23,7 @@
 #include <iostream>
 
 /***DEFINES*****/
+#define SERVER_NAME std::string("irc_des_bg")
 
 #define EVENTS_SIZE 100
 #define MAX_CONNECTIONS_LISTN 20
@@ -31,7 +32,7 @@
 #define WRITE_SIZE 128
 
 // will be changed to the real thing after
-#define IRC_MSG_SEPARATOR "\n"
+#define IRC_MSG_SEPARATOR "\r\n"
 
 
 

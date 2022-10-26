@@ -40,12 +40,13 @@ class User
 		bool				isInvisible(void) const;
 		bool				isWallop(void) const;
 		unsigned int		getId(void) const;
-		std::string	const	&getNick(void) const;
-		std::string const	&getOldNick(void) const;
-		std::string const	&getUsername(void) const;
-		std::string const	&getRealname(void) const;
-		std::string const	&getHostName(void) const;
-		std::string const	&getConnectPass(void) const;
+		const std::string	&getNick(void) const;
+		const std::string	&getOldNick(void) const;
+		const std::string	&getUsername(void) const;
+		const std::string	&getRealname(void) const;
+		const std::string	&getHostName(void) const;
+		const std::string	getFullName(void) const;
+		const std::string	&getConnectPass(void) const;
 		std::vector<std::string> & getChannels(void);
 	// The available modes are as follows:
 

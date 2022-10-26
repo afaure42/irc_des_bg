@@ -49,13 +49,14 @@ void	Channel::setTopic(std::string & topic) {
 }
 
 //METHODS
-void		Channel::send(Scheduler & scheduler, std::string & msg)
+void		Channel::send(Scheduler & scheduler, std::string & msg, unsigned int from)
 {
 	members_t::iterator it = this->_members.begin();
 
 	while(it != this->_members.end())
 	{
-		scheduler.queueMessage(it->first, msg, true);
+		if (it->first != from)
+			scheduler.queueMessage(it->first, msg, true);
 		it++;
 	}
 }
@@ -75,7 +76,7 @@ unsigned int Channel::join(Scheduler & scheduler, User & user)
 
 	//then send JOIN msg to everyone
 	std::string msg = ":" + user.getNick() + " JOIN " + this->getName() + "\r\n";
-	this->send(scheduler, msg);
+	this->send(scheduler, msg, 0);
 
 	return (0);
 }

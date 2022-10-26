@@ -5,7 +5,7 @@ void write_to_client(Client & client)
 	int r;
 
 	std::cout << "Writing to client:" << client.getId() << '\n'
-	<< "Message sent is :" << client.getWriteBuff();
+	<< "Message sent is <" << client.getWriteBuff();
 	while (client.isWriteable() && !client.getWriteBuff().empty())
 	{
 		int length = client.getWriteBuff().length();

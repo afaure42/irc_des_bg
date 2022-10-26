@@ -87,16 +87,18 @@ int main(int argc, char *argv[])
 
 					//do not forget to remove what you have processed from the read buffer
 					//i recommend reading a little bit about erase method for std::string
-					it->second.getBuff()->erase(0, command.getCharsRead() + 1);
+					it->second.getBuff()->erase(0, command.getCharsRead());
+					if (it->second.getBuff()->find(IRC_MSG_SEPARATOR) != it->second.getBuff()->npos)
+						continue; //to keep processing
 				}
-				it++;
+				updates.erase(it++);
 			}
 			//never forget to remove what you have processed from the update list
 			// the line <<updates.erase(*(it++));>> may find itself usefull for someone
 			//wanting to erase current item and go to the next
 
 			//because here we processed everything systematically we just clear
-			updates.clear();
+			// updates.clear();
 
 			std::cout << "Writing\n";
 			//WRITING STEP

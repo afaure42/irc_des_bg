@@ -13,7 +13,7 @@ t_channels::iterator findChannel(std::string & name, t_channels & channels)
 	return ret;
 }
 
-t_users::iterator findUser(std::string & nick, t_users & users)
+t_users::iterator findUser(const std::string & nick, t_users & users)
 {
 	t_users::iterator ret = users.begin();
 

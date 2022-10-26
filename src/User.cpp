@@ -77,6 +77,9 @@ std::vector<std::string> & User::getChannels(void) {
 const std::string &User::getConnectPass(void) const {
 	return this->_connection_pass;
 }
+const std::string User::getFullName(void) const {
+	return std::string(this->_nick + "!" + this->_usrname + "@" + this->_hostname);
+}
 
 // OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const User& usr)
