@@ -34,16 +34,20 @@ void	Command::_setupCommand(std::string raw_command) {
 		std::string command = raw_command.substr(0, raw_command.find(IRC_MSG_SEPARATOR));
 		this->_chars_read = command.length();
 		command.erase(command.find_first_of('\n'), 1);
-		// while find(\r\d), do that and count the size of what you find
-		if (!command.empty()) {
-			std::istringstream sstream(command);
-			std::string token;
-
-			while (std::getline(sstream, token, ' ')) {
-				this->_params.push_back(token);
+		while (!command.empty()) {
+			// We dont support prefixes but it should be here first
+			if (command.at(0) == ':') {
+				this->_params.push_back(command);
+				command.erase();
 			}
-			this->_cmd_name = this->_params.begin()->data();
-			this->_params.pop_front();
+			else {
+				std::cout << "bonjour\n";
+				std::size_t space = command.find_first_of(' ');
+				if (space == command.npos)
+					space = command.length();
+				this->_params.push_back(command.substr(0, space));
+				command.erase(0, space);
+			}
 		}
 	}
 	// return the size of what you just read for deletion from buffer
