@@ -102,6 +102,6 @@ std::ostream& operator<<(std::ostream& os, const Command& cmd)
 		std::cout << "Param " << i << "=> |" << it->data() << "|\n";
 	std::cout << "Numeric return => " << cmd.getNumericReturn() << std::endl \
 		<< "Chars read => " << cmd.getCharsRead() << std::endl;
-	os << "COMMAND OUTPUT END=================\n";
+	os << "COMMAND OUTPUT END=================\n\n";
     return os;
 }

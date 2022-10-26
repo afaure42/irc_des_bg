@@ -47,18 +47,12 @@ int main(int argc, char *argv[])
 		bool server_on = true;
 		while (server_on)
 		{
-			std::cout << "waitAndAccept\n";
 			//WAIT AND ACCEPT STEP
 			server.waitAndAccept(scheduler);
-
-
-			std::cout << "Reading\n";
 			//READING STEP
 			scheduler.readAll();
-
 			/*			PROCESSING STEP ( here just echoing what was received )*/
 
-			std::cout << "Processing\n";
 			//creating a reference to a map
 			//and calling the scheduler to get all updates
 			std::map <unsigned int, Update> & updates = scheduler.getUpdates();
@@ -78,7 +72,7 @@ int main(int argc, char *argv[])
 					Command command(function_map, it->second.getBuff(), scheduler, server);
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
-					std::cout << command;
+					std::cout << "\n\nCOMMAND AFTER EXECUTION:\n" << command;
 					if (it->second.getBuff()->find("shutdown\n", 0)
 						!= it->second.getBuff()->npos)
 						server_on = false;
@@ -100,7 +94,7 @@ int main(int argc, char *argv[])
 			//because here we processed everything systematically we just clear
 			// updates.clear();
 
-			std::cout << "Writing\n";
+			// std::cout << "Writing\n";
 			//WRITING STEP
 			scheduler.writeAll();
 
