@@ -11,10 +11,12 @@ unsigned int	user(	Command &command,
 		return (ERR_NEEDMOREPARAMS);
 
 	t_users::iterator user_it = users.find(client_id);
-
-	if (user_it == users.end())
-		return (ERR_WRONGORDER);
 	
+	if (user_it->second.getNick() == "*")
+	{
+		command.getScheduler().queueMessage(client_id, "USAGE : PASS NICK USER\n", false);
+		return (0);
+	}
 	if (user_it->second.getConnectPass() != command.getServer().getPass())
 	{
 		std::cerr << "User pass is \""<< user_it->second.getConnectPass()

@@ -82,7 +82,11 @@ void	Command::execute(
 	// having to use .find 2 times, but i can't make the syntax work
 	if (this->_function_map.find(this->_cmd_name) == this->_function_map.end()) {
 		std::cout << "command "<<this->_cmd_name<<" not found\n";
-		this->_numeric_return = -1; // -1 if command doesnt exist
+		this->_numeric_return = ERR_UNKNOWNCOMMAND; // -1 if command doesnt exist
+		if (users.find(client_id) != users.end())
+			this->getScheduler().queueMessage(client_id, errUnknownCommand(*this, users.at(client_id).getNick()), true);
+		else
+			this->getScheduler().queueMessage(client_id, errUnknownCommand(*this, "*"), true);
 	} 
 	else {
 		std::cout << "command "<<this->_cmd_name<<" execution\n";

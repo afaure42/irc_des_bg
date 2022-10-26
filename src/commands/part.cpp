@@ -8,7 +8,7 @@ unsigned int	part(	Command &command,
 	std::list<std::string> params = command.getParams();
 	t_channels::iterator ch_it;
 
-	std::string prefix = ":" + users[client_id].getFullName() + " PART";
+	std::string prefix = ":" + users.at(client_id).getFullName() + " PART";
 	std::string suffix;
 	std::string msg;
 

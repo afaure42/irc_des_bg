@@ -19,7 +19,8 @@
 class User
 {
 	public:
-		User(){};
+		// User(){};
+		User(const User & ref);
 		User(unsigned int client_id);
 		~User();
 		void				check(void) const;

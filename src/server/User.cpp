@@ -1,8 +1,21 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _registered(false), _modes(0)
+	_id(client_id), _nick("*"), _registered(false), _modes(0)
 {
+}
+
+User::User(const User & ref)
+{
+	this->_id = ref._id;
+	this->_nick = ref._nick;
+	this->_old_nick = ref._old_nick;
+	this->_usrname = ref._usrname;
+	this->_away_msg = ref._away_msg;
+	this->_registered = ref._registered;
+	this->_connection_pass = ref._connection_pass;
+	this->_modes = ref._modes;
+	this->_channels = ref._channels;
 }
 
 User::~User()

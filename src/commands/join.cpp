@@ -11,7 +11,7 @@ unsigned int	join(	Command &command,
 	if (params.size() < 1)
 		return (ERR_NEEDMOREPARAMS);
 	
-	std::string from = ":" + users[client_id].getNick() + " JOIN ";
+	std::string from = ":" + users.at(client_id).getNick() + " JOIN ";
 
 	while (params.size() > 0)
 	{
@@ -21,12 +21,12 @@ unsigned int	join(	Command &command,
 		//if channel exists join it
 		if (it != channels.end())
 		{
-			ret = it->join(command.getScheduler(), users[client_id]);
+			ret = it->join(command.getScheduler(), users.at(client_id));
 		}
 		else //else create it
 		{
 			channels.push_back(Channel(params.front()));
-			ret = channels.back().join(command.getScheduler(), users[client_id]);
+			ret = channels.back().join(command.getScheduler(), users.at(client_id));
 			it = channels.end() - 1;
 		}
 
