@@ -1,4 +1,4 @@
-#include "syntax_checks.hpp"
+#include "syntaxChecks.hpp"
 
 const std::string SpecialCharSet ("[]{}\\`_^|");
 

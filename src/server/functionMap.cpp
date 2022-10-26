@@ -1,6 +1,5 @@
 #include "functionMap.hpp"
 
-
 // INITIALIZATION OF MAPS OF FUNCTION POINTERS
 // LOGIN MAP
 // To add more functions to he map,	simply add to the map

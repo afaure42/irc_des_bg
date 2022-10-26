@@ -7,7 +7,7 @@
 #include "User.hpp"
 #include "Channel.hpp"
 
-#include "numeric_replies.hpp"
+#include "numericReplies.hpp"
 #include "functionMap.hpp"
 
 // users map

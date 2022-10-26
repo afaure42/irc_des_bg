@@ -2,7 +2,7 @@
 #define SERVER_HPP
 
 #include "common.hpp"
-#include "custom_exceptions.hpp"
+#include "customExceptions.hpp"
 #include "Client.hpp"
 #include "Scheduler.hpp"
 

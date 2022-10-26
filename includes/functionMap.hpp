@@ -3,8 +3,8 @@
 
 #include "common.hpp"
 #include "Command.hpp"
-#include "syntax_checks.hpp"
-#include "exec_command_utils.hpp"
+#include "syntaxChecks.hpp"
+#include "execCommandUtils.hpp"
 
 class Command;
 

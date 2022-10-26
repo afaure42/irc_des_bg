@@ -1,6 +1,5 @@
 #include "functionMap.hpp"
 
-
 unsigned int	privmsg(	Command &command,
 								unsigned int client_id,
 								t_users &users,
