@@ -8,7 +8,6 @@ Command::Command(exec_fn_map &fn_map,
 	_server(server)
 {
 	this->_setupCommand(*raw_command);
-	std::cout << "coucou => " << *raw_command << std::endl;
 }
 
 Command::~Command() {}
@@ -65,7 +64,6 @@ void	Command::_setupCommand(const std::string & raw_command) {
 		this->_cmd_name = this->_params.front();
 		this->_params.pop_front();
 	}
-	// return the size of what you just read for deletion from buffer
 }
 
 // EXECUTION PIPELINE
@@ -90,7 +88,7 @@ void	Command::execute(
 	} 
 	else {
 		std::cout << "command "<<this->_cmd_name<<" execution\n";
-		this->_numeric_return = // you can admire the very intuitive syntax lmao
+		this->_numeric_return =
 			this->_function_map.find(this->_cmd_name)->second(*this, client_id, users, channels);
 	}
 }
@@ -98,7 +96,7 @@ void	Command::execute(
 // OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const Command& cmd)
 {
-	os << "COMMAND OUTPUT START=================\n"
+	os << "=================\n"
 		<< "Command [" << cmd.getCmdName() << "]\n";
 	std::list<std::string>	params = cmd.getParams();
 	std::list<std::string>::iterator it = params.begin(), end = params.end();
@@ -106,6 +104,6 @@ std::ostream& operator<<(std::ostream& os, const Command& cmd)
 		std::cout << "Param " << i << "=> |" << it->data() << "|\n";
 	std::cout << "Numeric return => " << cmd.getNumericReturn() << std::endl \
 		<< "Chars read => " << cmd.getCharsRead() << std::endl;
-	os << "COMMAND OUTPUT END=================\n";
+	os << "================\n\n";
     return os;
 }

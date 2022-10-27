@@ -23,9 +23,8 @@ unsigned int	user(	Command &command,
 	}
 	if (user_it->second.getConnectPass() != command.getServer().getPass())
 	{
-		std::cerr << "User pass is\"" << std::endl << user_it->second.getConnectPass()
-		<< "; Server pass is \"" << command.getServer().getPass() << "\"" << std::endl;
-
+		std::cerr << "User pass is \""<< user_it->second.getConnectPass()
+		<< "\" Server pass is \"" << command.getServer().getPass() << "\"" << std::endl;
 		command.getScheduler().queueMessage(client_id, "ERROR :Invalid Password\n", false);
 		//deconnect incoming so use the deconnection routine
 		command.getScheduler().writeAll();
@@ -58,6 +57,6 @@ unsigned int	user(	Command &command,
 
 	command.getScheduler().queueMessage(client_id, ss.str(), true);
 
-	std::cout << "USER command execution\n";
+	std::cout << "USER command executed\n";
 	return (0);
 }

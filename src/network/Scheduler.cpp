@@ -25,8 +25,7 @@ bool Scheduler::queueMessage(unsigned int connection_id, std::string msg, bool c
 	std::cout << "A message is being queued for connection:" << connection_id << '\n';
 	if (this->_server.isClientConnected(connection_id))
 	{
-		this->_server.getClient(connection_id).
-		getWriteBuff().append(msg);
+		this->_server.getClient(connection_id).getWriteBuff().append(msg);
 		this->_write.insert(connection_id);
 		this->_server.getClient(connection_id).setConnected(connected);
 		return true;

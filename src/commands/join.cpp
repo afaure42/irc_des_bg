@@ -9,11 +9,9 @@ unsigned int	join(	Command &command,
 	unsigned int ret = 0;
 
 	if (params.size() < 1)
-	{
-		std::string err = errNeedMoreParams(command, users.at(client_id).getNick());
-		command.getScheduler().queueMessage(client_id, err, true);
-		return (0);
-	}
+		return (ERR_NEEDMOREPARAMS);
+	
+	std::string from = users.at(client_id).getNick() + " JOIN ";
 
 	while (params.size() > 0)
 	{
