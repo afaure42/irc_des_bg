@@ -26,11 +26,31 @@ const std::string	createNumericReply(
 #define RPL_MYINFO				004 // <client> <server_name> <version> <usermodes> <chanmodes> [chanmodes_with_a_parameter]
 #define RPL_UMODEIS				221 // <client> <user_modes> [<user_mode_params>]
 
-// NICK ERRORS
+//ERRORS
 #define ERR_NOSUCHNICK			401 // <client> <nick> :<reason>
+#define ERR_NOSUCHNICK_MSG		std::string("No such nick/channel")
+
 #define ERR_NOSUCHSERVER		402 // <client> <server> :<reason>
+#define ERR_NOSUCHSERVER_MSG	std:string("No such server")
+
 #define ERR_NOSUCHCHANNEL		403 // <client> <channel> :<reason>
+#define ERR_NOSUCHCHANNEL		std::string("No such channel")
+
+#define ERR_CANNOTSENDTOCHAN	404// <client> <channel> :<reason>
+#define ERR_CANNOTSENDTOCHAN_MSG std::string("Cannot send to channel")
+
+#define ERR_TOOMANYCHANNELS		405// <client> <channel> :<reason>
+#define ERR_TOOMANYCHANNELS_MSG std::string("You have joined too many channels")
+
+#define ERR_WASNOSUCHNICK		406// <client> <nick> :<reason>
+#define ERR_WASNOSUCHNICK_MSG	std::string("There Was no such nickname")
+
+#define ERR_TOOMANYTARGETS		407// <client> <target> :<reason>
+#define ERR_TOOMANYTARGETS_MSG	std::string("Duplicate recipients. No message delivered")
+
 #define ERR_NOORIGIN			409 // <client> :<reason>
+#define ERR_NOORIGIN_MSG		std::string("No origin specified")
+
 #define ERR_UNKNOWNCOMMAND		421 // <client> <command> :<reason>
 
 #define ERR_NONICKNAMEGIVEN		431 // <client> :<reason>
