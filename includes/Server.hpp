@@ -17,26 +17,27 @@ public:
 
 
 	/**
-	 * @brief Closes the tcp connection with the client
-	 * No condition regarding the server socket
+	 * @brief Will close the connection and free all resources
+	 * associated with that connection
 	 * May Throw a syscall_error exception
 	 * @param client The client you want to disconnect
 	 */
 	void	disconnectClient(Client & client);
 	/**
-	 * @brief Closes the tcp connection with the client
-	 * No condition regarding the server socket
+	 * @brief Will close the connection and free all resources
+	 * associated with that connection
 	 * May Throw a syscall_error exception
 	 * @param connection_id The id of the client you want to disconnect
 	 */
 	void	disconnectClient(unsigned int connection_id);
 
 	/**
-	 * @brief Function to know if a client is still connected
+	 * @brief Function to know if a client is waiting for deconnection
 	 * 
 	 * @param connection_id id of the client
 	 * @return true if client is connected
-	 * @return false if cilent is not connected
+	 * @return false if cilent is waiting for deconnection
+	 * (you should use disconnect client in this case)
 	 */
 	bool	isClientConnected(unsigned int connection_id);
 

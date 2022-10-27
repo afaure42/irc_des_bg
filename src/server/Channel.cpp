@@ -61,12 +61,12 @@ void		Channel::send(Scheduler & scheduler, std::string & msg, unsigned int from)
 	}
 }
 
-unsigned int Channel::join(Scheduler & scheduler, User & user)
+void Channel::joinChannel(Scheduler & scheduler, User & user)
 {
 	//TODO add invite flag
 
 	if (this->_members.find(user.getId()) != this->_members.end())
-		return (0); //idk if we should return something or not
+		return; //idk if we should return something or not
 
 	//check for permissions
 
@@ -77,6 +77,10 @@ unsigned int Channel::join(Scheduler & scheduler, User & user)
 	//then send JOIN msg to everyone
 	std::string msg = ":" + user.getNick() + " JOIN " + this->getName() + "\r\n";
 	this->send(scheduler, msg, 0);
+}
 
-	return (0);
+void Channel::removeUser(User & user)
+{
+	this->_members.erase(user.getId());
+	this->_permissions.erase(user.getId());
 }

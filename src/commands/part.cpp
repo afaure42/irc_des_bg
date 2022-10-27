@@ -30,8 +30,7 @@ unsigned int	part(	Command &command,
 
 		msg = prefix + " " + params.front() + " " + suffix;		
 		ch_it->send(command.getScheduler(), msg, 0);
-		// ch_it->getPermissions().erase(client_id);
-		ch_it->getMembers().erase(client_id);
+		ch_it->removeUser(users.at(client_id));
 		params.pop_front();
 	}
 	return (0);

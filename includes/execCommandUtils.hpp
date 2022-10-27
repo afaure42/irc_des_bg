@@ -10,3 +10,5 @@ typedef std::vector<Channel> 			t_channels;
 
 t_channels::iterator	findChannel(std::string & name, t_channels & channels);
 t_users::iterator		findUser(const std::string & nick, t_users & users);
+void freeUser(unsigned int client_id, Server & server,
+						Scheduler & scheduler,t_users & users);

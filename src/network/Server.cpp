@@ -115,15 +115,19 @@ void Server::waitAndAccept(Scheduler & scheduler)
 			this->_acceptNewClients();
 			continue;
 		}
-		//IF deconnected, disconnect client and remove from different
-		//queues
+
+		Client & current_client = this->getClient(this->_toId(fd));
+		//IF deconnected, set client in a passive state, processing will have to tell the
+		//server when the deconnection has been processed and the server can free the resources
 		if (ev[i].events & EPOLLRDHUP
 			|| ev[i].events & EPOLLERR
 			|| ev[i].events & EPOLLHUP)
 		{
-			std::cout << "EPOLLHUP for id:" << this->_toId(fd) << '\n';
-			scheduler.addToUpdates(Update(this->_toId(fd), NULL, false));
-			disconnectClient(this->_toId(fd));
+			std::cout << "EPOLLHUP for id:" << current_client.getId() << '\n';
+			scheduler.addToUpdates(Update(current_client.getId(), NULL, false));
+			current_client.setConnected(false);
+			current_client.setReadable(false);
+			current_client.setWriteable(false);
 			continue;
 		}
 

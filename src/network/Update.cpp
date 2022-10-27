@@ -44,3 +44,7 @@ bool Update::isConnected() const {
 void Update::setBuff(const std::string & ref) {
 	*(this->_read_buff) = ref;
 }
+
+void Update::setConnected(bool input) {
+	this->_connected = input;
+}

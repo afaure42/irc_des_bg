@@ -71,10 +71,13 @@ int main(int argc, char *argv[])
 					users.insert(std::make_pair(it->first, User(it->first)));
 				if (!it->second.isConnected())
 				{
-					users.erase(it->first);
-					scheduler.removeFromQueues(it->first);
+					std::string quit_cmd = "QUIT";
+					Command command(function_map, &quit_cmd, scheduler, server);
+
 					std::cout << "Client_id:" << it->second.getId()
-					<< " has disconnected\n";
+					<< " has disconnected unexpectedly\n";
+
+					command.execute((it)->second.getId(), users, channels);
 				}
 				else if (!it->second.getBuff()->empty())
 				{
@@ -83,17 +86,16 @@ int main(int argc, char *argv[])
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
 					std::cout << command;
-					if (it->second.getBuff()->find("shutdown\n", 0)
-						!= it->second.getBuff()->npos)
-						server_on = false;
-
 					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
 
 					//do not forget to remove what you have processed from the read buffer
 					//i recommend reading a little bit about erase method for std::string
-					it->second.getBuff()->erase(0, command.getCharsRead());
-					if (it->second.getBuff()->find(IRC_MSG_SEPARATOR) != it->second.getBuff()->npos)
-						continue; //to keep processing
+					if (it->second.isConnected())
+					{
+						it->second.getBuff()->erase(0, command.getCharsRead());
+						if (it->second.getBuff()->find(IRC_MSG_SEPARATOR) != it->second.getBuff()->npos)
+							continue; //to keep processing
+					}
 				}
 				updates.erase(it++);
 			}

@@ -25,3 +25,13 @@ t_users::iterator findUser(const std::string & nick, t_users & users)
 	}
 	return ret;
 }
+
+void freeUser(unsigned int client_id,
+			Server & server,
+			Scheduler & scheduler,
+			t_users & users)
+{
+	users.erase(client_id);
+	scheduler.removeFromQueues(client_id);
+	server.disconnectClient(client_id);
+}

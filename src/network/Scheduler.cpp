@@ -38,6 +38,7 @@ void Scheduler::removeFromQueues(unsigned int connection_id)
 {
 	this->_read.erase(connection_id);
 	this->_write.erase(connection_id);
+	this->_updates.at(connection_id).setConnected(false);
 }
 
 void Scheduler::readAll(void)
@@ -50,18 +51,7 @@ void Scheduler::readAll(void)
 		if (read_from_client(this->_server.getClient(*it)))
 			this->_updates[*it] = Update(this->_server.getClient(*it));
 		// add to the updates
-
-		if (!this->_server.getClient(*it).isConnected())
-		{
-			this->_write.erase(*it);
-			//remove from write queue
-			//and properly disconnect (may throw)
-			this->_server.disconnectClient(*it);
-			//be carefull client pointer is invalid now
-
-			this->_read.erase(*(it++));
-		}
-
+		
 		//if we cant read anymore, we will remove it from the read_list
 		else if (!this->_server.getClient(*it).isReadable())
 			this->_read.erase(*(it++));
@@ -82,16 +72,7 @@ void Scheduler::writeAll(void)
 
 		//if buffer empty remove from write queue
 		if (this->_server.getClient(*it).getWriteBuff().empty())
-		{
-			//if deconnection is requested, disconnect
-			if (!this->_server.getClient(*it).isConnected())
-			{
-				this->_server.disconnectClient(*it);
-				this->removeFromQueues(*(it++));
-			}
-			else
 				this->_write.erase(*(it++));
-		}
 		else
 			it++;
 	}

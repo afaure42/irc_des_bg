@@ -14,7 +14,11 @@ unsigned int	user(	Command &command,
 	
 	if (user_it->second.getNick() == "*")
 	{
-		command.getScheduler().queueMessage(client_id, "USAGE : PASS NICK USER\n", false);
+		command.getScheduler().queueMessage(client_id, "ERROR :USAGE PASS NICK USER\n", false);
+		//deconnect incoming so use the deconnection routine
+		command.getScheduler().writeAll();
+		freeUser(client_id, command.getServer(),
+					command.getScheduler(), users);
 		return (0);
 	}
 	if (user_it->second.getConnectPass() != command.getServer().getPass())
@@ -22,7 +26,11 @@ unsigned int	user(	Command &command,
 		std::cerr << "User pass is\"" << std::endl << user_it->second.getConnectPass()
 		<< "; Server pass is \"" << command.getServer().getPass() << "\"" << std::endl;
 
-		command.getScheduler().queueMessage(client_id, "Invalid Password\n", false);
+		command.getScheduler().queueMessage(client_id, "ERROR :Invalid Password\n", false);
+		//deconnect incoming so use the deconnection routine
+		command.getScheduler().writeAll();
+		freeUser(client_id, command.getServer(),
+					command.getScheduler(), users);
 		return (0);
 	}
 	

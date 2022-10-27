@@ -87,7 +87,15 @@ class Channel
 		 * @param scheduler 
 		 * @param user 
 		 */
-		unsigned int		join(Scheduler & scheduler, User & user);
+		void		joinChannel(Scheduler & scheduler, User & user);
+
+		/**
+		 * @brief Will remove the user from the channel
+		 * 
+		 * @param user 
+		 */
+		void		removeUser(User & user);
+
     private:
         std::string		_name;
 		std::string		_topic;

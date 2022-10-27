@@ -1,7 +1,7 @@
 #include "Command.hpp"
 
 Command::Command(exec_fn_map &fn_map,
-				std::string *raw_command,
+				const std::string *raw_command,
 				Scheduler & scheduler,
 				Server & server)
 :_chars_read(0), _function_map(fn_map), _scheduler(scheduler),
@@ -38,7 +38,7 @@ Server &	Command::getServer(void) {
 // TODO: This function needs to check for the presence of /r/d or whatever,
 // extract the substring(s), and the program must
 // delete the buffer up until that point 
-void	Command::_setupCommand(std::string raw_command) {
+void	Command::_setupCommand(const std::string & raw_command) {
 	// If a separator is in buffer, do stuff
 	if (raw_command.find(IRC_MSG_SEPARATOR) != raw_command.npos) {
 		std::cout << "la\n";

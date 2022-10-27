@@ -23,12 +23,12 @@ unsigned int	join(	Command &command,
 		//if channel exists join it
 		if (it != channels.end())
 		{
-			ret = it->join(command.getScheduler(), users.at(client_id));
+			it->joinChannel(command.getScheduler(), users.at(client_id));
 		}
 		else //else create it
 		{
 			channels.push_back(Channel(params.front()));
-			ret = channels.back().join(command.getScheduler(), users.at(client_id));
+			channels.back().joinChannel(command.getScheduler(), users.at(client_id));
 			it = channels.end() - 1;
 		}
 

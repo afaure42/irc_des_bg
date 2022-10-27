@@ -53,6 +53,8 @@ public:
 	 */
 	void	setBuff(const std::string & ref);
 
+	void	setConnected(bool input);
+
 private:
 
 	unsigned int	_connection_id;
