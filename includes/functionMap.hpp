@@ -40,6 +40,8 @@ unsigned int	ping(	Command &command, unsigned int client_id,
 						t_users &users, t_channels &channels );
 unsigned int	part(	Command &command, unsigned int client_id,
 						t_users &users, t_channels &channels );
+unsigned int	mode(	Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels );
 
 
 #endif

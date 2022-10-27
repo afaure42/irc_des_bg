@@ -9,7 +9,7 @@ SERVER_FILES_PATH	=	./src/server/
 INCLUDES			=	-I./includes
 				
 COMMANDS_FILES		=	execCommandUtils.cpp join.cpp nick.cpp part.cpp pass.cpp ping.cpp \
-						privmsg.cpp syntaxChecks.cpp user.cpp numericReplies.cpp
+						privmsg.cpp syntaxChecks.cpp user.cpp mode.cpp numericReplies.cpp
 COMMANDS_PATH		=	$(addprefix ${COMMANDS_FILES_PATH}, ${COMMANDS_FILES})
 COMMANDS_OFILES		=	$(COMMANDS_PATH:.cpp=.o)
 

@@ -81,8 +81,6 @@ class Command
 		Server		&			_server;
 		// Internal methods
 		void					_setupCommand(std::string raw_command);
-		std::string const		_createNumericReply(unsigned int nr,
-									unsigned int client_id);
 };
 
 std::ostream& operator<<(std::ostream& os, const Command& cmd);

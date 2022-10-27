@@ -1,7 +1,11 @@
 #include "functionMap.hpp"
 
 static bool	isValidMode(std::string mode) {
-	if (mode[0] != '-' && mode[0] != '+')
+	char sign	= mode[0];
+	char c		= mode[1];
+
+	if ( (sign != '-' && sign != '+') || (c != 'a' && c != 'i') )
+		return (false);
 	return true;
 }
 
@@ -17,23 +21,28 @@ unsigned int	mode(	Command &command,
 	if (params.empty())
 		return (RPL_UMODEIS);
 
+	// mode without args should (?) list all modes of user that sent the cmd
+
 	if (params.size() < 2)
 		return (ERR_NEEDMOREPARAMS);
 
-	t_users::iterator user_it = users.find(client_id);
-	if (user_it->second.getNick() != params_it->data())
+	t_users::iterator user_it	= users.find(client_id);
+	const std::string user_nick	= params_it->data();
+	if (user_it->second.getNick() != user_nick)
 		return (ERR_USERSDONTMATCH);
 	
 	params_it++;
 	while (params_it != params.end()) {
 		std::string param = params_it->data();
-		if (param[0] != '-' && param[0] != '+') {
-			; // invalid operand
+		if (!isValidMode(param)) {
+			const std::string numeric_reply = createNumericReply(
+												ERR_UMODEUNKNOWNFLAG,
+												user_nick,
+												"",
+												"");
+			command.getScheduler().queueMessage(client_id, numeric_reply, true);
 		}
-		
 		params_it++;
 	}
-
-	
 	return (0);
 }

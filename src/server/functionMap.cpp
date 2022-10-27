@@ -22,5 +22,6 @@ void	setFunctionMap(exec_fn_map &function_map) {
 			it, fn_map_pair("PING", ping));
 	function_map.insert(
 			it, fn_map_pair("PART", part));
-	
+	function_map.insert(
+			it, fn_map_pair("MODE", mode));
 }

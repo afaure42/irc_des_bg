@@ -93,23 +93,6 @@ void	Command::execute(
 	}
 }
 
-std::string const	Command::_createNumericReply(
-	unsigned int nr,
-	unsigned int client_id)
-{
-	std::string target = 
-	std::string numeric_reply = SERVER_PREFIX + " " + std::to_string(nr) + " ";
-	switch (nr)
-	{
-		case ERR_UMODEUNKNOWNFLAG:
-			/* code */
-			break;
-		
-		default:
-			break;
-	}
-}
-
 // OPERATOR OVERLOADS //
 std::ostream& operator<<(std::ostream& os, const Command& cmd)
 {
