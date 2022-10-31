@@ -79,18 +79,58 @@ void	Command::execute(
 	// TODO: using an iterator to .find(cmd_name) would make it possible to avoid
 	// having to use .find 2 times, but i can't make the syntax work
 	if (this->_function_map.find(this->_cmd_name) == this->_function_map.end()) {
-		std::cout << "command "<<this->_cmd_name<<" not found\n";
-		this->_numeric_return = ERR_UNKNOWNCOMMAND; // -1 if command doesnt exist
-		if (users.find(client_id) != users.end())
-			this->getScheduler().queueMessage(client_id, errUnknownCommand(*this, users.at(client_id).getNick()), true);
-		else
-			this->getScheduler().queueMessage(client_id, errUnknownCommand(*this, "*"), true);
-	} 
+		this->_numeric_return = ERR_UNKNOWNCOMMAND;
+		return;
+	}
 	else {
 		std::cout << "command "<<this->_cmd_name<<" execution\n";
 		this->_numeric_return =
 			this->_function_map.find(this->_cmd_name)->second(*this, client_id, users, channels);
 	}
+}
+
+// NUMERIC_REPLIES DISPATCHER
+void	Command::sendReplies(
+	unsigned int	client_id,
+	t_users			&users,
+	t_channels		&channels)
+{
+	(void)channels;
+	t_users::iterator 	it = users.find(client_id);
+	const std::string	user_nick = (it == users.end()) ? "" : users.at(client_id).getNick();
+	std::string			reason;
+	std::string			target = "";
+
+	switch (this->_numeric_return)
+	{
+		case ERR_UNKNOWNCOMMAND:
+			reason = this->_cmd_name + ": " + ERR_UNKNOWNCOMMAND_MSG;
+			break;
+		case ERR_NEEDMOREPARAMS:
+			reason = ERR_NEEDMOREPARAMS_MSG;
+			break;
+		case ERR_NONICKNAMEGIVEN:
+			reason = ERR_NONICKNAMEGIVEN_MSG;
+			break;
+		case ERR_ALREADYREGISTERED:
+			reason = ERR_ALREADYREGISTERED_MSG;
+			break;
+		case ERR_NICKNAMEINUSE:
+			target = this->_params.begin()->at(0);
+			reason = ERR_NICKNAMEINUSE_MSG;
+			break;
+		case ERR_NOSUCHNICK:
+			target = this->_params.begin()->at(0);
+			reason = ERR_NOSUCHNICK_MSG;
+			break;
+		default:
+			reason = "SERVER ERROR: UNKNOWN/UNSUPPORTED NUMERIC REPLY";
+			break;
+	}
+	const std::string numeric_reply = createNumericReply(this->_numeric_return, user_nick,
+															target, reason);
+	this->getScheduler().queueMessage(client_id, numeric_reply, true);
+
 }
 
 // OPERATOR OVERLOADS //

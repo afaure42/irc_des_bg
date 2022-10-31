@@ -25,12 +25,9 @@ unsigned int	user(	Command &command,
 	{
 		std::cerr << "User pass is \""<< user_it->second.getConnectPass()
 		<< "\" Server pass is \"" << command.getServer().getPass() << "\"" << std::endl;
-		command.getScheduler().queueMessage(client_id, "ERROR :Invalid Password\n", false);
-		//deconnect incoming so use the deconnection routine
-		command.getScheduler().writeAll();
 		freeUser(client_id, command.getServer(),
 					command.getScheduler(), users);
-		return (0);
+		return (ERR_PASSWDMISMATCH);
 	}
 	
 	
@@ -57,6 +54,5 @@ unsigned int	user(	Command &command,
 
 	command.getScheduler().queueMessage(client_id, ss.str(), true);
 
-	std::cout << "USER command executed\n";
 	return (0);
 }

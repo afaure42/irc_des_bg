@@ -8,10 +8,7 @@ unsigned int	nick(	Command &command,
 	std::list<std::string> const	params = command.getParams();
 
 	t_users::iterator user_it = users.find(client_id);
-	if (user_it == users.end())
-		return (ERR_NONICKNAMEGIVEN);
-
-	if (params.empty())
+	if (user_it == users.end() || params.empty())
 		return (ERR_NONICKNAMEGIVEN);
 
 	//BASIC SYNTAX CHEKS MAY NEED TO DO MORE LATER

@@ -80,6 +80,8 @@ int main(int argc, char *argv[])
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
 					std::cout << "\n\nCOMMAND AFTER EXECUTION:\n" << command;
+					if (command.getNumericReturn() != 0)
+						command.sendReplies(it->second.getId(), users, channels);
 					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
 
 					//do not forget to remove what you have processed from the read buffer

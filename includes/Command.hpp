@@ -63,6 +63,10 @@ class Command
 		void					execute(unsigned int client_id,
 									t_users &users,
 									t_channels &channels);
+		// Public method to be called after execution
+		void					sendReplies(unsigned int client_id,
+									t_users &users,
+									t_channels &channels);
 		// Getters
 		unsigned int const		&getCharsRead(void) const;
 		std::string const		&getCmdName(void) const;

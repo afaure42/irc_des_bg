@@ -12,16 +12,13 @@ unsigned int	pass(	Command &command,
 	std::cout << "PASS command execution:\n";
 	// Error checking
 	if (params.empty()) {
-		std::cout << "No parameters\n";
-		command.getScheduler().
-		queueMessage(client_id, errNeedMoreParams(command, users.at(client_id).getNick()), true);
+		return (ERR_NEEDMOREPARAMS);
 	}
 	t_users::iterator it = users.find(client_id);
 
 	//std::map insert returns a pair of iterator, bool, we just need the iterator
 
 	if (it->second.isRegistered()) {
-		std::cout << "Client already registered\n";
 		return (ERR_ALREADYREGISTERED);
 	}
 

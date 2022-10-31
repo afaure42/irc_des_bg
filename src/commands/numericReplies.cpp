@@ -13,12 +13,18 @@ const std::string	errUnknownCommand(Command & command, std::string nick){
 
 // UNE FONCTION POUR LES GOUVERNER TOUTES
 const std::string	createNumericReply(
-	uns,
+	unsigned int numeric_reply,
 	std::string nick,
 	std::string target, // can be empty
 	std::string reason)
 {
-	return (SERVER_PREFIX + " " + numeric_reply
-		+ " " + nick + " " + (target.empty() ? ":" : target + " :")
-		+ reason + IRC_MSG_SEPARATOR);
+	std::string	nr_str;
+	while (numeric_reply > 0) {
+		nr_str.insert(0, 1, numeric_reply % 10 + 48);
+		numeric_reply /= 10;
+	}
+
+	return (SERVER_PREFIX + " " + nr_str + " " + nick + " "
+			+ (target.empty() ? ":" : target + " :")
+			+ reason + IRC_MSG_SEPARATOR);
 }
