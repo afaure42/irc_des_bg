@@ -24,8 +24,6 @@ unsigned int	nick(	Command &command,
 	}
 
 	//err checking done
-
-	std::cout << "NICK command execution\n";
 	user_it->second.setNick(nick);
 	return (0);
 }

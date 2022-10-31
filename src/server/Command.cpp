@@ -119,6 +119,10 @@ void	Command::sendReplies(
 			target = this->_params.begin()->at(0);
 			reason = ERR_NICKNAMEINUSE_MSG;
 			break;
+		case ERR_ERRONEUSNICKNAME:
+			target = this->_params.begin()->at(0);
+			reason = ERR_ERRONEUSNICKNAME_MSG;
+			break;
 		case ERR_NOSUCHNICK:
 			target = this->_params.begin()->at(0);
 			reason = ERR_NOSUCHNICK_MSG;

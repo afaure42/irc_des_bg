@@ -139,7 +139,7 @@ const std::string	createNumericReply(
 #define ERR_NONICKNAMEGIVEN_MSG	"No nickname given"
 
 #define ERR_ERRONEUSNICKNAME	432 // <client> <nick> :<reason>
-#define ERR_ERRONEUSNICKNAME_MSG "Erroneous nickname"
+#define ERR_ERRONEUSNICKNAME_MSG "Invalid nickname"
 
 #define ERR_NICKNAMEINUSE		433 // <client> <nick> :<reason>	
 #define ERR_NICKNAMEINUSE_MSG	"Nickname is already in use"

@@ -23,10 +23,11 @@ unsigned int	part(	Command &command,
 		params.pop_back();
 	}
 	
-	std::string	channel_name;
-	size_t		delimiter;
-	std::string	numeric_reply;
+	std::string			channel_name;
+	size_t				delimiter;
+	std::string			numeric_reply;
 	const std::string	user_nick = users.at(client_id).getNick();
+	
 	while (!params.front().empty())
 	{
 		delimiter = params.front().find(",");
