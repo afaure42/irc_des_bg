@@ -12,6 +12,9 @@ unsigned int	part(	Command &command,
 	std::string suffix;
 	std::string msg;
 
+	if (params.empty())
+		return (ERR_NEEDMOREPARAMS);
+
 	if (params.back()[0] != ':')
 		suffix = ":User left\r\n";
 	else
@@ -20,18 +23,39 @@ unsigned int	part(	Command &command,
 		params.pop_back();
 	}
 	
-	while (params.size() > 0)
+	std::string	channel_name;
+	size_t		delimiter;
+	std::string	numeric_reply;
+	const std::string	user_nick = users.at(client_id).getNick();
+	while (!params.front().empty())
 	{
-		ch_it = findChannel(params.front(), channels);
-		if (ch_it == channels.end())
-			return (ERR_NOSUCHCHANNEL);		
-		if (ch_it->getMembers().find(client_id) == ch_it->getMembers().end())
-			return (ERR_NOTONCHANNEL);
+		delimiter = params.front().find(",");
 
-		msg = prefix + " " + params.front() + " " + suffix;		
-		ch_it->send(command.getScheduler(), msg, 0);
-		ch_it->removeUser(users.at(client_id));
-		params.pop_front();
+		if (delimiter != std::string::npos) {
+			channel_name = params.front().substr(0, delimiter);
+			params.front().erase(0, delimiter + 1);
+		}
+		else {
+			channel_name = params.front();
+			params.front().erase();
+		}
+
+		ch_it = findChannel(channel_name, channels);
+		if (ch_it == channels.end()) {
+			numeric_reply = createNumericReply(ERR_NOSUCHCHANNEL, user_nick,
+																	channel_name, ERR_NOSUCHCHANNEL_MSG);
+			command.getScheduler().queueMessage(client_id, numeric_reply, true);
+		}
+		else if (ch_it->getMembers().find(client_id) == ch_it->getMembers().end()) {
+			numeric_reply = createNumericReply(ERR_NOTONCHANNEL, user_nick,
+																	channel_name, ERR_NOTONCHANNEL_MSG);
+			command.getScheduler().queueMessage(client_id, numeric_reply, true);
+		}
+		else {
+			msg = prefix + " " + channel_name + " " + suffix;		
+			ch_it->send(command.getScheduler(), msg, 0);
+			ch_it->removeUser(users.at(client_id));
+		}
 	}
 	return (0);
 }
