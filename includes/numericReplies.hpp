@@ -100,7 +100,7 @@ const std::string	createNumericReply(
 #define ERR_NOSUCHSERVER_MSG	std:string("No such server")
 
 #define ERR_NOSUCHCHANNEL		403 // <client> <channel> :<reason>
-#define ERR_NOSUCHCHANNEL		std::string("No such channel")
+#define ERR_NOSUCHCHANNEL_MSG	std::string("No such channel")
 
 #define ERR_CANNOTSENDTOCHAN	404// <client> <channel> :<reason>
 #define ERR_CANNOTSENDTOCHAN_MSG std::string("Cannot send to channel")
@@ -127,10 +127,10 @@ const std::string	createNumericReply(
 #define ERR_UNKOWNCOMMAND_MSG	std::string("Unkown command")
 
 #define ERR_NOMOTD				422
-#define ERR_NOMOTD				std::string("MOTD File is missing")
+#define ERR_NOMOTD_MSG			std::string("MOTD File is missing")
 
 #define ERR_NOADMININFO			423
-#define	ERR_NOADMININFO			std::string("No administrative info available")
+#define	ERR_NOADMININFO_MSG		std::string("No administrative info available")
 
 #define ERR_FILEERROR			424
 #define ERR_FILEERROR_MSG		std::string("File error")
@@ -196,7 +196,7 @@ const std::string	createNumericReply(
 #define ERR_NOCHANMODES_MSG		std::string("Channel doesn't support modes")
 
 #define ERR_BANLISTFULL			478// <client> <channel> :<reason>
-#define ERR_BANLISTFULL			std::string("Channel list is full")
+#define ERR_BANLISTFULL_MSG		std::string("Channel list is full")
 
 #define ERR_NOPRIVILEGES		481// <client> :<reason>
 #define ERR_NOPRIVILEGES_MSG	std::string("Permission Denied- You're not an IRC operator")
@@ -205,16 +205,16 @@ const std::string	createNumericReply(
 #define ERR_CHANOPRIVSNEEDED_MSG std::string("You're not channel operator")
 
 #define ERR_CANTKILLSERVER		483
-#define ERR_CANTKILLSERVER		std::string("You can't kill a server!")
+#define ERR_CANTKILLSERVER_MSG	std::string("You can't kill a server!")
 
 #define ERR_RESTRICTED			484
-#define	ERR_RESTRICTED			std::string("Your connection is restricted")
+#define	ERR_RESTRICTED_MSG		std::string("Your connection is restricted")
 
-#define ERR_UNNIQOPRIVSNEEDED	485
-#define ERR_UNNIQOPRIVSNEEDED_MSG std::string("You're not the original channel operator")
+#define ERR_UNNIQOPRIVSNEEDED		485
+#define ERR_UNNIQOPRIVSNEEDED_MSG 	std::string("You're not the original channel operator")
 
-#define	ERR_UMODEUNKOWNFLAG		501
-#define ERR_UMODEUNKOWNFLAG_MSG	"Unknown MODE flag"
+#define	ERR_UMODEUNKNOWNFLAG		501
+#define ERR_UMODEUNKNOWNFLAG_MSG	"Unknown MODE flag"
 
 #define ERR_USERSDONTMATCH		502
 #define ERR_USERSDONTMATCH_MSG	std::string("Cannot change mode for other users")

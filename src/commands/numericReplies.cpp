@@ -13,7 +13,7 @@ const std::string	errUnknownCommand(Command & command, std::string nick){
 
 // UNE FONCTION POUR LES GOUVERNER TOUTES
 const std::string	createNumericReply(
-	std::string numeric_reply,
+	uns,
 	std::string nick,
 	std::string target, // can be empty
 	std::string reason)
