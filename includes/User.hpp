@@ -26,6 +26,7 @@ class User
 		void				check(void) const;
 		// setters
 		void				setAwayStatus(bool status);
+		void				setAwayMessage(const std::string & msg);
 		void				setInvisStatus(bool status);
 		void				setWallopStatus(bool status);
 		void				setRegistered(void);
@@ -49,6 +50,7 @@ class User
 		const std::string	getFullName(void) const;
 		const std::string	&getConnectPass(void) const;
 		std::vector<std::string> & getChannels(void);
+		const std::string	&getAwayMsg(void) const;
 	// The available modes are as follows:
 
 	// 	a - user is flagged as away;

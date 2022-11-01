@@ -26,6 +26,9 @@ User::~User()
 void	User::setAwayStatus(bool status) {
 	this->_modes ^= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
 }
+void	User::setAwayMessage(const std::string & msg) {
+	this->_away_msg = msg;
+}
 void	User::setInvisStatus(bool status) {
 	this->_modes ^= (USR_MODE_i) & (status << USR_MODE_i_OFFSET);
 }
@@ -88,6 +91,9 @@ const std::string &User::getConnectPass(void) const {
 }
 const std::string User::getFullName(void) const {
 	return std::string(this->_nick + "!" + this->_usrname + "@" + this->_hostname);
+}
+const std::string &User::getAwayMsg(void) const {
+	return this->_away_msg;
 }
 
 // OPERATOR OVERLOADS //

@@ -10,7 +10,9 @@ unsigned int	privmsg(	Command &command,
 	if (params.size() < 2)
 		return (ERR_NEEDMOREPARAMS);
 	
-	std::string from = ":" + users.at(client_id).getNick() + " PRIVMSG ";
+	std::string from = ":" + users.at(client_id).getFullName() + " PRIVMSG ";
+
+	User & current_user = users.at(client_id);
 
 	//TODO implement a map of nick -> id 
 	//to not have to iterate through all clients
@@ -19,7 +21,7 @@ unsigned int	privmsg(	Command &command,
 
 	while (params.size() > 1)
 	{
-		std::string msg = from + params.front() + " " + params.back() + "\r\n";
+		std::string msg = from + params.front() + " " + params.back() + IRC_MSG_SEPARATOR;
 
 		//first try to find channel
 		t_channels::iterator ch_it = findChannel(params.front(), channels);
@@ -38,7 +40,16 @@ unsigned int	privmsg(	Command &command,
 		{
 			t_users::iterator usr_it = findUser(params.front(), users);
 			if (usr_it != users.end())
-				command.getScheduler().queueMessage(usr_it->first, msg, true);
+			{
+				if (!usr_it->second.isAway())
+					command.getScheduler().queueMessage(usr_it->first, msg, true);
+				else
+				{
+					std::string rply = createNumericReply(RPL_AWAY, current_user.getFullName(),
+										usr_it->second.getFullName(), usr_it->second.getAwayMsg());
+					command.getScheduler().queueMessage(client_id, rply, true);
+				}
+			}
 			else //no channel nor user found then return ERR
 				return (ERR_NOSUCHNICK);
 		}
