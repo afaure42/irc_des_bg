@@ -124,7 +124,7 @@ const std::string	createNumericReply(
 #define ERR_NOTEXTTOSEND_MSG	"No text to send"
 
 #define ERR_UNKNOWNCOMMAND		421 // <client> <command> :<reason>
-#define ERR_UNKNOWNCOMMAND_MSG	"Unkown/Unsupported command"
+#define ERR_UNKNOWNCOMMAND_MSG	"unknown/Unsupported command"
 
 #define ERR_NOMOTD				422
 #define ERR_NOMOTD_MSG			"MOTD File is missing"
@@ -177,8 +177,8 @@ const std::string	createNumericReply(
 #define ERR_CHANELISFULL		471
 #define ERR_CHANELISFULL_MSG	"Cannot join chanel (+l"
 
-#define ERR_UNKOWNMODE			472 // <client> <channel> <char> :<reason>
-#define ERR_UNKOWNMODE_MSG		"is unnkown mode char for this channel"
+#define ERR_UNKNOWNMODE			472 // <client> <channel> <char> :<reason>
+#define ERR_UNKNOWNMODE_MSG		"is unknown mode char for this channel"
 
 #define ERR_INVITEONLYCHAN		473// <client> <channel> :<reason>
 #define ERR_INVITEONLYCHAN_MSG	"Cannot join channel (+i)"
