@@ -6,33 +6,54 @@
 #include <arpa/inet.h>
 
 #define BUFFER_LEN 2048
+#include <fstream>
 
-static void	test_command(int socket_fd, std::string test_str);
+static void	test_command(int socket_fd, std::string test_str, char *server_reponse);
+static void replace_tokens(std::string &str, const std::string &password,
+									const std::string &nick, const std::string &username);
 
 
 static void launch_tests(int socket_fd, const std::string &password,
-	const std::string &nick, const std::string &username)
+	const std::string &nick, const std::string &username, char **test_files)
 {
 	std::string	msg;
-
-	// VALID LOGIN
-	msg = "PASS " + password;
-	test_command(socket_fd, msg);
-	msg = "NICK " + nick;
-	test_command(socket_fd, msg);
-	msg = "USER " + nick + " 0 0 :" + username;
-	test_command(socket_fd, msg);
-}
-
-static void	test_command(int socket_fd, std::string test_str)
-{
-	// Get input from the user:
-	std::cout << "TESTER: Sending command [" << test_str << "] =========\n"; 
-	test_str += IRC_MSG_SEPARATOR;
 	char server_response[BUFFER_LEN];
 
 	// Clean buffers:
 	memset(server_response, '\0', BUFFER_LEN);
+	std::string		test_msg;
+
+	for (int i = 0; test_files[i] != NULL; i++) {
+		std::ifstream	infile(test_files[i]);
+		while (std::getline(infile, test_msg)) {
+			if (!test_msg.empty() && test_msg.at(0) != '#') {
+				replace_tokens(test_msg, password, nick, username);
+				std::cout << "======== TESTER: Sending command [" << test_msg << "] =========\n"; 
+				test_msg += IRC_MSG_SEPARATOR;
+				test_command(socket_fd, test_msg, server_response);
+			}
+		}
+	}
+	
+
+}
+
+static void replace_tokens(std::string &str, const std::string &password,
+									const std::string &nick, const std::string &username)
+{
+	size_t ret;
+	while ((ret = str.find("$PASSWORD")) != str.npos)
+		str.replace(ret, 9, password);
+	while ((ret = str.find("$NICK")) != str.npos)
+		str.replace(ret, 5, nick);
+	while ((ret = str.find("$USERNAME")) != str.npos)
+		str.replace(ret, 9, username);
+}
+
+static void	test_command(int socket_fd, std::string test_str, char *server_response)
+{
+	// Get input from the user:
+	test_str += IRC_MSG_SEPARATOR;
 
     // Send the message to server:
 	if (write(socket_fd, test_str.c_str(), test_str.length()) == -1) {
@@ -40,7 +61,7 @@ static void	test_command(int socket_fd, std::string test_str)
         return;
 	}
 	
-	usleep(100);
+	usleep(1000);
     // Receive the server's response:
 	int read_ret = 0;
 	if ((read_ret = read(socket_fd, server_response, BUFFER_LEN)) == -1) {
@@ -53,9 +74,9 @@ static void	test_command(int socket_fd, std::string test_str)
 int main(int ac, char **av)
 {
 	(void)av;
-	if (ac != 5)
+	if (ac < 5)
 	{
-		std::cout << "Usage: ./irc_tester [port] [password] [nick] [username]\n";
+		std::cout << "Usage: ./irc_tester [port] [password] [nick] [username] {... [test_file(s)]}\n";
 		return (EXIT_FAILURE);
 	}
 
@@ -97,7 +118,7 @@ int main(int ac, char **av)
 		std::cerr << e.what() << '\n';
 	}
 
-	launch_tests(socket_fd, password, nick, username);
+	launch_tests(socket_fd, password, nick, username, &av[5]);
 		// Close the socket:
 	close(socket_fd);
 }

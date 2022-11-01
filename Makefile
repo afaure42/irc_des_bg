@@ -7,6 +7,7 @@ rm		= rm -f
 COMMANDS_FILES_PATH =	./src/commands/
 NETWORK_FILES_PATH	=	./src/network/
 SERVER_FILES_PATH	=	./src/server/
+TESTER_FILES_PATH	=	./src/tester/
 INCLUDES			=	-I./includes
 				
 COMMANDS_FILES		=	execCommandUtils.cpp join.cpp nick.cpp part.cpp pass.cpp ping.cpp \
@@ -26,7 +27,7 @@ SERVER_OFILES		=	$(SERVER_PATH:.cpp=.o)
 
 SERVER_MAIN			=	$(addprefix ${SERVER_FILES_PATH}, main.cpp)
 SERVER_MAIN_OFILE	=	$(SERVER_MAIN:.cpp=.o)
-TESTER_MAIN			=	$(addprefix ${SERVER_FILES_PATH}, tester.cpp)
+TESTER_MAIN			=	$(addprefix ${TESTER_FILES_PATH}, tester.cpp)
 TESTER_MAIN_OFILE	=	$(TESTER_MAIN:.cpp=.o)
 
 ALL_OFILES			+=	$(SERVER_OFILES) $(NETWORK_OFILES) $(COMMANDS_OFILES)
