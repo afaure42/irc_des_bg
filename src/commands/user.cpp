@@ -50,12 +50,10 @@ unsigned int	user(	Command &command,
 	user_it->second.setRealname(params.front());
 
 	//TODO: SEND RPL 001 to 004
-	std::stringstream ss;
-	ss << ":irc_des_bg 001 " << user_it->second.getNick() << " Welcome to irc_des_bg " << user_it->second.getNick()
-	<< '!' << user_it->second.getUsername() << '@' << user_it->second.getHostName()
-	<<  "\r\n";
+	std::string rpl = createNumericReply(RPL_WELCOME, user_it->second.getFullName(),
+		"", "Welcome to irc_des_bg " + user_it->second.getFullName());
 
-	command.getScheduler().queueMessage(client_id, ss.str(), true);
+	command.getScheduler().queueMessage(client_id, rpl, true);
 
 	return (0);
 }

@@ -75,7 +75,7 @@ void Channel::joinChannel(Scheduler & scheduler, User & user)
 	user.getChannels().push_back(this->_name);
 
 	//then send JOIN msg to everyone
-	std::string msg = ":" + user.getNick() + " JOIN " + this->getName() + "\r\n";
+	std::string msg = ":" + user.getFullName() + " JOIN " + this->getName() + "\r\n";
 	this->send(scheduler, msg, 0);
 }
 

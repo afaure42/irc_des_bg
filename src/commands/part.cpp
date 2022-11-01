@@ -16,10 +16,10 @@ unsigned int	part(	Command &command,
 		return (ERR_NEEDMOREPARAMS);
 
 	if (params.back()[0] != ':')
-		suffix = ":User left\r\n";
+		suffix = IRC_MSG_SEPARATOR;
 	else
 	{
-		suffix = params.back() + "\r\n";
+		suffix = params.back() + IRC_MSG_SEPARATOR;
 		params.pop_back();
 	}
 	
