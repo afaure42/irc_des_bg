@@ -52,6 +52,7 @@ unsigned int	join(	Command &command,
 			// TODO: CHECK USER PERMISSIONS
 			channels.push_back(Channel(channel_list.front()));
 			channels.back().joinChannel(command.getScheduler(), users.at(client_id));
+			channels.back().getPermissions().at(client_id) = Channel::OPERATOR;
 			it = channels.end() - 1;
 		}
 

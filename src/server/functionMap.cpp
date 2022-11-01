@@ -28,4 +28,6 @@ void	setFunctionMap(exec_fn_map &function_map) {
 			it, fn_map_pair("MODE", mode));
 	function_map.insert(
 			it, fn_map_pair("AWAY", away));
+	function_map.insert(
+			it, fn_map_pair("NAMES", names));
 }

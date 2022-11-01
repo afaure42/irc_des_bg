@@ -25,7 +25,7 @@
 
 /***DEFINES*****/
 #define SERVER_NAME std::string("irc_des_bg")
-#define SERVER_PREFIX ":" + SERVER_NAME
+#define SERVER_PREFIX std::string(":" + SERVER_NAME)
 #define	QUIT_ACK	std::string("ERROR ")
 
 #define EVENTS_SIZE 100

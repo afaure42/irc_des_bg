@@ -39,6 +39,9 @@ std::string	&	Channel::getName() {
 std::string &	Channel::getTopic() {
 	return (this->_topic);
 }
+unsigned int	Channel::getModes() const {
+	return (this->_modes);
+}
 
 //SETTERS
 void	Channel::setName(std::string & name) {
@@ -46,6 +49,9 @@ void	Channel::setName(std::string & name) {
 }
 void	Channel::setTopic(std::string & topic) {
 	this->_topic = topic;
+}
+void	Channel::setModes(const unsigned int & modes) {
+	this->_modes = modes;
 }
 
 //METHODS
@@ -68,11 +74,11 @@ void Channel::joinChannel(Scheduler & scheduler, User & user)
 	if (this->_members.find(user.getId()) != this->_members.end())
 		return; //idk if we should return something or not
 
-	//check for permissions
-
 	//then add user to channel
 	this->_members.insert(std::make_pair(user.getId(), &user));
 	user.getChannels().push_back(this->_name);
+	if (this->_permissions.find(user.getId()) == this->_permissions.end())
+		this->_permissions.insert(std::make_pair(user.getId(), 0));
 
 	//then send JOIN msg to everyone
 	std::string msg = ":" + user.getFullName() + " JOIN " + this->getName() + "\r\n";

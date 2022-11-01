@@ -60,11 +60,13 @@ class Channel
 		members_perms_t &getPermissions();
 		std::string		&getName();
 		std::string		&getTopic();
+		unsigned int	getModes() const;
 
 
 		//setters
 		void		setName(std::string & name);
 		void		setTopic(std::string & topic);
+		void		setModes(const unsigned int & modes);
 
 
 		//METHODS
