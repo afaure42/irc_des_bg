@@ -97,14 +97,15 @@ void	Command::sendReplies(
 {
 	(void)channels;
 	t_users::iterator 	it = users.find(client_id);
-	const std::string	user_nick = (it == users.end()) ? "" : users.at(client_id).getNick();
+	const std::string	user_nick = (it == users.end()) ? "*" : users.at(client_id).getNick();
 	std::string			reason;
 	std::string			target = "";
 
 	switch (this->_numeric_return)
 	{
 		case ERR_UNKNOWNCOMMAND:
-			reason = this->_cmd_name + ": " + ERR_UNKNOWNCOMMAND_MSG;
+			target = this->getCmdName();
+			reason = ERR_UNKNOWNCOMMAND_MSG;
 			break;
 		case ERR_NEEDMOREPARAMS:
 			reason = ERR_NEEDMOREPARAMS_MSG;
