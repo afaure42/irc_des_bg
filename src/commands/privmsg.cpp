@@ -24,7 +24,16 @@ unsigned int	privmsg(	Command &command,
 		//first try to find channel
 		t_channels::iterator ch_it = findChannel(params.front(), channels);
 		if (ch_it != channels.end())
-			ch_it->send(command.getScheduler(), msg, client_id);
+		{
+			if(ch_it->getMembers().find(client_id) != ch_it->getMembers().end())
+				ch_it->send(command.getScheduler(), msg, client_id);
+			else
+			{
+				std::string rply = createNumericReply(ERR_CANNOTSENDTOCHAN,
+								users.at(client_id).getFullName(), "", ERR_CANNOTSENDTOCHAN_MSG);
+				command.getScheduler().queueMessage(client_id, rply, true);
+			}
+		}
 		else//if no channel found then try to find user
 		{
 			t_users::iterator usr_it = findUser(params.front(), users);
