@@ -19,7 +19,8 @@ const std::string	createNumericReply(
 	std::string reason)
 {
 	std::string	nr_str;
-	while (numeric_reply > 0) {
+	int i = 3;
+	while (i-- > 0) {
 		nr_str.insert(0, 1, numeric_reply % 10 + 48);
 		numeric_reply /= 10;
 	}
