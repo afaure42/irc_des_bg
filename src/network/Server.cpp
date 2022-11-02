@@ -2,7 +2,7 @@
 
 Server::Server(int port, std::string & pass)
 :_port(port), _sockfd(-1), _sockaddr(), _socklen(),
-	_epfd(-1), _events(), _pass(pass), _connection_counter()
+	_epfd(-1), _events(), _pass(pass), _is_on(true), _connection_counter()
 {
 	//CREATING SOCKET
 	this->_sockfd = socket(AF_INET,
@@ -207,6 +207,14 @@ void Server::_acceptNewClients(void)
 		this->_connected_clients[this->_connection_counter] = 
 			Client(new_sock, this->_connection_counter, addr, len, true);
 	}
+}
+
+void Server::setIsOn(bool status) {
+	this->_is_on = status;
+}
+
+bool Server::getIsOn(void) const {
+	return this->_is_on;
 }
 
 Server::~Server()

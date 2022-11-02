@@ -72,6 +72,9 @@ public:
 	 */
 	void waitAndAccept(Scheduler & scheduler);
 
+	void setIsOn(bool status);
+	bool getIsOn(void) const;
+
 private:
 //Private methods:
 
@@ -125,6 +128,7 @@ private:
 
 //UTILS
 	std::string _pass;
+	bool		_is_on;
 
 // Current_connections
 	std::map<unsigned int, Client>	_connected_clients;

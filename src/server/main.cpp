@@ -45,8 +45,7 @@ int main(int argc, char *argv[])
 		//those may be a deconnection or new chars received
 
 		//every connection is defined by a unique connection id
-		bool server_on = true;
-		while (server_on)
+		while (server.getIsOn())
 		{
 			//WAIT AND ACCEPT STEP
 			server.waitAndAccept(scheduler);

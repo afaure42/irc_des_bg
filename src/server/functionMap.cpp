@@ -30,4 +30,6 @@ void	setFunctionMap(exec_fn_map &function_map) {
 			it, fn_map_pair("AWAY", away));
 	function_map.insert(
 			it, fn_map_pair("NAMES", names));
+	function_map.insert(
+			it, fn_map_pair("die", die)); //yes wtf idk why irssi doesnt send DIE
 }
