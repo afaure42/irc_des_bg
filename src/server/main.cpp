@@ -3,6 +3,7 @@
 #include "Server.hpp"
 #include "Command.hpp"
 #include "functionMap.hpp"
+#include "printUtils.hpp"
 
 typedef std::map<unsigned int, Update>::iterator update_iter;
 
@@ -65,13 +66,19 @@ int main(int argc, char *argv[])
 					users.insert(std::make_pair(it->first, User(it->first)));
 				if (!it->second.isConnected())
 				{
-					std::string quit_cmd = "QUIT";
+					std::string quit_cmd = "QUIT" + std::string(IRC_MSG_SEPARATOR);
 					Command command(function_map, &quit_cmd, scheduler, server);
 
 					std::cout << "Client_id:" << it->second.getId()
 					<< " has disconnected unexpectedly\n";
 
 					command.execute((it)->second.getId(), users, channels);
+				}
+				else if (it->second.getBuff()->find("SHOW") != it->second.getBuff()->npos)
+				{
+					print_users(users.begin(), users.end());
+					print_channels(channels.begin(), channels.end());
+					it->second.getBuff()->clear();
 				}
 				else if (!it->second.getBuff()->empty())
 				{

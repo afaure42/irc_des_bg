@@ -50,6 +50,7 @@ class User
 		const std::string	getFullName(void) const;
 		const std::string	&getConnectPass(void) const;
 		std::vector<std::string> & getChannels(void);
+		std::vector<std::string> const &getChannels(void) const;
 		const std::string	&getAwayMsg(void) const;
 	// The available modes are as follows:
 

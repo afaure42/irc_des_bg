@@ -21,7 +21,8 @@ NETWORK_FILES		=	writeClient.cpp Scheduler.cpp Server.cpp serverInit.cpp \
 NETWORK_PATH		=	$(addprefix ${NETWORK_FILES_PATH}, ${NETWORK_FILES})
 NETWORK_OFILES		=	$(NETWORK_PATH:.cpp=.o)
 
-SERVER_FILES		=	Command.cpp functionMap.cpp User.cpp Channel.cpp
+SERVER_FILES		=	Command.cpp functionMap.cpp User.cpp Channel.cpp printUtils.cpp \
+
 SERVER_PATH			=	$(addprefix ${SERVER_FILES_PATH}, ${SERVER_FILES})
 SERVER_OFILES		=	$(SERVER_PATH:.cpp=.o)
 

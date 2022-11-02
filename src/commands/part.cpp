@@ -8,7 +8,8 @@ unsigned int	part(	Command &command,
 	std::list<std::string> params = command.getParams();
 	t_channels::iterator ch_it;
 
-	std::string prefix = ":" + users.at(client_id).getFullName() + " PART";
+	User & current_user = users.at(client_id);
+	std::string prefix = ":" + current_user.getFullName() + " PART";
 	std::string suffix;
 	std::string msg;
 
@@ -26,7 +27,7 @@ unsigned int	part(	Command &command,
 	std::string			channel_name;
 	size_t				delimiter;
 	std::string			numeric_reply;
-	const std::string	user_nick = users.at(client_id).getNick();
+	const std::string	user_nick = current_user.getNick();
 	
 	while (!params.front().empty())
 	{
@@ -55,7 +56,14 @@ unsigned int	part(	Command &command,
 		else {
 			msg = prefix + " " + channel_name + " " + suffix;		
 			ch_it->send(command.getScheduler(), msg, 0);
-			ch_it->removeUser(users.at(client_id));
+			ch_it->removeUser(current_user);
+			std::vector<std::string>::iterator it =
+				std::find(current_user.getChannels().begin(),
+							current_user.getChannels().end(),
+							ch_it->getName());
+			current_user.getChannels().erase(it);
+			if (ch_it->getMembers().empty())
+				channels.erase(ch_it);
 		}
 	}
 	return (0);

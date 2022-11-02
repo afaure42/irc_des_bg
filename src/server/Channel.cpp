@@ -30,13 +30,16 @@ Channel::~Channel() {}
 members_t	&Channel::getMembers() {
 	return (this->_members);
 }
+members_t const &Channel::getMembers() const {
+	return (this->_members);
+}
 members_perms_t & Channel::getPermissions() {
 	return (this->_permissions);
 }
-std::string	&	Channel::getName() {
+std::string	const &	Channel::getName() const {
 	return (this->_name);
 }
-std::string &	Channel::getTopic() {
+std::string const &	Channel::getTopic() const {
 	return (this->_topic);
 }
 unsigned int	Channel::getModes() const {
@@ -89,4 +92,21 @@ void Channel::removeUser(User & user)
 {
 	this->_members.erase(user.getId());
 	this->_permissions.erase(user.getId());
+}
+
+std::ostream & operator<<(std::ostream& os, const Channel& channel)
+{
+	os << "Channel name:" << channel.getName() << std::endl;
+	os << "Channel is" <<
+		((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
+	<< " invite only" << std::endl;
+	os << "User_list<";
+	for(members_t::const_iterator it = channel.getMembers().begin();
+			it != channel.getMembers().end(); it++)
+	{
+		os << '[' << it->second->getNick() << ']';
+	}
+	os << '>' << std::endl;
+
+	return os;
 }

@@ -86,6 +86,9 @@ std::string const &User::getHostName(void) const {
 std::vector<std::string> & User::getChannels(void) {
 	return this->_channels;
 }
+std::vector<std::string> const & User::getChannels(void) const {
+	return this->_channels;
+}
 const std::string &User::getConnectPass(void) const {
 	return this->_connection_pass;
 }
@@ -100,7 +103,12 @@ const std::string &User::getAwayMsg(void) const {
 std::ostream& operator<<(std::ostream& os, const User& usr)
 {
     os << "User id: " << usr.getId() << ", nickname: " << usr.getNick() << std::endl;
+    os << "User is" << (usr.isRegistered() ? "" : " not") << " registered" << std::endl;
     os << "User is" << (usr.isAway() ? "" : " not") << " away" << std::endl;
     os << "User is" << (usr.isInvisible() ? "" : " not") << " invisible" << std::endl;
+	os << "Joined Channels<";
+	for (size_t i = 0; i < usr.getChannels().size(); i++)
+		os << '[' << usr.getChannels()[i] << ']';
+	os << '>' << std::endl;
     return os;
 }
