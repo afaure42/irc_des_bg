@@ -5,7 +5,7 @@ static void list_channel_names(Channel & channel,
 								User & user)
 {
 	members_t::iterator members = channel.getMembers().begin();
-	std::string prefix = SERVER_PREFIX + " 353 " + user.getFullName() + " = " + channel.getName() + " :"; // " RPL CHANNEL " + ":" + CR-LF
+	std::string prefix = SERVER_PREFIX + " 353 " + user.getNick() + " = " + channel.getName() + " :"; // " RPL CHANNEL " + ":" + CR-LF
 
 	std::string names;
 	std::string reply;
@@ -17,18 +17,16 @@ static void list_channel_names(Channel & channel,
 			scheduler.queueMessage(user.getId(), prefix + names, true);
 			names.clear();
 		}
+		if (!names.empty())
+			names += ' ';
 		if (channel.getPermissions().at(members->first) & Channel::OPERATOR)
 			names += '@';
 		names += members->second->getNick();
-		names += ' ';
 		members++;
 	}
 
 	if (!names.empty())
-	{
-		names.append(IRC_MSG_SEPARATOR);
-		scheduler.queueMessage(user.getId(), prefix + names, true);
-	}
+		scheduler.queueMessage(user.getId(), prefix + names + IRC_MSG_SEPARATOR, true);
 }
 
 unsigned int names(Command & command,
@@ -47,15 +45,26 @@ unsigned int names(Command & command,
 				continue;
 			list_channel_names(*it, command.getScheduler(), users.at(client_id));
 		}
+		std::string endofnames = createNumericReply(RPL_ENDOFNAMES, users.at(client_id).getNick(),
+						"", RPL_ENDOFNAMES_MSG);
+		command.getScheduler().queueMessage(client_id, endofnames, true);
 	}
 	else
 	{
-		t_channels::iterator it = findChannel(params.front(), channels);
-
-		list_channel_names(*it, command.getScheduler(), users.at(client_id));
+		t_stringlist channel_names = split(params.front());
+		while (!channel_names.empty())
+		{
+			t_channels::iterator it = findChannel(channel_names.front(), channels);
+			if (it != channels.end())
+			{
+				list_channel_names(*it, command.getScheduler(), users.at(client_id));
+				std::string endofnames =
+					createNumericReply(RPL_ENDOFNAMES, users.at(client_id).getNick(),
+					it->getName(), RPL_ENDOFNAMES_MSG);
+				command.getScheduler().queueMessage(client_id, endofnames, true);
+			}
+			channel_names.pop_front();
+		}
 	}
-	std::string endofnames = createNumericReply(RPL_ENDOFNAMES, users.at(client_id).getNick(),
-												"", RPL_ENDOFNAMES_MSG);
-	command.getScheduler().queueMessage(client_id, endofnames, true);
 	return (0);
 }

@@ -12,7 +12,7 @@ unsigned int	quit(	Command &command,
 	//And the quit message for other users
 	User & user = users.at(client_id);
 
-	std::string quit_msg = ":" + user.getNick() + " QUIT ";
+	std::string quit_msg = ":" + user.getFullName() + " QUIT ";
 
 	if (!params.empty())
 		quit_msg += params.front();

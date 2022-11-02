@@ -1,32 +1,12 @@
 #include "functionMap.hpp"
 
-static t_stringlist	split(std::string str) {
-	t_stringlist	list;
-	size_t			delimiter;
-	std::string		token;
-
-	while (!str.empty()) {
-		delimiter = str.find(",");
-		if (delimiter != std::string::npos){
-			token = str.substr(0, delimiter);
-			str.erase(0, delimiter + 1);
-		}
-		else {
-			token = str;
-			str.erase();
-		}
-		list.push_back(token);
-	}
-
-	return (list);
-}
-
 unsigned int	join(	Command &command,
 								unsigned int client_id,
 								t_users &users,
 								t_channels &channels )
 {
 	t_stringlist	params = command.getParams();
+	std::string cmd_str;
 
 	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
@@ -59,6 +39,10 @@ unsigned int	join(	Command &command,
 		if(!it->getTopic().empty())
 			command.getScheduler()
 			.queueMessage(client_id, ":irc_des_bg 332 " + it->getTopic(), true);
+		cmd_str = "NAMES " + it->getName() + IRC_MSG_SEPARATOR; 
+		Command temp_cmd(command.getFunctionMap(), &cmd_str, 
+						command.getScheduler(), command.getServer());
+		temp_cmd.execute(client_id, users, channels);
 		channel_list.pop_front();
 	}
 

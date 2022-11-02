@@ -1,6 +1,6 @@
 #include "Command.hpp"
 
-Command::Command(exec_fn_map &fn_map,
+Command::Command(exec_fn_map & fn_map,
 				const std::string *raw_command,
 				Scheduler & scheduler,
 				Server & server)
@@ -31,6 +31,10 @@ Scheduler &		Command::getScheduler(void) {
 }
 Server &	Command::getServer(void) {
 	return (this->_server);
+}
+
+exec_fn_map & Command::getFunctionMap(void) {
+	return (this->_function_map);
 }
 
 // Creates the cmdType and params for the command

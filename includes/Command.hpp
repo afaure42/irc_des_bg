@@ -74,10 +74,11 @@ class Command
 		int const				&getNumericReturn(void) const;
 		Scheduler				&getScheduler(void);
 		Server					&getServer(void);
+		exec_fn_map				&getFunctionMap(void);
 	private:
 		// Internal variables
 		unsigned int			_chars_read;
-		exec_fn_map				_function_map;
+		exec_fn_map		&		_function_map;
 		std::string				_cmd_name;
 		t_stringlist			_params;
 		int						_numeric_return;
