@@ -43,7 +43,8 @@ class Channel
 		enum userPermissions {
 			CREATOR = 1, // O
 			OPERATOR = 1 << 1, // o
-			VOICE = 1 << 2 // v
+			VOICE = 1 << 2, // v
+			INVITED = 1 << 3
 		};
 		enum channelModes {
 			ANONYMOUS = 1, // a

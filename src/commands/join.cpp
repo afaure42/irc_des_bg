@@ -6,6 +6,7 @@ unsigned int	join(	Command &command,
 								t_channels &channels )
 {
 	t_stringlist	params = command.getParams();
+	User & current_user = users.at(client_id);
 	std::string cmd_str;
 
 	if (params.empty())
@@ -25,13 +26,27 @@ unsigned int	join(	Command &command,
 		if (it != channels.end())
 		{
 			// TODO: CHECK USER PERMISSIONS
-			it->joinChannel(command.getScheduler(), users.at(client_id));
+			if (it->getModes() & Channel::INVITE_ONLY)
+			{
+				members_perms_t::iterator perm_it= it->getPermissions().find(client_id);
+				if (perm_it == it->getPermissions().end()
+					|| !(perm_it->second & Channel::INVITED))
+				{
+					std::string rply = createNumericReply(ERR_INVITEONLYCHAN, current_user.getNick(),
+										it->getName(), ERR_INVITEONLYCHAN_MSG);
+					command.getScheduler().queueMessage(client_id, rply, true);
+					channel_list.pop_front();
+					continue;
+				}			
+			}
+
+			it->joinChannel(command.getScheduler(), current_user);
 		}
 		else //else create it
 		{
 			// TODO: CHECK USER PERMISSIONS
 			channels.push_back(Channel(channel_list.front()));
-			channels.back().joinChannel(command.getScheduler(), users.at(client_id));
+			channels.back().joinChannel(command.getScheduler(), current_user);
 			channels.back().getPermissions().at(client_id) = Channel::OPERATOR;
 			it = channels.end() - 1;
 		}
