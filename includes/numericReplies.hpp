@@ -58,6 +58,8 @@ const std::string	createNumericReply(
 #define RPL_LISTEND				323
 #define RPL_LISTEND_MSG			"End of /LIST"
 
+#define RPL_CHANNELMODEIS		324
+
 #define RPL_NOTOPIC				331
 #define RPL_NOTOPIC_MSG			"No topic is set"
 
