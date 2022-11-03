@@ -22,18 +22,33 @@ unsigned int	invite(	Command &command,
 					current_user.getChannels().end(),
 					params.front())
 		== current_user.getChannels().end())
-		return (ERR_NOTONCHANNEL);
+	{
+		rply = createNumericReply(ERR_NOTONCHANNEL, current_user.getNick(),
+					params.front(), ERR_NOTONCHANNEL_MSG);
+		command.getScheduler().queueMessage(client_id, rply, true);
+		return (0);
+	}
 
 
 	t_channels::iterator ch_it = findChannel(params.front(), channels);
 
 	if (ch_it->getMembers().find(usr_it->first) != ch_it->getMembers().end())
-		return (ERR_USERONCHANNEL);
+	{
+		rply = createNumericReply(ERR_USERONCHANNEL, current_user.getNick(),
+			usr_it->second.getNick() + " " + ch_it->getName(), ERR_USERONCHANNEL_MSG);
+		command.getScheduler().queueMessage(client_id, rply, true);
+		return (0);
+	}
 	
 	if (ch_it->getModes() & Channel::INVITE_ONLY &&
 			!(ch_it->getPermissions().find(client_id)->second
 			& Channel::OPERATOR))
-		return (ERR_CHANOPRIVSNEEDED);
+	{
+		rply = createNumericReply(ERR_CHANOPRIVSNEEDED, current_user.getNick(),
+			ch_it->getName(), ERR_CHANOPRIVSNEEDED_MSG);
+		command.getScheduler().queueMessage(client_id, rply, true);
+		return (0);
+	}
 	
 	if (usr_it->second.isAway())
 	{
