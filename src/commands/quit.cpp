@@ -32,6 +32,8 @@ unsigned int	quit(	Command &command,
 
 		ch_it->send(command.getScheduler(), quit_msg, client_id);
 		ch_it->removeUser(user);
+		if (ch_it->getMembers().size() == 0)
+			channels.erase(ch_it);
 		user.getChannels().pop_back();
 	}
 
