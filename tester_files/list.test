@@ -1,0 +1,5 @@
+JOIN #test,#test2,#test3
+LIST
+LIST #test
+LIST #jexistepas,#test,#test3
+PART #test,#test2,#test3

@@ -52,6 +52,8 @@ unsigned int	die(	Command &command, unsigned int client_id,
 						t_users &users, t_channels &channels );
 unsigned int	invite(	Command &command, unsigned int client_id,
 						t_users &users, t_channels &channels );
+unsigned int	list(	Command &command, unsigned int client_id,
+						t_users &users, t_channels &channels );
 
 
 #endif

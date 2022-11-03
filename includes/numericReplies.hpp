@@ -51,7 +51,7 @@ const std::string	createNumericReply(
 #define RPL_ENDOFWHOWAS_MSG		"End of WHOWAS"
 
 #define RPL_LISTSTART			321
-#define RPL_LISTSTRART_MSG		"Channel :Users\tName"
+#define RPL_LISTSTART_MSG		"Channel  Users  Name"
 
 #define RPL_LIST				322
 
