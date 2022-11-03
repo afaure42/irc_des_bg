@@ -64,7 +64,7 @@ static void	test_command(int socket_fd, std::string test_str)
 	usleep(10000);
     // Receive the server's response:
 	int read_ret = 0;
-	while ((read_ret = read(socket_fd, server_response, BUFFER_LEN)) == 0) {
+	while ((read_ret = read(socket_fd, server_response, BUFFER_LEN)) >= 0) {
         ;
 	}
 	std::cout << "Server's response: " << server_response << std::endl;

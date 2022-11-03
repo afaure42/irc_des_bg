@@ -107,11 +107,15 @@ void	Command::sendReplies(
 
 	switch (this->_numeric_return)
 	{
+		case ERR_NOTEXTTOSEND:
+			reason = ERR_NOTEXTTOSEND_MSG;
+			break;
 		case ERR_UNKNOWNCOMMAND:
 			target = this->getCmdName();
 			reason = ERR_UNKNOWNCOMMAND_MSG;
 			break;
 		case ERR_NEEDMOREPARAMS:
+			target = this->getCmdName();
 			reason = ERR_NEEDMOREPARAMS_MSG;
 			break;
 		case ERR_NONICKNAMEGIVEN:
@@ -121,15 +125,15 @@ void	Command::sendReplies(
 			reason = ERR_ALREADYREGISTERED_MSG;
 			break;
 		case ERR_NICKNAMEINUSE:
-			target = this->_params.begin()->at(0);
+			target = *this->_params.begin();
 			reason = ERR_NICKNAMEINUSE_MSG;
 			break;
 		case ERR_ERRONEUSNICKNAME:
-			target = this->_params.begin()->at(0);
+			target = *this->_params.begin();
 			reason = ERR_ERRONEUSNICKNAME_MSG;
 			break;
 		case ERR_NOSUCHNICK:
-			target = this->_params.begin()->at(0);
+			target = *this->_params.begin();
 			reason = ERR_NOSUCHNICK_MSG;
 			break;
 		default:

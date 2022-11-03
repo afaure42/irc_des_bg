@@ -1,0 +1,10 @@
+JOIN #testmsg
+PRIVMSG
+PRIVMSG #testmsg
+PRIVMSG #testmsg :
+PRIVMSG #testmsg :coucou
+PRIVMSG jexistepas
+PRIVMSG jexistepas :
+PRIVMSG jexistepas :test
+PRIVMSG #testmsg trop d'arguments
+PART #testmsg
