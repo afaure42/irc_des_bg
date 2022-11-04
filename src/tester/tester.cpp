@@ -28,6 +28,8 @@ static void launch_tests(int socket_fd, const std::string &password,
 		std::ifstream	infile(file.c_str());
 		while (std::getline(infile, test_msg)) {
 			if (!test_msg.empty() && test_msg.at(0) != '#') {
+				if (*(test_msg.end() - 1) == '\n')
+					test_msg.erase(test_msg.size() - 1); //remove trailing \n
 				replace_tokens(test_msg, password, nick, username);
 				std::cout << "======== TESTER: Sending command [" << test_msg << "] =========\n"; 
 				test_msg += IRC_MSG_SEPARATOR;
@@ -53,8 +55,6 @@ static void	test_command(int socket_fd, std::string test_str)
 {
 	char	server_response[BUFFER_LEN];
 	memset(server_response, '\0', BUFFER_LEN);
-	test_str += IRC_MSG_SEPARATOR;
-
     // Send the message to server:
 	if (write(socket_fd, test_str.c_str(), test_str.length()) == -1) {
         std::cout << "Unable to send message\n";
