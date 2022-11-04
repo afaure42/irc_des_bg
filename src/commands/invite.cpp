@@ -18,6 +18,15 @@ unsigned int	invite(	Command &command,
 		return (ERR_NOSUCHNICK);
 	params.pop_front();
 
+	t_channels::iterator ch_it = findChannel(params.front(), channels);
+	if (ch_it == channels.end())
+	{
+		rply = createNumericReply(ERR_NOSUCHCHANNEL, current_user.getNick(),
+					params.front(), ERR_NOSUCHCHANNEL_MSG);
+		command.getScheduler().queueMessage(client_id, rply, true);
+		return (0);
+	}
+
 	if (std::find(current_user.getChannels().begin(),
 					current_user.getChannels().end(),
 					params.front())
@@ -29,8 +38,6 @@ unsigned int	invite(	Command &command,
 		return (0);
 	}
 
-
-	t_channels::iterator ch_it = findChannel(params.front(), channels);
 
 	if (ch_it->getMembers().find(usr_it->first) != ch_it->getMembers().end())
 	{
