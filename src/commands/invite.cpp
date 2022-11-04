@@ -61,7 +61,7 @@ unsigned int	invite(	Command &command,
 	
 	if (usr_it->second.isAway())
 	{
-		rply = createNumericReply(RPL_AWAY, current_user.getFullName(),
+		rply = createNumericReply(RPL_AWAY, current_user.getNick(),
 				usr_it->second.getFullName(), usr_it->second.getAwayMsg());
 		command.getScheduler().queueMessage(client_id, rply, true);
 		return (0);

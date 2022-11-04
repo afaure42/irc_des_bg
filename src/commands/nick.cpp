@@ -6,9 +6,9 @@ unsigned int	nick(	Command &command,
 								t_channels &channels) {
 	(void)channels;
 	std::list<std::string> const	params = command.getParams();
+	User & current_user = users.at(client_id);
 
-	t_users::iterator user_it = users.find(client_id);
-	if (user_it == users.end() || params.empty())
+	if (params.empty())
 		return (ERR_NONICKNAMEGIVEN);
 
 	//BASIC SYNTAX CHEKS MAY NEED TO DO MORE LATER
@@ -24,6 +24,6 @@ unsigned int	nick(	Command &command,
 	}
 
 	//err checking done
-	user_it->second.setNick(nick);
+	current_user.setNick(nick);
 	return (0);
 }

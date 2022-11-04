@@ -19,7 +19,7 @@ unsigned int	away( Command &command,
 		current_user.setAwayStatus(false);
 		current_user.setAwayMessage(std::string());
 
-		reply = createNumericReply(RPL_UNAWAY, current_user.getFullName(), "",
+		reply = createNumericReply(RPL_UNAWAY, current_user.getNick(), "",
 								RPL_UNAWAY_MSG);
 	}
 	else
@@ -27,7 +27,7 @@ unsigned int	away( Command &command,
 		current_user.setAwayStatus(true);
 		current_user.setAwayMessage(params.front().substr(1));
 
-		reply = createNumericReply(RPL_NOAWAY, current_user.getFullName(), "",
+		reply = createNumericReply(RPL_NOAWAY, current_user.getNick(), "",
 									RPL_NOAWAY_MSG);
 	}
 

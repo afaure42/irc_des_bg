@@ -9,25 +9,20 @@ unsigned int	pass(	Command &command,
 								t_channels &channels ) {
 	(void)channels;
 	std::list<std::string> const	params = command.getParams();
-	t_users::iterator it = users.find(client_id);
+	User & current_user = users.at(client_id);
 	std::cout << "PASS command execution:\n";
 	// Error checking
 
-	if (it->second.isRegistered())
+	if (current_user.isRegistered())
 		return (ERR_ALREADYREGISTERED);
 	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
 
 	//std::map insert returns a pair of iterator, bool, we just need the iterator
-
-	if (it->second.isRegistered()) {
-		return (ERR_ALREADYREGISTERED);
-	}
-
 	// Error checking done ->
 	// set the password to the param given
-	it->second.setConnectPass(params.front());
-	std::cout << "password set is\"" << it->second.getConnectPass() << "\"\n";
+	current_user.setConnectPass(params.front());
+	std::cout << "password set is\"" << current_user.getConnectPass() << "\"\n";
 
 	std::cout << "execution succesful\n";
 	return (0);

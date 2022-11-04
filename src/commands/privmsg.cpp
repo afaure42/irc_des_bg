@@ -35,7 +35,7 @@ unsigned int	privmsg(	Command &command,
 		else
 		{
 			std::string rply = createNumericReply(ERR_CANNOTSENDTOCHAN,
-							users.at(client_id).getFullName(), "", ERR_CANNOTSENDTOCHAN_MSG);
+							current_user.getNick(), "", ERR_CANNOTSENDTOCHAN_MSG);
 			command.getScheduler().queueMessage(client_id, rply, true);
 		}
 	}
@@ -48,7 +48,7 @@ unsigned int	privmsg(	Command &command,
 				command.getScheduler().queueMessage(usr_it->first, msg, true);
 			else
 			{
-				std::string rply = createNumericReply(RPL_AWAY, current_user.getFullName(),
+				std::string rply = createNumericReply(RPL_AWAY, current_user.getNick(),
 									usr_it->second.getFullName(), usr_it->second.getAwayMsg());
 				command.getScheduler().queueMessage(client_id, rply, true);
 			}

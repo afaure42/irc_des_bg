@@ -6,15 +6,15 @@ unsigned int	user(	Command &command,
 								t_channels &channels ) {
 	(void)channels;
 	std::list<std::string>	params = command.getParams();
-	t_users::iterator user_it = users.find(client_id);
+	User & current_user = users.at(client_id);
 
-	if (user_it->second.isRegistered())
+	if (current_user.isRegistered())
 		return (ERR_ALREADYREGISTERED);
 	if (params.size() < 4)
 		return (ERR_NEEDMOREPARAMS);
 
 	
-	if (user_it->second.getNick() == "*")
+	if (current_user.getNick() == "*")
 	{
 		command.getScheduler().queueMessage(client_id, "ERROR :USAGE PASS NICK USER\r\n", false);
 		//deconnect incoming so use the deconnection routine
@@ -23,9 +23,9 @@ unsigned int	user(	Command &command,
 					command.getScheduler(), users);
 		return (0);
 	}
-	if (user_it->second.getConnectPass() != command.getServer().getPass())
+	if (current_user.getConnectPass() != command.getServer().getPass())
 	{
-		std::cerr << "User pass is \""<< user_it->second.getConnectPass()
+		std::cerr << "User pass is \""<< current_user.getConnectPass()
 		<< "\" Server pass is \"" << command.getServer().getPass() << "\"" << std::endl;
 		command.getScheduler().queueMessage(client_id, "ERROR :INVALID PASSWORD\r\n", false);
 		//deconnect incoming so use the deconnection routine
@@ -40,22 +40,22 @@ unsigned int	user(	Command &command,
 	//https://datatracker.ietf.org/doc/html/rfc2812#section-2.3.1
 
 	//set username
-	user_it->second.setUsername(params.front());
+	current_user.setUsername(params.front());
 	params.pop_front();
 
 	params.pop_front(); //2nd parameter unused
 	params.pop_front(); //3rd parameter unused
 	//setting hostname
-	user_it->second.setHostName(command.getServer().getClientHost(client_id));
+	current_user.setHostName(command.getServer().getClientHost(client_id));
 
 	//setting realname
-	user_it->second.setRealname(params.front());
+	current_user.setRealname(params.front());
 
-	user_it->second.setRegistered();
+	current_user.setRegistered();
 
 	//TODO: SEND RPL 001 to 004
-	std::string rpl = createNumericReply(RPL_WELCOME, user_it->second.getNick(),
-		"", "Welcome to irc_des_bg " + user_it->second.getNick());
+	std::string rpl = createNumericReply(RPL_WELCOME, current_user.getNick(),
+		"", "Welcome to irc_des_bg " + current_user.getNick());
 
 	command.getScheduler().queueMessage(client_id, rpl, true);
 

@@ -24,16 +24,25 @@ User::~User()
 
 // SETTERS //
 void	User::setAwayStatus(bool status) {
-	this->_modes ^= (USR_MODE_a) & (status << USR_MODE_a_OFFSET);
+	if (status)
+		this->_modes |= USR_MODE_a;
+	else
+		this->_modes &= ~(USR_MODE_a);
 }
 void	User::setAwayMessage(const std::string & msg) {
 	this->_away_msg = msg;
 }
 void	User::setInvisStatus(bool status) {
-	this->_modes ^= (USR_MODE_i) & (status << USR_MODE_i_OFFSET);
+	if (status)
+		this->_modes |= USR_MODE_i;
+	else
+		this->_modes &= ~(USR_MODE_i);
 }
 void User::setWallopStatus(bool status) {
-	this->_modes ^= (USR_MODE_w) & (status << USR_MODE_w_OFFSET);
+	if (status)
+		this->_modes |= USR_MODE_w;
+	else
+		this->_modes &= ~(USR_MODE_w);
 }
 void	User::setRegistered(void) {
 	this->_registered = true;
