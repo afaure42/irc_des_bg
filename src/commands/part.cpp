@@ -13,6 +13,8 @@ unsigned int	part(	Command &command,
 	std::string suffix;
 	std::string msg;
 
+	if (!current_user.isRegistered())
+		return (ERR_NOTREGISTERED);
 	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
 

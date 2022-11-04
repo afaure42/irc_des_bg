@@ -6,11 +6,13 @@ unsigned int	user(	Command &command,
 								t_channels &channels ) {
 	(void)channels;
 	std::list<std::string>	params = command.getParams();
+	t_users::iterator user_it = users.find(client_id);
 
+	if (user_it->second.isRegistered())
+		return (ERR_ALREADYREGISTERED);
 	if (params.size() < 4)
 		return (ERR_NEEDMOREPARAMS);
 
-	t_users::iterator user_it = users.find(client_id);
 	
 	if (user_it->second.getNick() == "*")
 	{
@@ -48,6 +50,8 @@ unsigned int	user(	Command &command,
 
 	//setting realname
 	user_it->second.setRealname(params.front());
+
+	user_it->second.setRegistered();
 
 	//TODO: SEND RPL 001 to 004
 	std::string rpl = createNumericReply(RPL_WELCOME, user_it->second.getNick(),

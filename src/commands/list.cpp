@@ -20,6 +20,8 @@ unsigned int	list(	Command &command,
 	User & current_user = users.at(client_id);
 	std::string rply;
 
+	if (!current_user.isRegistered())
+		return ERR_NOTREGISTERED;
 	rply = createNumericReply(RPL_LISTSTART, current_user.getNick(), "",
 			RPL_LISTSTART_MSG);
 	command.getScheduler().queueMessage(client_id, rply, true);

@@ -12,6 +12,8 @@ unsigned int	away( Command &command,
 	User & current_user = users.at(client_id);
 	std::string reply;
 
+	if (!current_user.isRegistered())
+		return (ERR_NOTREGISTERED);
 	if (params.empty())
 	{
 		current_user.setAwayStatus(false);

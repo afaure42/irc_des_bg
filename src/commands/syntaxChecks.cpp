@@ -74,8 +74,7 @@ bool isValidChannel(const std::string & channel)
 	if (channel.empty() || channel.length() > 50)
 		return false;
 	
-	if (channel[0] != '&' && channel[0] != '#'
-			&& channel[0] != '+' && channel[0] != '!')
+	if (channel[0] != '#')
 		return false;
 	
 	//need to chekc for channel id

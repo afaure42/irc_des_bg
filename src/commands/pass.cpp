@@ -9,12 +9,14 @@ unsigned int	pass(	Command &command,
 								t_channels &channels ) {
 	(void)channels;
 	std::list<std::string> const	params = command.getParams();
+	t_users::iterator it = users.find(client_id);
 	std::cout << "PASS command execution:\n";
 	// Error checking
-	if (params.empty()) {
+
+	if (it->second.isRegistered())
+		return (ERR_ALREADYREGISTERED);
+	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
-	}
-	t_users::iterator it = users.find(client_id);
 
 	//std::map insert returns a pair of iterator, bool, we just need the iterator
 

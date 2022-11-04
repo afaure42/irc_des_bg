@@ -10,6 +10,8 @@ unsigned int	invite(	Command &command,
 	std::string rply;
 	std::string from = ':' + current_user.getFullName() + " INVITE ";
 
+	if (!current_user.isRegistered())
+		return (ERR_NOTREGISTERED);
 	if (params.size() < 2)
 		return (ERR_NEEDMOREPARAMS);
 

@@ -35,7 +35,10 @@ unsigned int names(Command & command,
 					t_channels &channels)
 {
 	std::list<std::string> params = command.getParams();
+	User & current_user = users.at(client_id);
 
+	if (!current_user.isRegistered())
+		return (ERR_NOTREGISTERED);
 	if (params.empty())
 	{
 		for(t_channels::iterator it = channels.begin(); it != channels.end(); it++)
@@ -43,9 +46,9 @@ unsigned int names(Command & command,
 			if ((it->getModes() & Channel::SECRET)
 				&& it->getMembers().find(client_id) != it->getMembers().end())
 				continue;
-			list_channel_names(*it, command.getScheduler(), users.at(client_id));
+			list_channel_names(*it, command.getScheduler(), current_user);
 		}
-		std::string endofnames = createNumericReply(RPL_ENDOFNAMES, users.at(client_id).getNick(),
+		std::string endofnames = createNumericReply(RPL_ENDOFNAMES, current_user.getNick(),
 						"", RPL_ENDOFNAMES_MSG);
 		command.getScheduler().queueMessage(client_id, endofnames, true);
 	}
@@ -57,9 +60,9 @@ unsigned int names(Command & command,
 			t_channels::iterator it = findChannel(channel_names.front(), channels);
 			if (it != channels.end())
 			{
-				list_channel_names(*it, command.getScheduler(), users.at(client_id));
+				list_channel_names(*it, command.getScheduler(), current_user);
 				std::string endofnames =
-					createNumericReply(RPL_ENDOFNAMES, users.at(client_id).getNick(),
+					createNumericReply(RPL_ENDOFNAMES, current_user.getNick(),
 					it->getName(), RPL_ENDOFNAMES_MSG);
 				command.getScheduler().queueMessage(client_id, endofnames, true);
 			}

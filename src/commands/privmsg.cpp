@@ -6,6 +6,10 @@ unsigned int	privmsg(	Command &command,
 								t_channels &channels )
 {
 	std::list<std::string>	params = command.getParams();
+	User & current_user = users.at(client_id);
+
+	if (!current_user.isRegistered())
+		return (ERR_NOTREGISTERED);
 
 	if (params.size() < 2)
 		return (ERR_NEEDMOREPARAMS);
@@ -13,7 +17,6 @@ unsigned int	privmsg(	Command &command,
 	if (params.back().empty() || params.back()[0] != ':' || params.back().size() == 1)
 		return (ERR_NOTEXTTOSEND);
 
-	User & current_user = users.at(client_id);
 	std::string from = ":" + current_user.getFullName() + " PRIVMSG ";
 
 	//TODO implement a map of nick -> id 

@@ -9,6 +9,8 @@ unsigned int	join(	Command &command,
 	User & current_user = users.at(client_id);
 	std::string cmd_str;
 
+	if (!current_user.isRegistered())
+		return (ERR_NOTREGISTERED);
 	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
 	
@@ -45,6 +47,14 @@ unsigned int	join(	Command &command,
 		else //else create it
 		{
 			// TODO: CHECK USER PERMISSIONS
+			if (!isValidChannel(channel_list.front()))
+			{
+				std::string err = std::string("ERROR : INVALID CHANNEL NAME") + IRC_MSG_SEPARATOR;
+
+				command.getScheduler().queueMessage(client_id, err, true);
+				channel_list.pop_front();
+				continue;
+			}
 			channels.push_back(Channel(channel_list.front()));
 			channels.back().joinChannel(command.getScheduler(), current_user);
 			channels.back().getPermissions().at(client_id) = Channel::OPERATOR;

@@ -136,6 +136,9 @@ void	Command::sendReplies(
 			target = *this->_params.begin();
 			reason = ERR_NOSUCHNICK_MSG;
 			break;
+		case ERR_NOTREGISTERED:
+			reason = ERR_NOTREGISTERED_MSG;
+			break;
 		default:
 			reason = "SERVER ERROR: UNKNOWN/UNSUPPORTED NUMERIC REPLY";
 			break;

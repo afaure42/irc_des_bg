@@ -12,6 +12,8 @@ unsigned int	quit(	Command &command,
 	//And the quit message for other users
 	User & user = users.at(client_id);
 
+	if (!user.isRegistered())
+		return (ERR_NOTREGISTERED);
 	std::string quit_msg = ":" + user.getFullName() + " QUIT ";
 
 	if (!params.empty())
