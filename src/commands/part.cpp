@@ -47,12 +47,12 @@ unsigned int	part(	Command &command,
 		ch_it = findChannel(channel_name, channels);
 		if (ch_it == channels.end()) {
 			numeric_reply = createNumericReply(ERR_NOSUCHCHANNEL, user_nick,
-																	channel_name, ERR_NOSUCHCHANNEL_MSG);
+							channel_name, ERR_NOSUCHCHANNEL_MSG);
 			command.getScheduler().queueMessage(client_id, numeric_reply, true);
 		}
 		else if (ch_it->getMembers().find(client_id) == ch_it->getMembers().end()) {
 			numeric_reply = createNumericReply(ERR_NOTONCHANNEL, user_nick,
-																	channel_name, ERR_NOTONCHANNEL_MSG);
+							channel_name, ERR_NOTONCHANNEL_MSG);
 			command.getScheduler().queueMessage(client_id, numeric_reply, true);
 		}
 		else {
