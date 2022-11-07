@@ -54,6 +54,7 @@ class Channel
 			QUIET = 1 << 4, // q
 			PRIVATE = 1 << 5, // p
 			SECRET = 1 << 6, // s
+			TOPIC = 1 << 7 //t
 		};
 
 		//getters
