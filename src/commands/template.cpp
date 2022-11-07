@@ -7,3 +7,10 @@ unsigned int	cmd_name(	Command &command,
 	(void)command;(void)client_id;(void)users;(void)channels;
 	return (0);
 }
+	// t_stringlist	params = command.getParams();
+	// User & current_user = users.at(client_id);
+
+	// if (!current_user.isRegistered())
+	// 	return (ERR_NOTREGISTERED);
+	// if (params.empty())
+	// 	return (ERR_NEEDMOREPARAMS);

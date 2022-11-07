@@ -65,8 +65,8 @@ unsigned int	join(	Command &command,
 			command.getScheduler()
 			.queueMessage(client_id, ":irc_des_bg 332 " + it->getTopic(), true);
 		cmd_str = "NAMES " + it->getName() + IRC_MSG_SEPARATOR; 
-		Command temp_cmd(command.getFunctionMap(), &cmd_str, 
-						command.getScheduler(), command.getServer());
+		Command temp_cmd(command.getFunctionMap(), command.getOperators(),
+			&cmd_str, command.getScheduler(), command.getServer());
 		temp_cmd.execute(client_id, users, channels);
 		channel_list.pop_front();
 	}

@@ -32,6 +32,9 @@ void	User::setAwayStatus(bool status) {
 void	User::setAwayMessage(const std::string & msg) {
 	this->_away_msg = msg;
 }
+void	User::setOperator(void) {
+	this->_modes |= USR_MODE_o;
+}
 void	User::setInvisStatus(bool status) {
 	if (status)
 		this->_modes |= USR_MODE_i;
@@ -63,6 +66,9 @@ void	User::setConnectPass(const std::string & connect_pass) {
 void	User::setHostName(const std::string & hostname) {
 	this->_hostname = hostname;
 }
+void	User::setModes(const unsigned int & modes) {
+	this->_modes = modes;
+}
 
 // GETTERS //
 bool	User::isAway(void) const {
@@ -76,6 +82,9 @@ bool	User::isWallop(void) const{
 }
 bool	User::isRegistered(void) const{
 	return (this->_registered);
+}
+bool	User::isOp(void) const {
+	return (this->_modes & USR_MODE_o);
 }
 unsigned int	User::getId(void) const {
 	return (this->_id);

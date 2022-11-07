@@ -56,6 +56,8 @@ unsigned int	list(	Command &command, unsigned int client_id,
 						t_users &users, t_channels &channels );
 unsigned int	topic(	Command &command, unsigned int client_id,
 						t_users &users,	t_channels &channels );
+unsigned int	oper(	Command &command, unsigned int client_id,
+						t_users &users,	t_channels &channels );
 
 
 #endif

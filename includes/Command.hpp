@@ -9,6 +9,7 @@
 
 #include "numericReplies.hpp"
 #include "functionMap.hpp"
+#include "operatorMap.hpp"
 
 // users map
 typedef std::map<unsigned int, User>	t_users;
@@ -55,6 +56,7 @@ class Command
 	public:
 		Command(
 			exec_fn_map &fn_map,
+			const t_opers & operators,
 			const std::string *raw_command,
 			Scheduler & scheduler,
 			Server & server);
@@ -72,6 +74,7 @@ class Command
 		std::string const		&getCmdName(void) const;
 		t_stringlist const		&getParams(void) const;
 		int const				&getNumericReturn(void) const;
+		t_opers		const		&getOperators(void) const;
 		Scheduler				&getScheduler(void);
 		Server					&getServer(void);
 		exec_fn_map				&getFunctionMap(void);
@@ -84,6 +87,7 @@ class Command
 		int						_numeric_return;
 		Scheduler	&			_scheduler;
 		Server		&			_server;
+		const t_opers &			_operators;
 		// Internal methods
 		void					_setupCommand(const std::string & raw_command);
 };

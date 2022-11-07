@@ -12,6 +12,8 @@ unsigned int	die(	Command &command,
 	if (!current_user.isRegistered())
 		return (ERR_NOTREGISTERED);
 	//TODO ADD SERVER OPERATOR PERMISSION CHECK
+	if (!current_user.isOp())
+		return (ERR_NOPRIVILEGES);
 	command.getServer().setIsOn(false);
 	return (0);
 }

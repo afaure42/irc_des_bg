@@ -27,6 +27,7 @@ class User
 		// setters
 		void				setAwayStatus(bool status);
 		void				setAwayMessage(const std::string & msg);
+		void				setOperator(void);
 		void				setInvisStatus(bool status);
 		void				setWallopStatus(bool status);
 		void				setRegistered(void);
@@ -35,13 +36,17 @@ class User
 		void				setRealname(const std::string & realname);
 		void				setHostName(const std::string & hostname);
 		void				setConnectPass(const std::string & connect_pass);
+		void				setModes(const unsigned int & modes);
 
 		// getters
 		bool				isRegistered(void) const;
 		bool				isAway(void) const;
 		bool				isInvisible(void) const;
 		bool				isWallop(void) const;
+		bool				isOp(void) const;
 		unsigned int		getId(void) const;
+		unsigned int		getModes(void) const;
+
 		const std::string	&getNick(void) const;
 		const std::string	&getOldNick(void) const;
 		const std::string	&getUsername(void) const;
@@ -71,7 +76,7 @@ class User
 		std::string			_away_msg;
 		bool				_registered;
 		std::string			_connection_pass;
-		int					_modes;
+		unsigned int		_modes;
 		std::vector<std::string> _channels;
 };
 

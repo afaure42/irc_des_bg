@@ -1,11 +1,12 @@
 #include "Command.hpp"
 
 Command::Command(exec_fn_map & fn_map,
+				const t_opers  & operators,
 				const std::string *raw_command,
 				Scheduler & scheduler,
 				Server & server)
 :_chars_read(0), _function_map(fn_map), _scheduler(scheduler),
-	_server(server)
+	_server(server), _operators(operators)
 {
 	this->_setupCommand(*raw_command);
 }
@@ -25,6 +26,9 @@ std::list<std::string> const	&Command::getParams(void) const {
 }
 int const	&Command::getNumericReturn(void) const {
 	return (this->_numeric_return);
+}
+t_opers const &Command::getOperators(void) const {
+	return (this->_operators);
 }
 Scheduler &		Command::getScheduler(void) {
 	return (this->_scheduler);
@@ -138,6 +142,15 @@ void	Command::sendReplies(
 			break;
 		case ERR_NOTREGISTERED:
 			reason = ERR_NOTREGISTERED_MSG;
+			break;
+		case ERR_NOPRIVILEGES:
+			reason = ERR_NOPRIVILEGES_MSG;
+			break;
+		case RPL_YOUREOPER:
+			reason = RPL_YOUREOPER_MSG;
+			break;
+		case ERR_PASSWDMISMATCH:
+			reason = ERR_PASSWDMISMATCH_MSG;
 			break;
 		default:
 			reason = "SERVER ERROR: UNKNOWN/UNSUPPORTED NUMERIC REPLY";
