@@ -12,7 +12,8 @@ INCLUDES			=	-I./includes
 				
 COMMANDS_FILES		=	execCommandUtils.cpp join.cpp nick.cpp part.cpp pass.cpp ping.cpp \
 						privmsg.cpp syntaxChecks.cpp user.cpp mode.cpp numericReplies.cpp quit.cpp \
-						away.cpp names.cpp die.cpp invite.cpp list.cpp topic.cpp oper.cpp
+						away.cpp names.cpp die.cpp invite.cpp list.cpp topic.cpp oper.cpp \
+						kick.cpp
 COMMANDS_PATH		=	$(addprefix ${COMMANDS_FILES_PATH}, ${COMMANDS_FILES})
 COMMANDS_OFILES		=	$(COMMANDS_PATH:.cpp=.o)
 

@@ -39,5 +39,7 @@ void	setFunctionMap(exec_fn_map &function_map) {
 	function_map.insert(
 			it, fn_map_pair("OPER", oper));
 	function_map.insert(
+			it, fn_map_pair("KICK", kick));
+	function_map.insert(
 			it, fn_map_pair("die", die)); //yes wtf idk why irssi doesnt send DIE
 }
