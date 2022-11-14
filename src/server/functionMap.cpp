@@ -17,6 +17,8 @@ void	setFunctionMap(exec_fn_map &function_map) {
 	function_map.insert(
 			it, fn_map_pair("PRIVMSG", privmsg));
 	function_map.insert(
+			it, fn_map_pair("NOTICE", notice));
+	function_map.insert(
 			it, fn_map_pair("JOIN", join));
 	function_map.insert(
 			it, fn_map_pair("PING", ping));
