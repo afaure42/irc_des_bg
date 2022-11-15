@@ -222,7 +222,7 @@ Server::~Server()
 	//add little disconnect all maybe
 	for(std::map<unsigned int, Client>::iterator it = this->_connected_clients.begin();
 		it != this->_connected_clients.end(); it++)
-		close(it->first);
+		close(it->second.getFd());
 
 	close(this->_epfd);
 	close(this->_sockfd);
