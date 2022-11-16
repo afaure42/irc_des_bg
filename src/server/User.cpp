@@ -41,7 +41,7 @@ void	User::setInvisStatus(bool status) {
 	else
 		this->_modes &= ~(USR_MODE_i);
 }
-void User::setWallopStatus(bool status) {
+void	User::setWallopStatus(bool status) {
 	if (status)
 		this->_modes |= USR_MODE_w;
 	else

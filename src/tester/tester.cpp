@@ -7,7 +7,6 @@
 #include <fstream>
 
 #define BUFFER_LEN			1024
-#define TESTER_FILES_PATH	std::string("./tester_files/")
 #define CONFIG_FILE_PATH	"./tester_files/config.test"
 
 static void	test_command(int socket_fd, std::string test_str);
@@ -23,18 +22,22 @@ static void launch_tests(int socket_fd, const std::string &password,
 	// Clean buffers:
 	std::string		test_msg;
 
-	for (int i = 0; test_files[i] != NULL; i++) {
-		std::string		file = TESTER_FILES_PATH + test_files[i];
+	for (int i = 1; test_files[i] != NULL; i++) {
+		std::string		file = test_files[i];
 		std::ifstream	infile(file.c_str());
-		while (std::getline(infile, test_msg)) {
-			if (!test_msg.empty() && test_msg.at(0) != '#') {
-				if (*(test_msg.end() - 1) == '\n')
-					test_msg.erase(test_msg.size() - 1); //remove trailing \n
-				replace_tokens(test_msg, password, nick, username);
-				std::cout << "======== TESTER: Sending command [" << test_msg << "] =========\n"; 
-				test_msg += IRC_MSG_SEPARATOR;
-				test_command(socket_fd, test_msg);
+		if (infile.is_open()) {
+			while (std::getline(infile, test_msg)) {
+				if (!test_msg.empty() && test_msg.at(0) != '#') {
+					if (*(test_msg.end() - 1) == '\n')
+						test_msg.erase(test_msg.size() - 1); //remove trailing \n
+					replace_tokens(test_msg, password, nick, username);
+					std::cout << "======== TESTER: Sending command [" << test_msg << "] =========\n"; 
+					test_msg += IRC_MSG_SEPARATOR;
+					test_command(socket_fd, test_msg);
+				}
 			}
+		} else {
+			std::cout << "Invalid test file " << file << std::endl;
 		}
 	}
 }
@@ -90,7 +93,7 @@ static bool	init_tester_config(int &port, std::string &password,
 			init_count++;
 		}
 	}
-	return (init_count == 4 ? true : false);
+	return (init_count == 4);
 }
 
 int main(int ac, char **av)
@@ -105,9 +108,7 @@ int main(int ac, char **av)
 
 	if (std::strncmp(av[1], "-help", 6) == 0) {
 		std::cout << "USAGE: ./tester {-help} ...[test_files]\n"
-			<< "Config file is ./tester_files/config.test\n"
-			<< "Only the name of the test file is needed, this tester will "
-			<< "automatically preprend './tester_files/' to each file given as argument\n";
+			<< "Config file is ./tester_files/config.test\n";
 	}
 
 	if (init_tester_config(port, password, nick, username) == false) {

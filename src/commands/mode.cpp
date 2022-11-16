@@ -15,11 +15,11 @@ unsigned int	mode(	Command &command,
 								t_channels &channels )
 {
 	(void)command;(void)client_id;(void)users;(void)channels;
-	t_stringlist params = command.getParams();
-	t_stringlist::iterator params_it = params.begin();
+	t_stringlist 			params = command.getParams();
+	t_stringlist::iterator	params_it = params.begin();
 
 	if (params.empty()){
-		return (RPL_UMODEIS);
+		return (ERR_NEEDMOREPARAMS);
 	}
 	// mode without args should (?) list all modes of user that sent the cmd
 
