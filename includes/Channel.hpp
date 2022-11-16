@@ -69,6 +69,9 @@ class Channel
 		//setters
 		void		setName(std::string & name);
 		void		setTopic(std::string & topic);
+		void		setInviteMode(bool status);
+		void		setTopicMode(bool status);
+		void		setPrivateMode(bool status);
 		void		setModes(const unsigned int & modes);
 
 

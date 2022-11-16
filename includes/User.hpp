@@ -27,7 +27,7 @@ class User
 		// setters
 		void				setAwayStatus(bool status);
 		void				setAwayMessage(const std::string & msg);
-		void				setOperator(void);
+		void				setOperatorStatus(bool status);
 		void				setInvisStatus(bool status);
 		void				setWallopStatus(bool status);
 		void				setRegistered(void);
