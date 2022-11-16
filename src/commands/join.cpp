@@ -57,7 +57,7 @@ unsigned int	join(	Command &command,
 			}
 			channels.push_back(Channel(channel_list.front()));
 			channels.back().joinChannel(command.getScheduler(), current_user);
-			channels.back().getPermissions().at(client_id) = Channel::OPERATOR;
+			channels.back().getPermissions().at(client_id) = Channel::CREATOR | Channel::OPERATOR;
 			it = channels.end() - 1;
 		}
 
