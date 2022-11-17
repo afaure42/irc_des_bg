@@ -71,6 +71,8 @@ unsigned int	topic(	Command &command,
 	if (!params.front().empty() && params.front()[0] == ':')
 		params.front().erase(0, 1);
 	ch_it->setTopic(params.front());
+	reply = ":" + current_user.getFullName() + " TOPIC " + ch_it->getName() + " :" + ch_it->getTopic() + IRC_MSG_SEPARATOR;
+	ch_it->send(command.getScheduler(), reply, 0);
 	sendTopic(command.getScheduler(), current_user, *ch_it);
 	return (0);
 }

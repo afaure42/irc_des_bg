@@ -99,7 +99,8 @@ std::ostream & operator<<(std::ostream& os, const Channel& channel)
 	os << "Channel name:" << channel.getName() << std::endl;
 	os << "Channel is" <<
 		((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
-	<< " invite only" << std::endl;
+	<< " invite only" << std::endl
+	<< "Topic: " << channel.getTopic() << std::endl;
 	os << "User_list<";
 	for(members_t::const_iterator it = channel.getMembers().begin();
 			it != channel.getMembers().end(); it++)

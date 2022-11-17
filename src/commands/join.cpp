@@ -8,6 +8,7 @@ unsigned int	join(	Command &command,
 	t_stringlist	params = command.getParams();
 	User & current_user = users.at(client_id);
 	std::string cmd_str;
+	std::string rply;
 
 	if (!current_user.isRegistered())
 		return (ERR_NOTREGISTERED);
@@ -27,14 +28,13 @@ unsigned int	join(	Command &command,
 		//if channel exists join it
 		if (it != channels.end())
 		{
-			// TODO: CHECK USER PERMISSIONS
 			if (it->getModes() & Channel::INVITE_ONLY)
 			{
 				members_perms_t::iterator perm_it= it->getPermissions().find(client_id);
 				if (perm_it == it->getPermissions().end()
 					|| !(perm_it->second & Channel::INVITED))
 				{
-					std::string rply = createNumericReply(ERR_INVITEONLYCHAN, current_user.getNick(),
+					rply = createNumericReply(ERR_INVITEONLYCHAN, current_user.getNick(),
 										it->getName(), ERR_INVITEONLYCHAN_MSG);
 					command.getScheduler().queueMessage(client_id, rply, true);
 					channel_list.pop_front();
@@ -46,12 +46,11 @@ unsigned int	join(	Command &command,
 		}
 		else //else create it
 		{
-			// TODO: CHECK USER PERMISSIONS
 			if (!isValidChannel(channel_list.front()))
 			{
-				std::string err = std::string("ERROR : INVALID CHANNEL NAME") + IRC_MSG_SEPARATOR;
+				rply = std::string("ERROR : INVALID CHANNEL NAME") + IRC_MSG_SEPARATOR;
 
-				command.getScheduler().queueMessage(client_id, err, true);
+				command.getScheduler().queueMessage(client_id, rply, true);
 				channel_list.pop_front();
 				continue;
 			}
@@ -62,8 +61,11 @@ unsigned int	join(	Command &command,
 		}
 
 		if(!it->getTopic().empty())
-			command.getScheduler()
-			.queueMessage(client_id, ":irc_des_bg 332 " + it->getTopic(), true);
+		{
+			rply = createNumericReply(RPL_TOPIC, current_user.getNick(),
+							it->getName(), it->getTopic());
+			command.getScheduler().queueMessage(client_id, rply, true);
+		}
 		cmd_str = "NAMES " + it->getName() + IRC_MSG_SEPARATOR; 
 		Command temp_cmd(command.getFunctionMap(), command.getOperators(),
 			&cmd_str, command.getScheduler(), command.getServer());
