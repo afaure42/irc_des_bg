@@ -60,16 +60,21 @@ unsigned int	join(	Command &command,
 			it = channels.end() - 1;
 		}
 
+		//sending current channel topic
 		if(!it->getTopic().empty())
-		{
 			rply = createNumericReply(RPL_TOPIC, current_user.getNick(),
 							it->getName(), it->getTopic());
-			command.getScheduler().queueMessage(client_id, rply, true);
-		}
+		else
+			rply = createNumericReply(RPL_NOTOPIC, current_user.getNick(),
+							it->getName(), RPL_NOTOPIC_MSG);
+		command.getScheduler().queueMessage(client_id, rply, true);
+							
+		//launching names command
 		cmd_str = "NAMES " + it->getName() + IRC_MSG_SEPARATOR; 
 		Command temp_cmd(command.getFunctionMap(), command.getOperators(),
 			&cmd_str, command.getScheduler(), command.getServer());
 		temp_cmd.execute(client_id, users, channels);
+
 		channel_list.pop_front();
 	}
 

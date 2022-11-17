@@ -22,10 +22,12 @@ unsigned int	list(	Command &command,
 
 	if (!current_user.isRegistered())
 		return ERR_NOTREGISTERED;
+
 	rply = createNumericReply(RPL_LISTSTART, current_user.getNick(), "",
 			RPL_LISTSTART_MSG);
 	command.getScheduler().queueMessage(client_id, rply, true);
-	if (params.empty())
+
+	if (params.empty()) //sending every channel on server
 	{
 		for(t_channels::iterator ch_it = channels.begin();
 				ch_it != channels.end(); ch_it++)
@@ -35,7 +37,7 @@ unsigned int	list(	Command &command,
 			sendChannelRPL(command.getScheduler(), ch_it, current_user);
 		}
 	}
-	else
+	else //sending only queried channels
 	{
 		t_channels::iterator ch_it;
 		t_stringlist channel_list = split(params.front());
@@ -47,6 +49,7 @@ unsigned int	list(	Command &command,
 			channel_list.pop_front();
 		}
 	}
+
 	rply = createNumericReply(RPL_LISTEND, current_user.getNick(), "",
 							RPL_LISTEND_MSG);
 	command.getScheduler().queueMessage(client_id, rply, true);

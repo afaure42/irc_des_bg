@@ -20,6 +20,7 @@ unsigned int	invite(	Command &command,
 		return (ERR_NOSUCHNICK);
 	params.pop_front();
 
+	//CHECKING IF CHANNEL EXISTS
 	t_channels::iterator ch_it = findChannel(params.front(), channels);
 	if (ch_it == channels.end())
 	{
@@ -29,6 +30,7 @@ unsigned int	invite(	Command &command,
 		return (0);
 	}
 
+	//CHECKING IF USER IS ON CHANNEL
 	if (std::find(current_user.getChannels().begin(),
 					current_user.getChannels().end(),
 					params.front())
@@ -40,7 +42,7 @@ unsigned int	invite(	Command &command,
 		return (0);
 	}
 
-
+	//CHECKING IF TARGET IS ON CHANNEL
 	if (ch_it->getMembers().find(usr_it->first) != ch_it->getMembers().end())
 	{
 		rply = createNumericReply(ERR_USERONCHANNEL, current_user.getNick(),
@@ -49,6 +51,7 @@ unsigned int	invite(	Command &command,
 		return (0);
 	}
 	
+	//CHECKING FOR PERMISSIONS
 	if (ch_it->getModes() & Channel::INVITE_ONLY &&
 			!(ch_it->getPermissions().find(client_id)->second
 			& Channel::OPERATOR))
@@ -58,7 +61,8 @@ unsigned int	invite(	Command &command,
 		command.getScheduler().queueMessage(client_id, rply, true);
 		return (0);
 	}
-	
+
+	//CHECKING IF TARGET IS AWAY	
 	if (usr_it->second.isAway())
 	{
 		rply = createNumericReply(RPL_AWAY, current_user.getNick(),
@@ -70,9 +74,11 @@ unsigned int	invite(	Command &command,
 	//add to invite list
 	ch_it->getPermissions().insert(std::make_pair(usr_it->first, Channel::INVITED));
 
+	//sending invite to target
 	rply = from + usr_it->second.getNick() + " " + ch_it->getName() + IRC_MSG_SEPARATOR;
 	command.getScheduler().queueMessage(usr_it->first, rply, true);
 
+	//sending reply to client
 	rply = createNumericReply(RPL_INVITING, current_user.getNick(), usr_it->second.getNick() + " " +
 						ch_it->getName(), "");
 	command.getScheduler().queueMessage(client_id, rply, true);

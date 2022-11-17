@@ -9,6 +9,7 @@ static void list_channel_names(Channel & channel,
 
 	std::string names;
 	std::string reply;
+	
 	while (members != channel.getMembers().end())
 	{
 		if (prefix.size() + names.size() + members->second->getNick().size() + 2 > 512)

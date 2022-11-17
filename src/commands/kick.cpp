@@ -21,14 +21,17 @@ unsigned int	kick(	Command &command,
 	params.pop_front();
 	t_stringlist	user_list = split(params.front());
 
+	//because you can do #test user1,user2,user3 OR #test1,#test2,#test# user1
 	if (channel_list.size() == 1)
 		single_channel = true;
 	else if (user_list.size() == 1)
 		single_user = true;
+
 	if (!single_channel && !single_user && channel_list.size() != user_list.size())
 		return (ERR_NEEDMOREPARAMS);
 
 	params.pop_front();
+
 	if (!params.empty() && params.front()[0] == ':')
 		params.front().erase(0, 1);
 	if (params.empty() && !params.front().empty())
@@ -49,13 +52,13 @@ unsigned int	kick(	Command &command,
 			reply = createNumericReply(ERR_NOSUCHCHANNEL, current_user.getNick(),
 					channel_list.front(), ERR_NOSUCHCHANNEL_MSG);
 			command.getScheduler().queueMessage(client_id, reply, true);
-			if (!single_channel)
-				channel_list.pop_front();
+			channel_list.pop_front();
 			if (!single_user)
 				user_list.pop_front();
 			continue;
 		}
 
+		//check target exists
 		if (target_it == users.end())
 		{
 			reply = createNumericReply(ERR_NOSUCHNICK, current_user.getNick(),
@@ -63,13 +66,13 @@ unsigned int	kick(	Command &command,
 			command.getScheduler().queueMessage(client_id, reply, true);
 			if (!single_channel)
 				channel_list.pop_front();
-			if (!single_user)
-				user_list.pop_front();
+			user_list.pop_front();
 			continue;
 		}
 
+
 		ch_member = ch_it->getMembers().find(client_id);
-		//check on channel
+		//check client on channel
 		if (ch_member == ch_it->getMembers().end())
 		{
 			reply = createNumericReply(ERR_NOTONCHANNEL, current_user.getNick(),
@@ -113,12 +116,11 @@ unsigned int	kick(	Command &command,
 		//actual kicking
 		std::string kick_str = from + ch_it->getName() + " " + target_it->second.getNick()
 				+ " :" + msg + IRC_MSG_SEPARATOR;
-		// Command temp_cmd(command.getFunctionMap(), command.getOperators(),
-			// &part_str, command.getScheduler(), command.getServer());
-		// temp_cmd.execute(target_it->first, users, channels);
+
 		ch_it->send(command.getScheduler(), kick_str, 0);
 		ch_it->removeUser(target_it->second);
 		target_it->second.getChannels().erase(ch_it->getName());
+
 		if (!single_channel)
 			channel_list.pop_front();
 		if (!single_user)
