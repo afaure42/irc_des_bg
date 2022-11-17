@@ -54,8 +54,8 @@ class User
 		const std::string	&getHostName(void) const;
 		const std::string	getFullName(void) const;
 		const std::string	&getConnectPass(void) const;
-		std::vector<std::string> & getChannels(void);
-		std::vector<std::string> const &getChannels(void) const;
+		std::set<std::string> & getChannels(void);
+		std::set<std::string> const &getChannels(void) const;
 		const std::string	&getAwayMsg(void) const;
 	// The available modes are as follows:
 
@@ -77,7 +77,7 @@ class User
 		bool				_registered;
 		std::string			_connection_pass;
 		unsigned int		_modes;
-		std::vector<std::string> _channels;
+		std::set<std::string> _channels;
 };
 
 std::ostream& operator<<(std::ostream& os, const User& usr);

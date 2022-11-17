@@ -79,7 +79,7 @@ void Channel::joinChannel(Scheduler & scheduler, User & user)
 
 	//then add user to channel
 	this->_members.insert(std::make_pair(user.getId(), &user));
-	user.getChannels().push_back(this->_name);
+	user.getChannels().insert(this->_name);
 	if (this->_permissions.find(user.getId()) == this->_permissions.end())
 		this->_permissions.insert(std::make_pair(user.getId(), 0));
 

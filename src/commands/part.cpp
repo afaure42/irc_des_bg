@@ -59,11 +59,7 @@ unsigned int	part(	Command &command,
 			msg = prefix + " " + channel_name + " " + suffix;		
 			ch_it->send(command.getScheduler(), msg, 0);
 			ch_it->removeUser(current_user);
-			std::vector<std::string>::iterator it =
-				std::find(current_user.getChannels().begin(),
-							current_user.getChannels().end(),
-							ch_it->getName());
-			current_user.getChannels().erase(it);
+			current_user.getChannels().erase(ch_it->getName());
 			if (ch_it->getMembers().empty())
 				channels.erase(ch_it);
 		}

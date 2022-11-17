@@ -1,6 +1,6 @@
 #include "execCommandUtils.hpp"
 
-t_channels::iterator findChannel(std::string & name, t_channels & channels)
+t_channels::iterator findChannel(const std::string & name, t_channels & channels)
 {
 	t_channels::iterator ret = channels.begin();
 
