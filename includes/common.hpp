@@ -15,6 +15,7 @@
 #include <fcntl.h> //fcntl
 #include <cstdlib>
 #include <iostream>
+#include <csignal>
 // STD containers
 #include <map>
 #include <set>
