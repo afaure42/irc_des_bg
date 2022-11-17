@@ -1,7 +1,7 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _nick("*"), _registered(false), _modes(0)
+	_id(client_id), _nick(TEMP_NICK), _registered(false), _modes(0)
 {
 }
 

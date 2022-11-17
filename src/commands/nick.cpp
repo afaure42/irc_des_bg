@@ -6,6 +6,7 @@ unsigned int	nick(	Command &command,
 								t_channels &channels) {
 	(void)channels;
 	std::list<std::string> const	params = command.getParams();
+	std::string old_nick; //need some rhum ?
 	User & current_user = users.at(client_id);
 
 	if (params.empty())
@@ -24,6 +25,14 @@ unsigned int	nick(	Command &command,
 	}
 
 	//err checking done
+	old_nick = current_user.getNick();
+
 	current_user.setNick(nick);
+	if (old_nick != TEMP_NICK)
+	{
+		std::string msg = ":" + old_nick + " NICK " + nick + IRC_MSG_SEPARATOR;
+
+		sendAllUser(command.getScheduler(), users, msg, 0);
+	}
 	return (0);
 }

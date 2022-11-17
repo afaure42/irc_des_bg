@@ -14,7 +14,7 @@ unsigned int	user(	Command &command,
 		return (ERR_NEEDMOREPARAMS);
 
 	
-	if (current_user.getNick() == "*")
+	if (current_user.getNick() == TEMP_NICK)
 	{
 		command.getScheduler().queueMessage(client_id, "ERROR :USAGE PASS NICK USER\r\n", false);
 		//deconnect incoming so use the deconnection routine

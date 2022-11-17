@@ -105,7 +105,7 @@ void	Command::sendReplies(
 {
 	(void)channels;
 	t_users::iterator 	it = users.find(client_id);
-	const std::string	user_nick = (it == users.end()) ? "*" : users.at(client_id).getNick();
+	const std::string	user_nick = (it == users.end()) ? TEMP_NICK : users.at(client_id).getNick();
 	std::string			reason;
 	std::string			target = "";
 
