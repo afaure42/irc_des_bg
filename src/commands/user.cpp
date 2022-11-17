@@ -16,7 +16,7 @@ unsigned int	user(	Command &command,
 	
 	if (current_user.getNick() == TEMP_NICK)
 	{
-		command.getScheduler().queueMessage(client_id, "ERROR :USAGE PASS NICK USER\r\n", false);
+		command.getScheduler().queueMessage(client_id, "ERROR :NO NICKNAME GIVEN\r\n", false);
 		//deconnect incoming so use the deconnection routine
 		command.getScheduler().writeAll();
 		freeUser(client_id, command.getServer(),
