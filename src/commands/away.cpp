@@ -14,7 +14,7 @@ unsigned int	away( Command &command,
 
 	if (!current_user.isRegistered())
 		return (ERR_NOTREGISTERED);
-	if (params.empty())
+	if (params.empty()) //removing away status
 	{
 		current_user.setAwayStatus(false);
 		current_user.setAwayMessage(std::string());
@@ -22,7 +22,7 @@ unsigned int	away( Command &command,
 		reply = createNumericReply(RPL_UNAWAY, current_user.getNick(), "",
 								RPL_UNAWAY_MSG);
 	}
-	else
+	else //setting away status
 	{
 		current_user.setAwayStatus(true);
 		current_user.setAwayMessage(params.front().substr(1));

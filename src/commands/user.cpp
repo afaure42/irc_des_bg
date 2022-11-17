@@ -14,9 +14,9 @@ unsigned int	user(	Command &command,
 		return (ERR_NEEDMOREPARAMS);
 
 	
-	if (current_user.getNick() == "*")
+	if (current_user.getNick() == TEMP_NICK)
 	{
-		command.getScheduler().queueMessage(client_id, "ERROR :USAGE PASS NICK USER\r\n", false);
+		command.getScheduler().queueMessage(client_id, "ERROR :NO NICKNAME GIVEN\r\n", false);
 		//deconnect incoming so use the deconnection routine
 		command.getScheduler().writeAll();
 		freeUser(client_id, command.getServer(),
@@ -35,10 +35,16 @@ unsigned int	user(	Command &command,
 		return (0);
 	}
 	
-	
-	//i dont understand what syntax checks are needed for now
-	//https://datatracker.ietf.org/doc/html/rfc2812#section-2.3.1
+	if (!isValidUser(params.front()))
+	{
+		command.getScheduler().queueMessage(client_id, "ERROR :INVALID USERNAME\r\n", false);
 
+		command.getScheduler().writeAll();
+		freeUser(client_id, command.getServer(),
+					command.getScheduler(), users);
+		return (0);
+	
+	}
 	//set username
 	current_user.setUsername(params.front());
 	params.pop_front();

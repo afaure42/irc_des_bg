@@ -1,6 +1,15 @@
 #include "execCommandUtils.hpp"
 
-t_channels::iterator findChannel(std::string & name, t_channels & channels)
+void sendAllUser(Scheduler & scheduler, t_users & users, const std::string & msg, unsigned int from)
+{
+	for(t_users::iterator it = users.begin(); it != users.end(); it++)
+	{
+		if (it->second.isRegistered() && it->first != from)
+			scheduler.queueMessage(it->first, msg, true);
+	}
+}
+
+t_channels::iterator findChannel(const std::string & name, t_channels & channels)
 {
 	t_channels::iterator ret = channels.begin();
 

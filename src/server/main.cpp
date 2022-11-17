@@ -8,6 +8,12 @@
 
 typedef std::map<unsigned int, Update>::iterator update_iter;
 
+void sigint_handler(int sig)
+{
+	(void)sig;
+	throw std::exception();
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc != 3)
@@ -17,6 +23,7 @@ int main(int argc, char *argv[])
 	}
 	int port = std::atoi(argv[1]);
 	std::string pass = std::string(argv[2]);
+	std::signal(SIGINT, sigint_handler);
 
 	//every actions is in a try catch block
 	//the server's dtor can free all its resources
@@ -123,6 +130,10 @@ int main(int argc, char *argv[])
 	catch(const syscall_error & e)
 	{
 		std::cerr << e.what() << e.err() << '\n';
+		return EXIT_FAILURE;
+	}
+	catch(const std::exception & e)
+	{
 		return EXIT_FAILURE;
 	}
 

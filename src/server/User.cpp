@@ -1,7 +1,7 @@
 #include "User.hpp"
 
 User::User(unsigned int client_id) :
-	_id(client_id), _nick("*"), _registered(false), _modes(0)
+	_id(client_id), _nick(TEMP_NICK), _registered(false), _modes(0)
 {
 }
 
@@ -101,10 +101,10 @@ std::string const	&User::getOldNick(void) const {
 std::string const &User::getHostName(void) const {
 	return this->_hostname;
 }
-std::vector<std::string> & User::getChannels(void) {
+std::set<std::string> & User::getChannels(void) {
 	return this->_channels;
 }
-std::vector<std::string> const & User::getChannels(void) const {
+std::set<std::string> const & User::getChannels(void) const {
 	return this->_channels;
 }
 const std::string &User::getConnectPass(void) const {
@@ -125,8 +125,9 @@ std::ostream& operator<<(std::ostream& os, const User& usr)
     os << "User is" << (usr.isAway() ? "" : " not") << " away" << std::endl;
     os << "User is" << (usr.isInvisible() ? "" : " not") << " invisible" << std::endl;
 	os << "Joined Channels<";
-	for (size_t i = 0; i < usr.getChannels().size(); i++)
-		os << '[' << usr.getChannels()[i] << ']';
+	for (std::set<std::string>::iterator it = usr.getChannels().begin();
+		it != usr.getChannels().end(); it++)
+		os << '[' << *it << ']';
 	os << '>' << std::endl;
     return os;
 }

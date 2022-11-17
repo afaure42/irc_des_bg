@@ -79,7 +79,7 @@ void Channel::joinChannel(Scheduler & scheduler, User & user)
 
 	//then add user to channel
 	this->_members.insert(std::make_pair(user.getId(), &user));
-	user.getChannels().push_back(this->_name);
+	user.getChannels().insert(this->_name);
 	if (this->_permissions.find(user.getId()) == this->_permissions.end())
 		this->_permissions.insert(std::make_pair(user.getId(), 0));
 
@@ -99,7 +99,8 @@ std::ostream & operator<<(std::ostream& os, const Channel& channel)
 	os << "Channel name:" << channel.getName() << std::endl;
 	os << "Channel is" <<
 		((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
-	<< " invite only" << std::endl;
+	<< " invite only" << std::endl
+	<< "Topic: " << channel.getTopic() << std::endl;
 	os << "User_list<";
 	for(members_t::const_iterator it = channel.getMembers().begin();
 			it != channel.getMembers().end(); it++)

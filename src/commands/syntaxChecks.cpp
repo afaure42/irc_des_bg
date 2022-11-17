@@ -29,7 +29,7 @@ bool isValidNick(const std::string & nick)
 
 bool isValidUser(const std::string & user)
 {
-	if (user.empty())
+	if (user.empty() || user.length() > 15)
 		return false;
 	
 	for(size_t i = 0; i < user.length(); i++)
