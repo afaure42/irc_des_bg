@@ -90,7 +90,38 @@ static void	updateChannelModes(Channel &channel, unsigned int mask, unsigned int
 	channel.setModes(channel_modes);
 }
 
+static void	updateChannelUserPerms(Command &command,
+									t_users &users,
+									Channel &channel,
+									User &current_user,
+									std::string &target_user,
+									unsigned int mask,
+									unsigned int operation_type)
+{
+	std::string			reply;
+	t_users::iterator	target_it = findUser(target_user, users);
+
+	if (target_it == users.end()
+		|| channel.getMembers().find(target_it->second.getId()) == channel.getMembers().end())
+	{
+		reply = createNumericReply(ERR_NOTONCHANNEL, target_user,
+									channel.getName(), ERR_NOTONCHANNEL_MSG);
+		command.getScheduler().queueMessage(current_user.getId(), reply, true);
+		return ;
+	}
+
+	unsigned int &usr_perms = channel.getPermissions().at(target_it->second.getId());
+
+	if (operation_type == 1) {
+		usr_perms |= mask;
+	}
+	else if (operation_type == 2) {
+		usr_perms &= ~mask;
+	}
+}
+
 unsigned int	modeChannel(Command &command,
+							t_users &users,
 							t_stringlist &params,
 							std::string &channel_name,
 							User &current_user,
@@ -138,6 +169,7 @@ unsigned int	modeChannel(Command &command,
 					if (!params.empty()) {
 						std::cout << "target mode\n";
 						mask = createChanUserPermMask(command, current_user, chan_operation);
+						updateChannelUserPerms(command, users, *ch_it, current_user, params.front(), mask, operation_type);
 					}
 					else {
 						mask = createChannelMask(command, current_user, chan_operation);
@@ -171,7 +203,7 @@ unsigned int	mode(	Command &command,
 
 	params.pop_front();
 	if (target[0] == '#')
-		return modeChannel(command, params, target, current_user, channels);
+		return modeChannel(command, users, params, target, current_user, channels);
 	// else
 	// 	return modeUser(current_user, target, params, channels);
 	return (0);
