@@ -15,6 +15,7 @@ unsigned int	createChanUserPermMask(Command &command,
 	size_t			i = 0;
 
 	while (isModeFlag(operation[i])) {
+		reply_changes += operation[i];
 		if (operation[i] == 'o')
 				flag |= Channel::INVITE_ONLY;
 		else if (operation[i] == 'v')
@@ -26,7 +27,6 @@ unsigned int	createChanUserPermMask(Command &command,
 		}
 		i++;
 	}
-	reply_changes += operation.substr(0, i);
 	operation.erase(0, i);
 	return (flag);
 }
@@ -41,6 +41,7 @@ unsigned int	createUserMask(Command &command,
 	size_t			i = 0;
 
 	while (isModeFlag(operation[i])) {
+		reply_changes += operation[i];
 		switch (operation[i])
 		{
 			case 'i':
@@ -62,6 +63,7 @@ unsigned int	createUserMask(Command &command,
 				flag |= User::SRVNOTICES;
 				break;
 			default:
+				reply_changes.erase(reply_changes.size() - 1);
 				reply = createNumericReply(ERR_UMODEUNKNOWNFLAG, current_user.getNick(),
 											"", ERR_UMODEUNKNOWNFLAG_MSG);
 				command.getScheduler().queueMessage(current_user.getId(), reply, true);
@@ -69,7 +71,6 @@ unsigned int	createUserMask(Command &command,
 		}
 		i++;
 	}
-	reply_changes += operation.substr(0, i);
 	operation.erase(0, i);
 	return (flag);
 }
@@ -84,6 +85,7 @@ unsigned int	createChannelMask(Command &command,
 	size_t			i = 0;
 
 	while (isModeFlag(operation[i])) {
+		reply_changes += operation[i];
 		switch (operation[i])
 		{
 			case 'a':
@@ -111,6 +113,7 @@ unsigned int	createChannelMask(Command &command,
 				flag |= Channel::TOPIC;
 				break;
 			default:
+				reply_changes.erase(reply_changes.size() - 1);
 				reply = createNumericReply(ERR_UMODEUNKNOWNFLAG, current_user.getNick(),
 											"", ERR_UMODEUNKNOWNFLAG_MSG);
 				command.getScheduler().queueMessage(current_user.getId(), reply, true);
@@ -119,7 +122,6 @@ unsigned int	createChannelMask(Command &command,
 		i++;
 	}
 	std::cout << "Avant " << reply_changes << std::endl;
-	reply_changes += operation.substr(0, i);
 	std::cout << "Apres " << reply_changes << std::endl;
 	operation.erase(0, i);
 	return (flag);
