@@ -94,7 +94,7 @@ void Channel::removeUser(User & user)
 	this->_permissions.erase(user.getId());
 }
 
-std::ostream & operator<<(std::ostream& os, const Channel& channel)
+std::ostream & operator<<(std::ostream& os, Channel& channel)
 {
 	os << "Channel name:" << channel.getName() << std::endl;
 	os << "Channel is" << ((channel.getModes() & Channel::ANONYMOUS) ? "" : " not")
@@ -113,11 +113,16 @@ std::ostream & operator<<(std::ostream& os, const Channel& channel)
 		<< " secret" << std::endl
 	<< "Channel has " << ((channel.getModes() & Channel::TOPIC) ? "a" : "no")
 		<< " topic\tTopic: " << channel.getTopic() << std::endl;
-	os << "User_list<";
-	for(members_t::const_iterator it = channel.getMembers().begin();
+	os << "Channel user list:\n";
+	unsigned int userPerms = 0;
+	for (members_t::const_iterator it = channel.getMembers().begin();
 			it != channel.getMembers().end(); it++)
 	{
-		os << '[' << it->second->getNick() << ']';
+		userPerms = channel.getPermissions().at(it->second->getId());
+		os << "User [" << it->second->getNick() << "]\n"
+			<< "\tIs " << (userPerms & Channel::CREATOR ? "":"not") << " the channel creator\n"
+			<< "\tIs " << (userPerms & Channel::OPERATOR ? "":"not") << " a channel operator\n"
+			<< "\tHas " << (userPerms & Channel::CREATOR ? "":"no") << " voice privilege\n";
 	}
 	os << '>' << std::endl;
 
