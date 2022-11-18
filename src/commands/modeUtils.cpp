@@ -5,6 +5,53 @@ static bool	isModeFlag(char c)
 	return !(c == '\0' || c == '+' || c == '-');
 }
 
+std::string createUserModeString(User & user)
+{
+	std::string ret = "+";
+	unsigned int modes = user.getModes();
+
+	if (modes & User::AWAY)
+		ret += 'a';
+	if (modes & User::INVISIBLE)
+		ret += 'i';
+	if (modes & User::WALLOPS)
+		ret += 'w';
+	if (modes & User::RESTRICTED)
+		ret += 'r';
+	if (modes & User::OPERATOR)
+		ret += 'o';
+	if (modes & User::LOCALOP)
+		ret += 'O';
+	if (modes & User::SRVNOTICES)
+		ret += 's';
+	
+	return ret;
+}
+
+std::string createChanModeString(Channel & channel)
+{
+	std::string ret = "+";
+	unsigned int modes = channel.getModes();
+
+	if (modes & Channel::ANONYMOUS)
+		ret += 'a';
+	if (modes & Channel::INVITE_ONLY)
+		ret += 'i';
+	if (modes & Channel::MODERATED)
+		ret += 'm';
+	if (modes & Channel::NO_MSG_FROM_OUTSIDE)
+		ret += 'n';
+	if (modes & Channel::QUIET)
+		ret += 'q';
+	if (modes & Channel::PRIVATE)
+		ret += 'p';
+	if (modes & Channel::SECRET)
+		ret += 's';
+	if (modes & Channel::TOPIC)
+		ret += 't';
+	return ret;
+}
+
 unsigned int	createChanUserPermMask(Command &command,
 											User &current_user,
 											std::string &operation,

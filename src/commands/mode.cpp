@@ -40,7 +40,9 @@ unsigned int	modeChannel(Command &command,
 		command.getScheduler().queueMessage(current_user.getId(), numeric_reply, true);
 	}
 	else if (params.empty()) {
-			; // list all activated modes on channel (??)
+		numeric_reply = createNumericReply(RPL_CHANNELMODEIS, current_user.getNick(),
+				ch_it->getName(), createChanModeString(*ch_it));
+		command.getScheduler().queueMessage(current_user.getId(), numeric_reply, true);
 	}
 	else {
 		// Privileges check, so 2022
@@ -96,7 +98,9 @@ unsigned int	modeUser(Command &command,
 		command.getScheduler().queueMessage(current_user.getId(), reply, true);
 	}
 	else if (params.empty()) {
-		; // list settings for nick
+		reply = createNumericReply(RPL_UMODEIS, current_user.getNick(),
+				"", createUserModeString(current_user));
+		command.getScheduler().queueMessage(current_user.getId(), reply, true);
 	}
 	else {
 		unsigned int	operation_type = 0; // 0 = list, 1 = add, 2 = delete

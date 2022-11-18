@@ -24,3 +24,6 @@ unsigned int	createChannelMask(Command &command,
 										User &current_user,
 										std::string &operation,
 										std::string &reply_changes);
+
+std::string createChanModeString(Channel & channel);
+std::string createUserModeString(User & user);
