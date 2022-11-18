@@ -30,13 +30,13 @@ unsigned int	quit(	Command &command,
 	//remove the user and send the quit message to every channel
 	while(user.getChannels().size() != 0)
 	{
-		t_channels::iterator ch_it = findChannel(user.getChannels().back(), channels);
+		t_channels::iterator ch_it = findChannel(*user.getChannels().begin(), channels);
 
 		ch_it->send(command.getScheduler(), quit_msg, client_id);
 		ch_it->removeUser(user);
 		if (ch_it->getMembers().size() == 0)
 			channels.erase(ch_it);
-		user.getChannels().pop_back();
+		user.getChannels().erase(ch_it->getName());
 	}
 
 	//then free the user from everywhere

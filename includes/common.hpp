@@ -15,6 +15,7 @@
 #include <fcntl.h> //fcntl
 #include <cstdlib>
 #include <iostream>
+#include <csignal>
 // STD containers
 #include <map>
 #include <set>
@@ -27,7 +28,8 @@
 /***DEFINES*****/
 #define SERVER_NAME std::string("irc_des_bg")
 #define SERVER_PREFIX std::string(":" + SERVER_NAME)
-#define	QUIT_ACK	std::string("ERROR ")
+#define	QUIT_ACK	std::string("ERROR ") + IRC_MSG_SEPARATOR
+#define TEMP_NICK "*"
 
 #define EVENTS_SIZE 100
 #define MAX_CONNECTIONS_LISTN 20
