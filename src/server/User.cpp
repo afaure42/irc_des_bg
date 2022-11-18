@@ -25,27 +25,27 @@ User::~User()
 // SETTERS //
 void	User::setAwayStatus(bool status) {
 	if (status)
-		this->_modes |= USR_MODE_a;
+		this->_modes |= User::AWAY;
 	else
-		this->_modes &= ~(USR_MODE_a);
+		this->_modes &= ~(User::AWAY);
 }
 void	User::setAwayMessage(const std::string & msg) {
 	this->_away_msg = msg;
 }
 void	User::setOperator(void) {
-	this->_modes |= USR_MODE_o;
+	this->_modes |= User::OPERATOR;
 }
 void	User::setInvisStatus(bool status) {
 	if (status)
-		this->_modes |= USR_MODE_i;
+		this->_modes |= User::INVISIBLE;
 	else
-		this->_modes &= ~(USR_MODE_i);
+		this->_modes &= ~(User::INVISIBLE);
 }
 void	User::setWallopStatus(bool status) {
 	if (status)
-		this->_modes |= USR_MODE_w;
+		this->_modes |= User::WALLOPS;
 	else
-		this->_modes &= ~(USR_MODE_w);
+		this->_modes &= ~(User::WALLOPS);
 }
 void	User::setRegistered(void) {
 	this->_registered = true;
@@ -72,22 +72,25 @@ void	User::setModes(const unsigned int & modes) {
 
 // GETTERS //
 bool	User::isAway(void) const {
-	return (this->_modes & USR_MODE_a);
+	return (this->_modes & User::AWAY);
 }
 bool	User::isInvisible(void) const {
-	return (this->_modes & USR_MODE_i);
+	return (this->_modes & User::INVISIBLE);
 }
 bool	User::isWallop(void) const{
-	return (this->_modes & USR_MODE_w);
+	return (this->_modes & User::WALLOPS);
 }
 bool	User::isRegistered(void) const{
 	return (this->_registered);
 }
 bool	User::isOp(void) const {
-	return (this->_modes & USR_MODE_o);
+	return (this->_modes & User::OPERATOR);
 }
 unsigned int	User::getId(void) const {
 	return (this->_id);
+}
+unsigned int	User::getModes(void) const {
+	return (this->_modes);
 }
 std::string	const	&User::getNick(void) const {
 	return (this->_nick);

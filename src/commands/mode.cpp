@@ -182,6 +182,100 @@ unsigned int	modeChannel(Command &command,
 	return (0);
 }
 
+static unsigned int	createUserMask(Command &command,
+										User &current_user,
+										std::string &operation)
+{
+	unsigned int	flag = 0;
+	std::string		reply;
+	size_t			i = 0;
+
+	while (isModeFlag(operation[i])) {
+		switch (operation[i])
+		{
+			case 'a':
+				flag |= User::AWAY;
+				break;
+			case 'i':
+				flag |= User::INVISIBLE;
+				break;
+			case 'w':
+				flag |= User::WALLOPS;
+				break;
+			case 'r':
+				flag |= User::RESTRICTED;
+				break;
+			case 'o':
+				flag |= User::OPERATOR;
+				break;
+			case 'O':
+				flag |= User::LOCALOP;
+				break;
+			case 's':
+				flag |= User::SRVNOTICES;
+				break;
+			default:
+				reply = createNumericReply(ERR_UMODEUNKNOWNFLAG, current_user.getNick(),
+											"", ERR_UMODEUNKNOWNFLAG_MSG);
+				command.getScheduler().queueMessage(current_user.getId(), reply, true);
+				break;
+		}
+		i++;
+	}
+	operation.erase(0, i);
+	return (flag);
+}
+
+static void	updateUserModes(User &current_user, unsigned int mask, unsigned int operation_type)
+{
+	unsigned int updated_user_modes = current_user.getModes();
+
+	if (operation_type == 1) {
+		updated_user_modes |= mask;
+	}
+	else if (operation_type == 2) {
+		updated_user_modes &= ~mask;
+	}
+
+	current_user.setModes(updated_user_modes);
+}
+
+unsigned int	modeUser(Command &command,
+							User &current_user,
+							t_stringlist &params,
+							std::string target)
+{
+	std::string reply;
+
+	if (current_user.getNick() != target) {
+		reply = createNumericReply(ERR_USERSDONTMATCH, current_user.getNick(),
+									target, ERR_USERSDONTMATCH_MSG);
+		command.getScheduler().queueMessage(current_user.getId(), reply, true);
+	}
+	else if (params.empty()) {
+		; // list settings for nick
+	}
+	else {
+		unsigned int	operation_type = 0; // 0 = list, 1 = add, 2 = delete
+		std::string		chan_operation = params.front();
+		params.pop_front();
+		while (!chan_operation.empty()) {
+			if (chan_operation[0] == '+') {
+				operation_type = 1;
+				chan_operation.erase(0, 1);
+			} else if (chan_operation[0] == '-') {
+				operation_type = 2;
+				chan_operation.erase(0, 1);
+			} else {
+				unsigned int mask = createUserMask(command, current_user, chan_operation);
+				updateUserModes(current_user, mask, operation_type);
+				std::cout << "USER MASK => " << mask << std::endl;
+			}
+		}
+	}
+	return (0);
+}
+
 unsigned int	mode(	Command &command,
 								unsigned int client_id,
 								t_users &users,
@@ -204,7 +298,7 @@ unsigned int	mode(	Command &command,
 	params.pop_front();
 	if (target[0] == '#')
 		return modeChannel(command, users, params, target, current_user, channels);
-	// else
-	// 	return modeUser(current_user, target, params, channels);
+	else
+		return modeUser(command, current_user, params, target);
 	return (0);
 }
