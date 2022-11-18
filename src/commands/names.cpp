@@ -18,10 +18,13 @@ static void list_channel_names(Channel & channel,
 			scheduler.queueMessage(user.getId(), prefix + names, true);
 			names.clear();
 		}
+		unsigned int & perms = channel.getPermissions().at(members->first);
 		if (!names.empty())
 			names += ' ';
-		if (channel.getPermissions().at(members->first) & Channel::OPERATOR)
+		if (perms & Channel::OPERATOR)
 			names += '@';
+		else if (perms & Channel::VOICE)
+			names += '+';
 		names += members->second->getNick();
 		members++;
 	}
