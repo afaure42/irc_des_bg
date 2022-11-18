@@ -32,8 +32,11 @@ void	User::setAwayStatus(bool status) {
 void	User::setAwayMessage(const std::string & msg) {
 	this->_away_msg = msg;
 }
-void	User::setOperator(void) {
-	this->_modes |= User::OPERATOR;
+void	User::setOperatorStatus(bool status) {
+	if (status)
+		this->_modes |= User::OPERATOR;
+	else
+		this->_modes &= ~(User::OPERATOR);
 }
 void	User::setInvisStatus(bool status) {
 	if (status)

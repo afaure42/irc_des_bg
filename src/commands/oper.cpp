@@ -22,6 +22,6 @@ unsigned int	oper(	Command &command,
 		return (ERR_PASSWDMISMATCH);
 	
 	//now password is ok
-	current_user.setOperator();
+	current_user.setOperatorStatus(true);
 	return (RPL_YOUREOPER);
 }

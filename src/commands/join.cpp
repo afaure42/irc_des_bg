@@ -31,8 +31,8 @@ unsigned int	join(	Command &command,
 			if (it->getModes() & Channel::INVITE_ONLY)
 			{
 				members_perms_t::iterator perm_it= it->getPermissions().find(client_id);
-				if (perm_it == it->getPermissions().end()
-					|| !(perm_it->second & Channel::INVITED))
+				if ((perm_it == it->getPermissions().end() || !(perm_it->second & Channel::INVITED))
+					&& !current_user.isOp())
 				{
 					rply = createNumericReply(ERR_INVITEONLYCHAN, current_user.getNick(),
 										it->getName(), ERR_INVITEONLYCHAN_MSG);
