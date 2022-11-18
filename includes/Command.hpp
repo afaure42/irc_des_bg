@@ -25,11 +25,6 @@ typedef std::list<std::string>			t_stringlist;
  * @param _cmd_type the command type/name
  * @param _params list of all parameters excluding command name
  * @param _numeric_return Numeric reply code :
- * 	All numeric replies return values in numeric_replies.hpp
- * 	Numeric return will be set to :
- * 	-1 if command doesnt exist
- * 	0 if command executed succesfully
- * 	>0 if command encountered an error
  */
 
 class Command;
@@ -38,7 +33,7 @@ class Command;
 typedef std::map<unsigned int, User>	t_users;
 // channels map
 typedef std::vector<Channel> 			t_channels;
-
+// functions map
 typedef unsigned int (*exec_fn) (
 		Command &,
 		unsigned int,
@@ -81,13 +76,13 @@ class Command
 	private:
 		// Internal variables
 		unsigned int			_chars_read;
-		exec_fn_map		&		_function_map;
+		exec_fn_map				&_function_map;
 		std::string				_cmd_name;
 		t_stringlist			_params;
 		int						_numeric_return;
-		Scheduler	&			_scheduler;
-		Server		&			_server;
-		const t_opers &			_operators;
+		Scheduler				&_scheduler;
+		Server					&_server;
+		const t_opers 			&_operators;
 		// Internal methods
 		void					_setupCommand(const std::string & raw_command);
 };

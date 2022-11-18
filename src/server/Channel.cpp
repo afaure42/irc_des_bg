@@ -97,10 +97,22 @@ void Channel::removeUser(User & user)
 std::ostream & operator<<(std::ostream& os, const Channel& channel)
 {
 	os << "Channel name:" << channel.getName() << std::endl;
-	os << "Channel is" <<
-		((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
-	<< " invite only" << std::endl
-	<< "Topic: " << channel.getTopic() << std::endl;
+	os << "Channel is" << ((channel.getModes() & Channel::ANONYMOUS) ? "" : " not")
+		<< " anonymous" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
+		<< " invite only" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::MODERATED) ? "" : " not")
+		<< " moderated" << std::endl
+	<< "Channel does" << ((channel.getModes() & Channel::NO_MSG_FROM_OUTSIDE) ? " not" : "")
+		<< " accept messages from outside" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::QUIET) ? "" : " not")
+		<< " quiet" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::PRIVATE) ? "" : " not")
+		<< " private" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::SECRET) ? "" : " not")
+		<< " secret" << std::endl
+	<< "Channel has " << ((channel.getModes() & Channel::TOPIC) ? "a" : "no")
+		<< " topic\tTopic: " << channel.getTopic() << std::endl;
 	os << "User_list<";
 	for(members_t::const_iterator it = channel.getMembers().begin();
 			it != channel.getMembers().end(); it++)

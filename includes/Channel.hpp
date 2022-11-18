@@ -7,6 +7,7 @@
 
 typedef std::map<unsigned int, User *> members_t; // id -> User
 typedef std::map<unsigned int, unsigned int> members_perms_t; // id -> permissions
+
 class Channel
 {
 	// The various modes available for channels are as follows:
@@ -33,12 +34,27 @@ class Channel
 	// 	e - set/remove an exception mask to override a ban mask;
 	// 	I - set/remove an invitation mask to automatically override
 	// 		the invite-only flag;
+	
     public:
 		Channel(const std::string & name);
 		Channel(const Channel & ref);
         Channel();
         ~Channel();
 		Channel & operator=(const Channel & ref);
+
+		//getters
+		members_t			&getMembers();
+		members_t	const	&getMembers() const;
+		members_perms_t 	&getPermissions();
+		std::string	const	&getName() const;
+		std::string	const	&getTopic() const;
+		unsigned int		getModes() const;
+
+
+		//setters
+		void		setName(std::string & name);
+		void		setTopic(std::string & topic);
+		void		setModes(const unsigned int & modes);
 
 		enum userPermissions {
 			CREATOR = 1, // O
@@ -56,21 +72,6 @@ class Channel
 			SECRET = 1 << 6, // s
 			TOPIC = 1 << 7 //t
 		};
-
-		//getters
-		members_t			&getMembers();
-		members_t	const	&getMembers() const;
-		members_perms_t 	&getPermissions();
-		std::string	const	&getName() const;
-		std::string	const	&getTopic() const;
-		unsigned int		getModes() const;
-
-
-		//setters
-		void		setName(std::string & name);
-		void		setTopic(std::string & topic);
-		void		setModes(const unsigned int & modes);
-
 
 		//METHODS
 
