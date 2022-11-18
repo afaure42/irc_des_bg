@@ -24,7 +24,8 @@ unsigned int	notice(	Command &command,
 	t_channels::iterator ch_it = findChannel(params.front(), channels);
 	if (ch_it != channels.end())
 	{
-		if(ch_it->getMembers().find(client_id) != ch_it->getMembers().end())
+		if(ch_it->getMembers().find(client_id) != ch_it->getMembers().end()
+			|| !(ch_it->getModes() & Channel::NO_MSG_FROM_OUTSIDE))
 			ch_it->send(command.getScheduler(), msg, client_id);
 	}
 	else//if no channel found then try to find user

@@ -64,9 +64,6 @@ unsigned int	join(	Command &command,
 		if(!it->getTopic().empty())
 			rply = createNumericReply(RPL_TOPIC, current_user.getNick(),
 							it->getName(), it->getTopic());
-		else
-			rply = createNumericReply(RPL_NOTOPIC, current_user.getNick(),
-							it->getName(), RPL_NOTOPIC_MSG);
 		command.getScheduler().queueMessage(client_id, rply, true);
 							
 		//launching names command
