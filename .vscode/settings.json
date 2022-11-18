@@ -63,6 +63,8 @@
 		"thread": "cpp",
 		"cinttypes": "cpp",
 		"valarray": "cpp",
-		"variant": "cpp"
+		"variant": "cpp",
+		"complex": "cpp",
+		"csignal": "cpp"
 	}
 }
