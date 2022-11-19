@@ -1,0 +1,18 @@
+MODE $NICK +o
+MODE $NICK +ooooooooo
+MODE $NICK +o-o+o-ooooooooo
+MODE $NICK +o///efwef
+MODE $NICK +o
+MODE badnick +o
+MODE $NICK +O
+JOIN #testchan
+MODE #testchan +aimnpst
+MODE #testchan -aimnpst
+MODE #testchan +a
+MODE #testchan -a
+MODE #testchan +invalidflags
+MODE #testchan +o $NICK
+MODE #testchan -o $NICK
+MODE #testchan +o $NICK
+MODE #testchan +zzeknfowe $NICK
+

@@ -42,4 +42,3 @@ PRIVMSG #testchan :spam time
 PRIVMSG #testchan :spam time
 PRIVMSG #testchan :spam time
 PRIVMSG #testchan :spam time
-PART #testchan
