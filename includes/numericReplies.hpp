@@ -201,7 +201,7 @@ const std::string	createNumericReply(
 #define ERR_BANLISTFULL_MSG		"Channel list is full"
 
 #define ERR_NOPRIVILEGES		481// <client> :<reason>
-#define ERR_NOPRIVILEGES_MSG	"Permission Denied- You're not an IRC operator"
+#define ERR_NOPRIVILEGES_MSG	"Permission Denied- Insufficient privileges"
 
 #define ERR_CHANOPRIVSNEEDED	482// <client> <channel> :<reason>
 #define ERR_CHANOPRIVSNEEDED_MSG "You're not channel operator"

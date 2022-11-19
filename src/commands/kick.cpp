@@ -113,6 +113,20 @@ unsigned int	kick(	Command &command,
 			continue;
 		}
 
+		// check for channel creator
+		unsigned int target_modes = ch_it->getPermissions().find(target_it->first)->second;
+		if (target_modes & Channel::CREATOR)
+		{
+			reply = createNumericReply(ERR_NOPRIVILEGES, current_user.getNick(),
+					ch_it->getName(), ERR_NOPRIVILEGES_MSG);
+			command.getScheduler().queueMessage(client_id, reply, true);
+			if (!single_channel)
+				channel_list.pop_front();
+			if (!single_user)
+				user_list.pop_front();
+			continue;
+		}
+		
 		//actual kicking
 		std::string kick_str = from + ch_it->getName() + " " + target_it->second.getNick()
 				+ " :" + msg + IRC_MSG_SEPARATOR;

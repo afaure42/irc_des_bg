@@ -168,8 +168,6 @@ unsigned int	createChannelMask(Command &command,
 		}
 		i++;
 	}
-	std::cout << "Avant " << reply_changes << std::endl;
-	std::cout << "Apres " << reply_changes << std::endl;
 	operation.erase(0, i);
 	return (flag);
 }

@@ -33,6 +33,6 @@ bool read_from_client(Client & client)
 		in_received = true;
 	}
 	std::cout << "Message received from connection:"
-	<< client.getId() << ":<" << client.getReadBuff() << ">\n";
+		<< client.getId() << ":" << client.getReadBuff();
 	return in_received;
 }

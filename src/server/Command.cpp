@@ -48,7 +48,6 @@ exec_fn_map & Command::getFunctionMap(void) {
 void	Command::_setupCommand(const std::string & raw_command) {
 	// If a separator is in buffer, do stuff
 	if (raw_command.find(IRC_MSG_SEPARATOR) != raw_command.npos) {
-		std::cout << "la\n";
 		std::string command = raw_command.substr(0, raw_command.find(IRC_MSG_SEPARATOR));
 		this->_chars_read = command.length() + std::strlen(IRC_MSG_SEPARATOR);
 		while (!command.empty()) {
@@ -60,7 +59,6 @@ void	Command::_setupCommand(const std::string & raw_command) {
 			else {
 				std::size_t space = command.find_first_of(' ');
 				if (space == command.npos) {
-					std::cout << "ici\n";
 					space = command.length();
 				}
 				this->_params.push_back(command.substr(0, space));
@@ -83,7 +81,6 @@ void	Command::execute(
 	t_channels		&channels)
 {
 	(void)channels;
-	std::cout << "Execution starts =>\t";
 	// TODO: using an iterator to .find(cmd_name) would make it possible to avoid
 	// having to use .find 2 times, but i can't make the syntax work
 	if (this->_function_map.find(this->_cmd_name) == this->_function_map.end()) {
@@ -91,7 +88,6 @@ void	Command::execute(
 		return;
 	}
 	else {
-		std::cout << "command "<<this->_cmd_name<<" execution\n";
 		this->_numeric_return =
 			this->_function_map.find(this->_cmd_name)->second(*this, client_id, users, channels);
 	}

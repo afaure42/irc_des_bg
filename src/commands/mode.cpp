@@ -3,17 +3,35 @@
 
 static void	sendModeReply(Command &command, User &current_user, std::string target, std::string changes)
 {
-	std::string reply = ":" + current_user.getFullName() + " MODE " + target + " :" + changes + IRC_MSG_SEPARATOR;
+	std::string changes_wo_dups = "";
+
+	for (std::string::iterator it = changes.begin(); it != changes.end(); it++)
+		if (changes_wo_dups.find(*it) == changes_wo_dups.npos)
+			changes_wo_dups.push_back(*it);
+	
+	std::string reply = ":" + current_user.getFullName() + " MODE " + target + " :" + changes_wo_dups + IRC_MSG_SEPARATOR;
 	command.getScheduler().queueMessage(current_user.getId(), reply, true);	
 }
 static void	sendModeReply(Command &command, User &current_user, Channel &chan, std::string changes, std::string target)
 {
-	std::string reply = ":" + current_user.getFullName() + " MODE " + chan.getName() + " :" + changes + " " + target + IRC_MSG_SEPARATOR;
+	std::string changes_wo_dups = "";
+
+	for (std::string::iterator it = changes.begin(); it != changes.end(); it++)
+		if (changes_wo_dups.find(*it) == changes_wo_dups.npos)
+			changes_wo_dups.push_back(*it);
+	
+	std::string reply = ":" + current_user.getFullName() + " MODE " + chan.getName() + " :" + changes_wo_dups + " " + target + IRC_MSG_SEPARATOR;
 	chan.send(command.getScheduler(), reply, 0);
 }
 static void	sendModeReply(Command &command, Channel &chan, User &current_user, std::string target, std::string changes)
 {
-	std::string reply = ":" + current_user.getFullName() + " MODE " + target + " :" + changes + IRC_MSG_SEPARATOR;
+	std::string changes_wo_dups = "";
+
+	for (std::string::iterator it = changes.begin(); it != changes.end(); it++)
+		if (changes_wo_dups.find(*it) == changes_wo_dups.npos)
+			changes_wo_dups.push_back(*it);
+	
+	std::string reply = ":" + current_user.getFullName() + " MODE " + target + " :" + changes_wo_dups + IRC_MSG_SEPARATOR;
 	chan.send(command.getScheduler(), reply, 0);
 }
 

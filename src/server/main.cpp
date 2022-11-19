@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		
 		setFunctionMap(function_map);
 		setOperatorMap(oper_map);
-		std::cout << "Init is Done\n";
+		std::cout << "Init is Done, server ready\n";
 		//init is done in the ctors so if any errors were to happen
 		//an exception would have been thrown by now
 
@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
 					std::string quit_cmd = "QUIT" + std::string(IRC_MSG_SEPARATOR);
 					Command command(function_map, oper_map, &quit_cmd, scheduler, server);
 
-					std::cout << "Client_id:" << it->second.getId()
-					<< " has disconnected unexpectedly\n";
+					// std::cout << "Client_id:" << it->second.getId()
+					// << " has disconnected unexpectedly\n";
 
 					command.execute((it)->second.getId(), users, channels);
 				}
@@ -95,9 +95,9 @@ int main(int argc, char *argv[])
 					Command command(function_map, oper_map, it->second.getBuff(), scheduler, server);
 					// Execuuuuute
 					command.execute(it->second.getId(), users, channels);
-					std::cout << "\n\nCOMMAND AFTER EXECUTION:\n" << command;
+					// std::cout << "\n\nCOMMAND AFTER EXECUTION:\n" << command;
 					if (command.getNumericReturn() != 0) {
-						std::cout << "sending numeric reply\n";
+						// std::cout << "sending numeric reply\n";
 						command.sendReplies(it->second.getId(), users, channels);
 					}
 					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
