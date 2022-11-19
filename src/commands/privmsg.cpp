@@ -69,7 +69,5 @@ unsigned int	privmsg(	Command &command,
 		else //no channel nor user found then return ERR
 			return (ERR_NOSUCHNICK);
 	}
-
-	std::cout << "PRIVMSG command execution\n";
 	return (0);
 }

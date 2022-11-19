@@ -10,8 +10,6 @@ unsigned int	pass(	Command &command,
 	(void)channels;
 	std::list<std::string> const	params = command.getParams();
 	User & current_user = users.at(client_id);
-	std::cout << "PASS command execution:\n";
-	// Error checking
 
 	if (current_user.isRegistered())
 		return (ERR_ALREADYREGISTERED);
@@ -22,8 +20,5 @@ unsigned int	pass(	Command &command,
 	// Error checking done ->
 	// set the password to the param given
 	current_user.setConnectPass(params.front());
-	std::cout << "password set is\"" << current_user.getConnectPass() << "\"\n";
-
-	std::cout << "execution succesful\n";
 	return (0);
 }

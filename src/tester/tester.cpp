@@ -10,12 +10,15 @@
 #define CONFIG_FILE_PATH	"./tester_files/config.test"
 
 static void	test_command(int socket_fd, std::string test_str);
-static void replace_tokens(std::string &str, const std::string &password,
-									const std::string &nick, const std::string &username);
+static void replace_tokens(std::string &str,
+							const std::string &password,
+							const std::string &nick,
+							const std::string &username,
+							const std::string &fullname);
 
 
 static void launch_tests(int socket_fd, const std::string &password,
-	const std::string &nick, const std::string &username, char **test_files)
+	const std::string &nick, const std::string &username, const std::string &fullname, char **test_files)
 {
 	std::string	msg;
 
@@ -30,7 +33,7 @@ static void launch_tests(int socket_fd, const std::string &password,
 				if (!test_msg.empty() && test_msg.at(0) != '#') {
 					if (*(test_msg.end() - 1) == '\n')
 						test_msg.erase(test_msg.size() - 1); //remove trailing \n
-					replace_tokens(test_msg, password, nick, username);
+					replace_tokens(test_msg, password, nick, username, fullname);
 					std::cout << "======== TESTER: Sending command [" << test_msg << "] =========\n"; 
 					test_msg += IRC_MSG_SEPARATOR;
 					test_command(socket_fd, test_msg);
@@ -42,8 +45,11 @@ static void launch_tests(int socket_fd, const std::string &password,
 	}
 }
 
-static void replace_tokens(std::string &str, const std::string &password,
-									const std::string &nick, const std::string &username)
+static void replace_tokens(std::string &str,
+							const std::string &password,
+							const std::string &nick,
+							const std::string &username,
+							const std::string &fullname)
 {
 	size_t ret;
 	while ((ret = str.find("$PASSWORD")) != str.npos)
@@ -52,6 +58,8 @@ static void replace_tokens(std::string &str, const std::string &password,
 		str.replace(ret, 5, nick);
 	while ((ret = str.find("$USERNAME")) != str.npos)
 		str.replace(ret, 9, username);
+	while ((ret = str.find("$FULLNAME")) != str.npos)
+		str.replace(ret, 9, fullname);
 }
 
 static void	test_command(int socket_fd, std::string test_str)
@@ -74,7 +82,7 @@ static void	test_command(int socket_fd, std::string test_str)
 }
 
 static bool	init_tester_config(int &port, std::string &password,
-	std::string &nick, std::string &username)
+	std::string &nick, std::string &username, std::string &fullname)
 {
 	std::string		rl_str;
 	std::ifstream	infile(CONFIG_FILE_PATH);
@@ -90,10 +98,12 @@ static bool	init_tester_config(int &port, std::string &password,
 				nick = rl_str;
 			else if (init_count == 3)
 				username = rl_str;
+			else if (init_count == 4)
+				fullname = rl_str;
 			init_count++;
 		}
 	}
-	return (init_count == 4);
+	return (init_count == 5);
 }
 
 int main(int ac, char **av)
@@ -104,14 +114,14 @@ int main(int ac, char **av)
 	}
 
 	int	port;
-	std::string	password, nick, username;
+	std::string	password, nick, username, fullname;
 
 	if (std::strncmp(av[1], "-help", 6) == 0) {
 		std::cout << "USAGE: ./tester {-help} ...[test_files]\n"
 			<< "Config file is ./tester_files/config.test\n";
 	}
 
-	if (init_tester_config(port, password, nick, username) == false) {
+	if (init_tester_config(port, password, nick, username, fullname) == false) {
 		std::cout << "Config error\n";
 		return (EXIT_FAILURE);
 	}
@@ -149,7 +159,7 @@ int main(int ac, char **av)
 		std::cerr << e.what() << '\n';
 	}
 
-	launch_tests(socket_fd, password, nick, username, av);
+	launch_tests(socket_fd, password, nick, username, fullname, av);
 		// Close the socket:
 	std::cout << "Tests end, closing server connexion\n";
 	close(socket_fd);

@@ -46,12 +46,12 @@ exec_fn_map & Command::getFunctionMap(void) {
 // extract the substring(s), and the program must
 // delete the buffer up until that point 
 void	Command::_setupCommand(const std::string & raw_command) {
-	// If a separator is in buffer, do stuff
+	// If separator is in buffer, do stuff
 	if (raw_command.find(IRC_MSG_SEPARATOR) != raw_command.npos) {
 		std::string command = raw_command.substr(0, raw_command.find(IRC_MSG_SEPARATOR));
+		std::cout << "IRC message received: " << command << std::endl;
 		this->_chars_read = command.length() + std::strlen(IRC_MSG_SEPARATOR);
 		while (!command.empty()) {
-			// We dont support prefixes but it should be here first
 			if (command.at(0) == ':') {
 				this->_params.push_back(command);
 				command.erase();
@@ -65,10 +65,10 @@ void	Command::_setupCommand(const std::string & raw_command) {
 				command.erase(0, space + 1);
 			}
 		}
-	}
-	if (!this->_params.empty()) {
-		this->_cmd_name = this->_params.front();
-		this->_params.pop_front();
+		if (!this->_params.empty()) {
+			this->_cmd_name = this->_params.front();
+			this->_params.pop_front();
+		}
 	}
 }
 
@@ -81,8 +81,6 @@ void	Command::execute(
 	t_channels		&channels)
 {
 	(void)channels;
-	// TODO: using an iterator to .find(cmd_name) would make it possible to avoid
-	// having to use .find 2 times, but i can't make the syntax work
 	if (this->_function_map.find(this->_cmd_name) == this->_function_map.end()) {
 		this->_numeric_return = ERR_UNKNOWNCOMMAND;
 		return;
