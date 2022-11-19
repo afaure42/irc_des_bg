@@ -91,24 +91,26 @@ int main(int argc, char *argv[])
 				}
 				else if (!it->second.getBuff()->empty())
 				{
-					// parse and create command
-					Command command(function_map, oper_map, it->second.getBuff(), scheduler, server);
-					// Execuuuuute
-					command.execute(it->second.getId(), users, channels);
-					// std::cout << "\n\nCOMMAND AFTER EXECUTION:\n" << command;
-					if (command.getNumericReturn() != 0) {
-						// std::cout << "sending numeric reply\n";
-						command.sendReplies(it->second.getId(), users, channels);
-					}
-					// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
+					if (it->second.getBuff()->find(IRC_MSG_SEPARATOR) != it->second.getBuff()->npos) {
+						// parse and create command
+						Command command(function_map, oper_map, it->second.getBuff(), scheduler, server);
+						// Execuuuuute
+						command.execute(it->second.getId(), users, channels);
+						// std::cout << "\n\nCOMMAND AFTER EXECUTION:\n" << command;
+						if (command.getNumericReturn() != 0) {
+							// std::cout << "sending numeric reply\n";
+							command.sendReplies(it->second.getId(), users, channels);
+						}
+						// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
 
-					//do not forget to remove what you have processed from the read buffer
-					//i recommend reading a little bit about erase method for std::string
-					if (it->second.isConnected())
-					{
-						it->second.getBuff()->erase(0, command.getCharsRead());
-						if (it->second.getBuff()->find(IRC_MSG_SEPARATOR) != it->second.getBuff()->npos)
-							continue; //to keep processing
+						//do not forget to remove what you have processed from the read buffer
+						//i recommend reading a little bit about erase method for std::string
+						if (it->second.isConnected())
+						{
+							it->second.getBuff()->erase(0, command.getCharsRead());
+							if (it->second.getBuff()->find(IRC_MSG_SEPARATOR) != it->second.getBuff()->npos)
+								continue; //to keep processing
+						}
 					}
 				}
 				updates.erase(it++);

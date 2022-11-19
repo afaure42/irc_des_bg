@@ -41,8 +41,6 @@ std::string createChanModeString(Channel & channel)
 		ret += 'm';
 	if (modes & Channel::NO_MSG_FROM_OUTSIDE)
 		ret += 'n';
-	if (modes & Channel::QUIET)
-		ret += 'q';
 	if (modes & Channel::PRIVATE)
 		ret += 'p';
 	if (modes & Channel::SECRET)
