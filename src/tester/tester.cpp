@@ -151,5 +151,6 @@ int main(int ac, char **av)
 
 	launch_tests(socket_fd, password, nick, username, av);
 		// Close the socket:
+	std::cout << "Tests end, closing server connexion\n";
 	close(socket_fd);
 }

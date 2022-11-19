@@ -1,0 +1,9 @@
+JOIN #test
+MODE #test +a
+MODE #test -a
+MODE #test +az
+MODE #test -za
+MODE #test +o $NICK
+MODE #test +o wifnowenfwe
+MODE #test -o $NICK
+MODE #test +o $NICK
