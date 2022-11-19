@@ -9,6 +9,8 @@ unsigned int	oper(	Command &command,
 	(void)channels;
 	t_stringlist	params = command.getParams();
 	User & current_user = users.at(client_id);
+	std::string reply = ":" + current_user.getNick()+ " MODE "
+						+ current_user.getNick() + " +o\r\n";
 
 	if (!current_user.isRegistered())
 		return (ERR_NOTREGISTERED);
@@ -22,6 +24,7 @@ unsigned int	oper(	Command &command,
 		return (ERR_PASSWDMISMATCH);
 	
 	//now password is ok
-	current_user.setOperator();
+	current_user.setOperatorStatus(true);
+	command.getScheduler().queueMessage(client_id, reply, true);
 	return (RPL_YOUREOPER);
 }

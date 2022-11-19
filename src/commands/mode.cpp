@@ -1,56 +1,25 @@
 #include "functionMap.hpp"
+#include "modes.hpp"
 
-// unsigned int	modeUser(User &current_user, std::string &target,
-// 							t_stringlist &params, t_channels &channels)
-// {
-	
-// }
-
-static void	updateChannelFlags(Channel &channel, unsigned int operation_type, char c)
+static void	sendModeReply(Command &command, User &current_user, std::string target, std::string changes)
 {
-	unsigned int	channel_flags = channel.getModes();
-	unsigned int	flag = 0;
-
-	switch (c)
-	{
-		case 'a':
-			flag = Channel::ANONYMOUS;
-			break;
-		case 'i':
-			flag = Channel::INVITE_ONLY;
-			break;
-		case 'm':
-			flag = Channel::MODERATED;
-			break;
-		case 'n':
-			flag = Channel::NO_MSG_FROM_OUTSIDE;
-			break;
-		case 'q':
-			flag = Channel::QUIET;
-			break;
-		case 'p':
-			flag = Channel::PRIVATE;
-			break;
-		case 's':
-			flag = Channel::SECRET;
-			break;
-		case 't':
-			flag = Channel::TOPIC;
-			break;
-	}
-
-	std::cout << "updating channel modes, from " << channel_flags << " to ";
-	if (operation_type == 1)
-		channel_flags |= flag;
-	else if (operation_type == 2)
-		channel_flags &= ~flag;
-	std::cout << channel_flags << std::endl;
-	channel.setModes(channel_flags);
+	std::string reply = ":" + current_user.getFullName() + " MODE " + target + " :" + changes + IRC_MSG_SEPARATOR;
+	command.getScheduler().queueMessage(current_user.getId(), reply, true);	
+}
+static void	sendModeReply(Command &command, User &current_user, Channel &chan, std::string changes, std::string target)
+{
+	std::string reply = ":" + current_user.getFullName() + " MODE " + chan.getName() + " :" + changes + " " + target + IRC_MSG_SEPARATOR;
+	chan.send(command.getScheduler(), reply, 0);
+}
+static void	sendModeReply(Command &command, Channel &chan, User &current_user, std::string target, std::string changes)
+{
+	std::string reply = ":" + current_user.getFullName() + " MODE " + target + " :" + changes + IRC_MSG_SEPARATOR;
+	chan.send(command.getScheduler(), reply, 0);
 }
 
 unsigned int	modeChannel(Command &command,
+							t_users &users,
 							t_stringlist &params,
-							unsigned int client_id,
 							std::string &channel_name,
 							User &current_user,
 							t_channels &channels)
@@ -62,37 +31,93 @@ unsigned int	modeChannel(Command &command,
 	if (ch_it == channels.end()) {
 		numeric_reply = createNumericReply(ERR_NOSUCHCHANNEL, current_user.getNick(),
 						channel_name, ERR_NOSUCHCHANNEL_MSG);
-		command.getScheduler().queueMessage(client_id, numeric_reply, true);
+		command.getScheduler().queueMessage(current_user.getId(), numeric_reply, true);
 	}
 	// User not on channel
-	else if (ch_it->getMembers().find(client_id) == ch_it->getMembers().end()) {
+	else if (ch_it->getMembers().find(current_user.getId()) == ch_it->getMembers().end()) {
 		numeric_reply = createNumericReply(ERR_NOTONCHANNEL, current_user.getNick(),
 						channel_name, ERR_NOTONCHANNEL_MSG);
-		command.getScheduler().queueMessage(client_id, numeric_reply, true);
+		command.getScheduler().queueMessage(current_user.getId(), numeric_reply, true);
 	}
 	else if (params.empty()) {
-			; // list all activated modes on channel (??)
+		numeric_reply = createNumericReply(RPL_CHANNELMODEIS, current_user.getNick(),
+				ch_it->getName(), createChanModeString(*ch_it));
+		command.getScheduler().queueMessage(current_user.getId(), numeric_reply, true);
 	}
 	else {
 		// Privileges check, so 2022
-		members_perms_t::iterator	user_perm_it = ch_it->getPermissions().find(client_id);
+		members_perms_t::iterator	user_perm_it = ch_it->getPermissions().find(current_user.getId());
 		if (user_perm_it == ch_it->getPermissions().end() || !(user_perm_it->second & Channel::OPERATOR)) {
 			numeric_reply = createNumericReply(ERR_CHANOPRIVSNEEDED, current_user.getNick(),
 			ch_it->getName(), ERR_CHANOPRIVSNEEDED_MSG);
-			command.getScheduler().queueMessage(client_id, numeric_reply, true);
+			command.getScheduler().queueMessage(current_user.getId(), numeric_reply, true);
 		}
 		else {
 			unsigned int	operation_type = 0; // 0 = list, 1 = add, 2 = delete
 			std::string		chan_operation = params.front();
+			params.pop_front();
 			while (!chan_operation.empty()) {
 				if (chan_operation[0] == '+') {
 					operation_type = 1;
+					chan_operation.erase(0, 1);
 				} else if (chan_operation[0] == '-') {
 					operation_type = 2;
+					chan_operation.erase(0, 1);
 				} else {
-					updateChannelFlags(*ch_it, operation_type, chan_operation[0]);
+					unsigned int 	mask = 0;
+					std::string		reply_changes = operation_type == 1 ? "+" : operation_type == 2 ? "-" : "";
+					if (!params.empty()) {
+						mask = createChanUserPermMask(command, current_user, chan_operation, reply_changes);
+						if (mask && updateChannelUserPerms(command, users, *ch_it, current_user, params.front(), mask, operation_type))
+							sendModeReply(command, current_user, *ch_it, reply_changes, params.front());
+					}
+					else {
+						mask = createChannelMask(command, current_user, chan_operation, reply_changes);
+						if (mask != 0) {
+							updateChannelModes(*ch_it, mask, operation_type);
+							sendModeReply(command, *ch_it, current_user, channel_name, reply_changes);
+						}
+					}
 				}
+			}
+		}
+	}
+	return (0);
+}
+
+unsigned int	modeUser(Command &command,
+							User &current_user,
+							t_stringlist &params,
+							std::string target)
+{
+	std::string reply;
+
+	if (current_user.getNick() != target) {
+		reply = createNumericReply(ERR_USERSDONTMATCH, current_user.getNick(),
+									target, ERR_USERSDONTMATCH_MSG);
+		command.getScheduler().queueMessage(current_user.getId(), reply, true);
+	}
+	else if (params.empty()) {
+		reply = createNumericReply(RPL_UMODEIS, current_user.getNick(),
+				"", createUserModeString(current_user));
+		command.getScheduler().queueMessage(current_user.getId(), reply, true);
+	}
+	else {
+		unsigned int	operation_type = 0; // 0 = list, 1 = add, 2 = delete
+		std::string		chan_operation = params.front();
+		params.pop_front();
+		while (!chan_operation.empty()) {
+			if (chan_operation[0] == '+') {
+				operation_type = 1;
 				chan_operation.erase(0, 1);
+			} else if (chan_operation[0] == '-') {
+				operation_type = 2;
+				chan_operation.erase(0, 1);
+			} else {
+				std::string reply_changes = operation_type == 1 ? "+" : operation_type == 2 ? "-" : "";
+				unsigned int mask = createUserMask(command, current_user, chan_operation, reply_changes);
+				updateUserModes(current_user, mask, operation_type);
+				sendModeReply(command, current_user, target, reply_changes);
 			}
 		}
 	}
@@ -110,18 +135,18 @@ unsigned int	mode(	Command &command,
 	if (params.empty())
 		return (ERR_NEEDMOREPARAMS);
 
-	User 					&current_user = users.at(client_id);
+	User &current_user = users.at(client_id);
 
 	if (!current_user.isRegistered())
 		return (ERR_NOTREGISTERED);
 
-	const std::string		user_nick = current_user.getNick();
-	std::string				&target = params.front();
+	const std::string	user_nick = current_user.getNick();
+	std::string			target = params.front();
 
 	params.pop_front();
 	if (target[0] == '#')
-		return modeChannel(command, params, client_id, target, current_user, channels);
-	// else
-	// 	return modeUser(current_user, target, params, channels);
+		return modeChannel(command, users, params, target, current_user, channels);
+	else
+		return modeUser(command, current_user, params, target);
 	return (0);
 }

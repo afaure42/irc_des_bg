@@ -94,18 +94,35 @@ void Channel::removeUser(User & user)
 	this->_permissions.erase(user.getId());
 }
 
-std::ostream & operator<<(std::ostream& os, const Channel& channel)
+std::ostream & operator<<(std::ostream& os, Channel& channel)
 {
 	os << "Channel name:" << channel.getName() << std::endl;
-	os << "Channel is" <<
-		((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
-	<< " invite only" << std::endl
-	<< "Topic: " << channel.getTopic() << std::endl;
-	os << "User_list<";
-	for(members_t::const_iterator it = channel.getMembers().begin();
+	os << "Channel is" << ((channel.getModes() & Channel::ANONYMOUS) ? "" : " not")
+		<< " anonymous" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::INVITE_ONLY) ? "" : " not")
+		<< " invite only" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::MODERATED) ? "" : " not")
+		<< " moderated" << std::endl
+	<< "Channel does" << ((channel.getModes() & Channel::NO_MSG_FROM_OUTSIDE) ? " not" : "")
+		<< " accept messages from outside" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::QUIET) ? "" : " not")
+		<< " quiet" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::PRIVATE) ? "" : " not")
+		<< " private" << std::endl
+	<< "Channel is" << ((channel.getModes() & Channel::SECRET) ? "" : " not")
+		<< " secret" << std::endl
+	<< "Channel has " << ((channel.getModes() & Channel::TOPIC) ? "a" : "no")
+		<< " topic\tTopic: " << channel.getTopic() << std::endl;
+	os << "Channel user list:\n";
+	unsigned int userPerms = 0;
+	for (members_t::const_iterator it = channel.getMembers().begin();
 			it != channel.getMembers().end(); it++)
 	{
-		os << '[' << it->second->getNick() << ']';
+		userPerms = channel.getPermissions().at(it->second->getId());
+		os << "User [" << it->second->getNick() << "]\n"
+			<< "\tIs " << (userPerms & Channel::CREATOR ? "":"not") << " the channel creator\n"
+			<< "\tIs " << (userPerms & Channel::OPERATOR ? "":"not") << " a channel operator\n"
+			<< "\tHas " << (userPerms & Channel::CREATOR ? "":"no") << " voice privilege\n";
 	}
 	os << '>' << std::endl;
 

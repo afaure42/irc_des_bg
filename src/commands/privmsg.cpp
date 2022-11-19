@@ -30,12 +30,25 @@ unsigned int	privmsg(	Command &command,
 	t_channels::iterator ch_it = findChannel(params.front(), channels);
 	if (ch_it != channels.end())
 	{
-		if(ch_it->getMembers().find(client_id) != ch_it->getMembers().end())
+		members_perms_t::iterator perm_it = ch_it->getPermissions().find(client_id);
+		bool to_send = true;
+		//checking if user it not on channel and outside msg are forbidden
+		if (perm_it == ch_it->getPermissions().end() 
+			&& ch_it->getModes() & Channel::NO_MSG_FROM_OUTSIDE)
+			to_send = false;
+		//checking if channel is moderated and user doesnt have rights to speak
+		if (perm_it != ch_it->getPermissions().end()
+			&& ch_it->getModes() & Channel::MODERATED
+			&& !(perm_it->second & Channel::VOICE)
+			&& !(perm_it->second & Channel::OPERATOR))
+			to_send = false;
+
+		if (to_send)
 			ch_it->send(command.getScheduler(), msg, client_id);
 		else
 		{
 			std::string rply = createNumericReply(ERR_CANNOTSENDTOCHAN,
-							current_user.getNick(), "", ERR_CANNOTSENDTOCHAN_MSG);
+							current_user.getNick(), ch_it->getName(), ERR_CANNOTSENDTOCHAN_MSG);
 			command.getScheduler().queueMessage(client_id, rply, true);
 		}
 	}

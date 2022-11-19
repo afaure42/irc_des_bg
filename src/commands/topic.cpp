@@ -11,7 +11,7 @@ void sendTopic(Scheduler & scheduler, User & current_user, Channel & channel)
 	}
 	else
 	{
-		reply = createNumericReply(RPL_TOPIC, current_user.getNick(),
+		reply = createNumericReply(RPL_NOTOPIC, current_user.getNick(),
 				channel.getName(), RPL_NOTOPIC_MSG);
 	}
 	scheduler.queueMessage(current_user.getId(), reply, true);

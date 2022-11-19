@@ -45,7 +45,7 @@ class Channel
 		//getters
 		members_t			&getMembers();
 		members_t	const	&getMembers() const;
-		members_perms_t 	&getPermissions();
+		members_perms_t  	&getPermissions();
 		std::string	const	&getName() const;
 		std::string	const	&getTopic() const;
 		unsigned int		getModes() const;
@@ -112,4 +112,4 @@ class Channel
 		members_perms_t _permissions;
 };
 
-std::ostream& operator<<(std::ostream& os, const Channel& channel);
+std::ostream& operator<<(std::ostream& os, Channel& channel);
