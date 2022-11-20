@@ -123,7 +123,7 @@ void Server::waitAndAccept(Scheduler & scheduler)
 			|| ev[i].events & EPOLLERR
 			|| ev[i].events & EPOLLHUP)
 		{
-			std::cout << "EPOLLHUP for id:" << current_client.getId() << '\n';
+			// std::cout << "EPOLLHUP for id:" << current_client.getId() << '\n';
 			scheduler.addToUpdates(Update(current_client.getId(), NULL, false));
 			current_client.setConnected(false);
 			current_client.setReadable(false);
