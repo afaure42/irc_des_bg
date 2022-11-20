@@ -70,6 +70,10 @@ const std::string	createNumericReply(
 #define RPL_VERSION				351
 #define RPL_VERSION_MSG			"Best version ever"
 
+#define RPL_WHOREPLY			352
+#define RPL_ENDOFWHO			315
+#define RPL_ENDOFWHO_MSG		"End of WHO list"
+
 #define RPL_NAMREPLY			353
 #define RPL_ENDOFNAMES			366
 #define RPL_ENDOFNAMES_MSG		"End of /NAMES list"

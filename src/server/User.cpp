@@ -101,6 +101,9 @@ std::string	const	&User::getNick(void) const {
 std::string	const	&User::getUsername(void) const {
 	return (this->_usrname);
 }
+std::string const	&User::getRealname(void) const {
+	return (this->_realname);
+}
 std::string const	&User::getOldNick(void) const {
 	return this->_old_nick;
 }
