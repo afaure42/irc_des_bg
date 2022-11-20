@@ -19,7 +19,7 @@ unsigned int	oper(	Command &command,
 	
 	t_opers::const_iterator op_it = command.getOperators().find(params.front());
 	if (op_it == command.getOperators().end())
-		return (0);
+		return (ERR_PASSWDMISMATCH);
 	if (op_it->second != *(++params.begin()))
 		return (ERR_PASSWDMISMATCH);
 	

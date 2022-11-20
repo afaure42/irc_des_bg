@@ -175,7 +175,7 @@ const std::string	createNumericReply(
 #define ERR_ALREADYREGISTERED_MSG "You may not reregister"
 
 #define ERR_PASSWDMISMATCH		464 // <client> :<reason>
-#define ERR_PASSWDMISMATCH_MSG	"Password incorrect"
+#define ERR_PASSWDMISMATCH_MSG	"Name/Password incorrect"
 
 #define ERR_KEYSET				467 // <client> <channel> :<reason>
 #define ERR_KEYSET_MSG			"Channel key already set"
