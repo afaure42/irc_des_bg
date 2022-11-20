@@ -34,7 +34,7 @@ unsigned int	kick(	Command &command,
 
 	if (!params.empty() && params.front()[0] == ':')
 		params.front().erase(0, 1);
-	if (params.empty() && !params.front().empty())
+	if (!params.empty() && !params.front().empty())
 		msg = params.front();
 
 	while (user_list.size() != 0 && channel_list.size() != 0)
