@@ -33,9 +33,9 @@
 
 #define EVENTS_SIZE 100
 #define MAX_CONNECTIONS_LISTN 20
-#define USR_EVENT_FLAGS EPOLLIN | EPOLLOUT | EPOLLET | EPOLLRDHUP
+#define USR_EVENT_FLAGS EPOLLIN | EPOLLOUT | EPOLLRDHUP
 #define READ_SIZE 128
-#define WRITE_SIZE 128
+#define WRITE_SIZE 512
 
 // will be changed to the real thing after
 #define IRC_MSG_SEPARATOR "\r\n"

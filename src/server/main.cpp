@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
 
 			// std::cout << "Writing\n";
 			//WRITING STEP
-			// server.waitAndAccept(scheduler);
+			server.waitAndAccept(scheduler);
 			scheduler.writeAll();
 
 		}

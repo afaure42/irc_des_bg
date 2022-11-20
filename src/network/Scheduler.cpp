@@ -45,6 +45,13 @@ void Scheduler::readAll(void)
 	//read from client
 	while (it != this->_read.end())
 	{
+		if (this->_server.getClient(*it).isReadable())
+		{
+			if (read_from_client(this->_server.getClient(*it)))
+				this->_updates[*it] = Update(this->_server.getClient(*it));
+			this->_read.erase(*(it++));
+		}
+		/*
 		//if something changed (deconnexion or data received)
 		if (read_from_client(this->_server.getClient(*it)))
 			this->_updates[*it] = Update(this->_server.getClient(*it));
@@ -52,7 +59,7 @@ void Scheduler::readAll(void)
 		
 		//if we cant read anymore, we will remove it from the read_list
 		else if (!this->_server.getClient(*it).isReadable())
-			this->_read.erase(*(it++));
+		*/
 		else
 			it++;
 	}
@@ -65,7 +72,8 @@ void Scheduler::writeAll(void)
 	while (it != this->_write.end())
 	{
 		//if client is writeable
-		if (this->_server.getClient(*it).isWriteable())
+		if (this->_server.getClient(*it).isWriteable()
+			&& !this->_server.getClient(*it).getWriteBuff().empty())
 			write_to_client(this->_server.getClient(*it));
 
 		//if buffer empty remove from write queue
