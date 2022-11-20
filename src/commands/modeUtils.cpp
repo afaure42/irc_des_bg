@@ -121,9 +121,9 @@ unsigned int	createUserMask(Command &command,
 }
 
 unsigned int	createChannelMask(Command &command,
-										User &current_user,
-										std::string &operation,
-										std::string &reply_changes)
+									User &current_user,
+									std::string &operation,
+									std::string &reply_changes)
 {
 	unsigned int	flag = 0;
 	std::string		reply;

@@ -52,7 +52,7 @@ static void	send_command(int socket_fd, std::string command)
         return;
 	}
 	
-	usleep(100000);
+	// usleep(100000);
     // Receive the server's response:
 	int read_ret = 0;
 	while ((read_ret = read(socket_fd, server_response, BUFFER_LEN)) >= 0) {
@@ -147,17 +147,13 @@ static void	login_client(struct tester_client_s tc)
 
 int main(int ac, char **av)
 {
-	if (ac < 2) {
-		std::cout << "USAGE: ./tester {-help} ...[test_files]\n";
-		return (EXIT_FAILURE);
+	if (ac < 2 || std::strncmp(av[1], "-help", 6) == 0) {
+		std::cout << "USAGE: ./tester {-help} ...[test_files] OR ./tester -st\n"
+			<< "Config file is ./tester_files/config.test\n";
+		return (0);
 	}
 
 	struct tester_client_info_s	tci;
-
-	if (std::strncmp(av[1], "-help", 6) == 0) {
-		std::cout << "USAGE: ./tester {-help} ...[test_files] OR ./tester -st\n"
-			<< "Config file is ./tester_files/config.test\n";
-	}
 
 	if (init_tester_config(tci) == false) {
 		std::cout << "Config error\n";
@@ -180,10 +176,10 @@ int main(int ac, char **av)
 		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++)
 			for (size_t i = 0; i < STRESSTEST_MSG_N; i++) {
 				send_command(it->socket_fd, "PRIVMSG #test :spam!!");
-				usleep(10000);
+				// usleep(10000);
 			}
 		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++) {
-			usleep(10000);
+			// usleep(10000);
 			close(it->socket_fd);
 		}
 	}
