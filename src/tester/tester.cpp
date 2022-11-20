@@ -183,8 +183,10 @@ int main(int ac, char **av)
 				send_command(it->socket_fd, "PRIVMSG #test :spam!!");
 				usleep(10000);
 			}
-		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++)
+		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++) {
+			usleep(10000);
 			close(it->socket_fd);
+		}
 	}
 
 	// int					socket_fd;
