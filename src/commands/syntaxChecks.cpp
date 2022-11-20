@@ -49,8 +49,7 @@ static bool isValidChanstring(const std::string & chanstring)
 	
 	for(size_t i = 0; i < chanstring.length(); i++)
 	{
-		if (ForbiddenChanCharSet.find(chanstring[i])
-			!= ForbiddenChanCharSet.npos)
+		if (!isalnum(chanstring[i]))
 			return false;
 	}
 	return true;
