@@ -55,6 +55,9 @@ unsigned int	user(	Command &command,
 	current_user.setHostName(command.getServer().getClientHost(client_id));
 
 	//setting realname
+	//removing beginning ":" chars
+	if (!params.front().empty() && params.front()[0] == ':')
+		params.front().erase(0, 1);
 	current_user.setRealname(params.front());
 
 	current_user.setRegistered();
