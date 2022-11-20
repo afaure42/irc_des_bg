@@ -10,6 +10,18 @@ static bool isSpecialChar(const char & c) {
 	return (SpecialCharSet.find(c) != SpecialCharSet.npos);
 }
 
+bool isValidRealName(const std::string & name)
+{
+	if (name.length() > 30)
+		return false;
+	
+	for(size_t i = 0; i < name.length(); i++)
+	{
+		if (!std::isalnum(name[i]) && name[i] != ' ')
+			return false;
+	}
+	return true;
+}
 
 // nickname   =  ( letter / special ) *8( letter / digit / special / "-" )
 bool isValidNick(const std::string & nick)

@@ -58,6 +58,16 @@ unsigned int	user(	Command &command,
 	//removing beginning ":" chars
 	if (!params.front().empty() && params.front()[0] == ':')
 		params.front().erase(0, 1);
+
+	if (!isValidRealName(params.front()))
+	{
+		command.getScheduler().queueMessage(client_id, "ERROR :INVALID REALNAME\r\n", false);
+
+		command.getScheduler().writeAll();
+		freeUser(client_id, command.getServer(),
+					command.getScheduler(), users);
+		return (0);	
+	}
 	current_user.setRealname(params.front());
 
 	current_user.setRegistered();

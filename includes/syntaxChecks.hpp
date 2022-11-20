@@ -10,3 +10,4 @@
 bool isValidChannel(const std::string & channel);
 bool isValidUser(const std::string & user);
 bool isValidNick(const std::string & nick);
+bool isValidRealName(const std::string & name);
