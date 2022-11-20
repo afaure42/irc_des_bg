@@ -10,9 +10,10 @@ NICK name$l
 
 # invalid USER command
 PASS $PASSWORD
-NICK $NICK
+NICK invalid
 USER $USERNAME 0
 
+# valid login
 PASS $PASSWORD
 NICK $NICK
 USER $NICK $USERNAME 0 :$FULLNAME

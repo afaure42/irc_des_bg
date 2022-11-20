@@ -6,39 +6,7 @@ PRIVMSG #testchan :coucou
 PRIVMSG jexistepas
 PRIVMSG jexistepas :
 PRIVMSG jexistepas :test
-PRIVMSG #testchan trop d'arguments
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
-PRIVMSG #testchan :spam time
+PRIVMSG #test trop d'arguments
+PRIVMSG #test :spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time spam time
+
+

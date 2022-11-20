@@ -52,7 +52,7 @@ static void	send_command(int socket_fd, std::string command)
         return;
 	}
 	
-	// usleep(100000);
+	usleep(1000);
     // Receive the server's response:
 	int read_ret = 0;
 	while ((read_ret = read(socket_fd, server_response, BUFFER_LEN)) >= 0) {
@@ -176,10 +176,8 @@ int main(int ac, char **av)
 		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++)
 			for (size_t i = 0; i < STRESSTEST_MSG_N; i++) {
 				send_command(it->socket_fd, "PRIVMSG #test :spam!!");
-				// usleep(10000);
 			}
 		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++) {
-			// usleep(10000);
 			close(it->socket_fd);
 		}
 	}

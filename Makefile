@@ -1,4 +1,4 @@
-NAME	= irc_des_bg
+NAME	= ft_irc
 TESTER	= tester
 CC		= c++
 FLAGS	= -Wall -Wextra -Werror -MMD -std=c++98 -g3

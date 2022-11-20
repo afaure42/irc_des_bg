@@ -14,6 +14,17 @@ void sigint_handler(int sig)
 	throw std::exception();
 }
 
+static bool isValidPass(std::string &password) {
+	if (password.length() < 4 || password.length() > 16)
+		return false;
+
+	for (std::string::iterator it = password.begin(); it != password.end(); it++)
+		if (!std::isalnum(*it))
+			return false;
+
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc != 3)
@@ -21,8 +32,21 @@ int main(int argc, char *argv[])
 		std::cout << "USAGE : ./program <port> <password>\n";
 		return EXIT_FAILURE;
 	}
+	std::string verify_port(argv[1]);
+	if (verify_port.find_first_not_of("0123456789") != verify_port.npos) {
+		std::cout << "Invalid port parameter\n";
+		return EXIT_FAILURE;
+	}
 	int port = std::atoi(argv[1]);
+	if (port < 0 || port > 65535) {
+		std::cout << "Invalid port parameter\n";
+		return EXIT_FAILURE;
+	}
 	std::string pass = std::string(argv[2]);
+	if (!isValidPass(pass)) {
+		std::cout << "Invalid password, must be between 4 and 16 alphanumeric characters\n";
+		return EXIT_FAILURE;
+	}
 	std::signal(SIGINT, sigint_handler);
 
 	//every actions is in a try catch block
@@ -38,7 +62,7 @@ int main(int argc, char *argv[])
 		
 		setFunctionMap(function_map);
 		setOperatorMap(oper_map);
-		std::cout << "Init is Done, server ready\n";
+		std::cout << "Init is Done, server ready on port " << port << std::endl;
 		//init is done in the ctors so if any errors were to happen
 		//an exception would have been thrown by now
 
