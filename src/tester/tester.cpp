@@ -177,6 +177,7 @@ int main(int ac, char **av)
 			for (size_t i = 0; i < STRESSTEST_MSG_N; i++) {
 				send_command(it->socket_fd, "PRIVMSG #test :spam!!");
 			}
+		usleep(10000);
 		for (client_list_t::iterator it = client_list.begin(); it != client_list.end(); it++) {
 			close(it->socket_fd);
 		}

@@ -1,7 +1,7 @@
 NAME	= ft_irc
 TESTER	= tester
 CC		= c++
-FLAGS	= -Wall -Wextra -Werror -MMD -std=c++98 -g3
+FLAGS	= -Wall -Wextra -Werror -MMD -std=c++98
 rm		= rm -f
 
 COMMANDS_FILES_PATH =	./src/commands/

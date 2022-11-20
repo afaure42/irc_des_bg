@@ -86,7 +86,7 @@ unsigned int	modeChannel(Command &command,
 					std::string		reply_changes = operation_type == 1 ? "+" : operation_type == 2 ? "-" : "";
 					if (!params.empty()) {
 						mask = createChanUserPermMask(command, current_user, chan_operation, reply_changes);
-						if (mask && updateChannelUserPerms(command, users, *ch_it, current_user, params.front(), mask, operation_type))
+						if (mask != 0 && updateChannelUserPerms(command, users, *ch_it, current_user, params.front(), mask, operation_type))
 							sendModeReply(command, current_user, *ch_it, reply_changes, params.front());
 					}
 					else {
@@ -134,8 +134,10 @@ unsigned int	modeUser(Command &command,
 			} else {
 				std::string reply_changes = operation_type == 1 ? "+" : operation_type == 2 ? "-" : "";
 				unsigned int mask = createUserMask(command, current_user, chan_operation, reply_changes);
-				updateUserModes(current_user, mask, operation_type);
-				sendModeReply(command, current_user, target, reply_changes);
+				if (mask != 0) {
+					updateUserModes(current_user, mask, operation_type);
+					sendModeReply(command, current_user, target, reply_changes);
+				}
 			}
 		}
 	}
