@@ -63,13 +63,12 @@ unsigned int names(Command & command,
 		{
 			t_channels::iterator it = findChannel(channel_names.front(), channels);
 			if (it != channels.end())
-			{
 				list_channel_names(*it, command.getScheduler(), current_user);
-				std::string endofnames =
-					createNumericReply(RPL_ENDOFNAMES, current_user.getNick(),
-					it->getName(), RPL_ENDOFNAMES_MSG);
-				command.getScheduler().queueMessage(client_id, endofnames, true);
-			}
+
+			std::string endofnames =
+				createNumericReply(RPL_ENDOFNAMES, current_user.getNick(),
+				channel_names.front(), RPL_ENDOFNAMES_MSG);
+			command.getScheduler().queueMessage(client_id, endofnames, true);
 			channel_names.pop_front();
 		}
 	}
