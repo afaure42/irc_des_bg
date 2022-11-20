@@ -13,12 +13,8 @@
 #define STRESSTEST_CLIENTS	100
 #define STRESSTEST_MSG_N	10
 
-void	test_command(int socket_fd, std::string test_str);
-void 	replace_tokens(std::string &str,
-							const std::string &password,
-							const std::string &nick,
-							const std::string &username,
-							const std::string &fullname);
+static void		send_command(int socket_fd, std::string test_str);
+static void 	replace_tokens(std::string &str, struct tester_client_info_s &tci);
 
 typedef std::list<struct tester_client_s> client_list_t;
 

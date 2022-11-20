@@ -157,6 +157,12 @@ unsigned int	createChannelMask(Command &command,
 			case 't':
 				flag |= Channel::TOPIC;
 				break;
+			case 'b':
+				reply_changes.erase(reply_changes.size() - 1);
+				reply = createNumericReply(RPL_ENDOFBANLIST, current_user.getNick(),
+											"", RPL_ENDOFBANLIST_MSG);
+				command.getScheduler().queueMessage(current_user.getId(), reply, true);
+				break;
 			default:
 				reply_changes.erase(reply_changes.size() - 1);
 				reply = createNumericReply(ERR_UMODEUNKNOWNFLAG, current_user.getNick(),
@@ -166,6 +172,7 @@ unsigned int	createChannelMask(Command &command,
 		}
 		i++;
 	}
-	operation.erase(0, i);
+	if (i >= 0)
+		operation.erase(0, i);
 	return (flag);
 }

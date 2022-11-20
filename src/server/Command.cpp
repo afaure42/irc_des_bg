@@ -49,7 +49,7 @@ void	Command::_setupCommand(const std::string & raw_command) {
 	// If separator is in buffer, do stuff
 	if (raw_command.find(IRC_MSG_SEPARATOR) != raw_command.npos) {
 		std::string command = raw_command.substr(0, raw_command.find(IRC_MSG_SEPARATOR));
-		std::cout << "IRC message received: " << command << std::endl;
+		std::cout << "Valid IRC message received: " << command << std::endl;
 		this->_chars_read = command.length() + std::strlen(IRC_MSG_SEPARATOR);
 		while (!command.empty()) {
 			if (command.at(0) == ':') {

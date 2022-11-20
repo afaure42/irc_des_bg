@@ -104,7 +104,6 @@ int main(int argc, char *argv[])
 						// scheduler.queueMessage(it->second.getId(), *it->second.getBuff(), true);
 
 						//do not forget to remove what you have processed from the read buffer
-						//i recommend reading a little bit about erase method for std::string
 						if (it->second.isConnected())
 						{
 							it->second.getBuff()->erase(0, command.getCharsRead());
