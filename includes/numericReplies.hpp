@@ -74,6 +74,9 @@ const std::string	createNumericReply(
 #define RPL_ENDOFNAMES			366
 #define RPL_ENDOFNAMES_MSG		"End of /NAMES list"
 
+#define RPL_ENDOFBANLIST		368
+#define RPL_ENDOFBANLIST_MSG	"End of /BANS list"
+
 #define RPL_INFO				371
 #define RPL_ENDOFINFO			374
 #define RPL_ENDOFINFO_MSG		"End of /INFO list"
