@@ -12,6 +12,9 @@ MODE #testchan +a
 MODE #testchan -a
 MODE #testchan +invalidflags
 MODE #testchan +o $NICK
+MODE #testchan ++++++ $NICK
+MODE #testchan ++++++zzzz+++++ $NICK
+MODE #testchan -o $NICK
 MODE #testchan -o $NICK
 MODE #testchan +o $NICK
 MODE #testchan +zzeknfowe $NICK
